@@ -1,0 +1,42 @@
+package net.name.template.dataGen;
+
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
+import net.name.template.Template;
+
+
+
+// Aca vamos a agregar los modelos de nuestros items (un modelo es como la formita del item)
+public class ProviderItemModel extends ItemModelProvider {
+    public ProviderItemModel(PackOutput output, ExistingFileHelper existingFileHelper) {
+        super(output, Template.MODID, existingFileHelper);
+    }
+
+    @Override
+    protected void registerModels() {
+
+    }
+
+
+
+    private ItemModelBuilder simpleItem(RegistryObject<Item> item) {
+        return withExistingParent(item.getId().getPath(),
+                 ResourceLocation.fromNamespaceAndPath("minecraft", "item/generated"))
+                .texture("layer0",
+                         ResourceLocation.fromNamespaceAndPath(Template.MODID, "item/" + item.getId().getPath()));
+    }
+
+
+    private ItemModelBuilder handheldItem(RegistryObject<Item> item) {
+        return withExistingParent(item.getId().getPath(),
+                 ResourceLocation.parse("item/handheld")).texture("layer0",
+                 ResourceLocation.fromNamespaceAndPath(Template.MODID,"item/" + item.getId().getPath()));
+    }
+
+
+}
