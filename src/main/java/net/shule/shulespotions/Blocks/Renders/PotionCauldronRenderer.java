@@ -20,8 +20,15 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
 
     @Override
     public void render(PotionCauldronBE be, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
+        int color = be.getLiquidColor();
 
-        if(be.getLiquid_Level() <= 0)
+        float a = ((color >> 24) & 0xFF) / 255f;
+        float r = ((color >> 16) & 0xFF) / 255f;
+        float g = ((color >> 8) & 0xFF) / 255f;
+        float b = (color & 0xFF) / 255f;
+
+
+        if(be.getLiquidLevel() <= 0)
             return;
 
         poseStack.pushPose();
@@ -50,28 +57,28 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
 
         // 🔲 QUAD (orden importante)
         vc.vertex(matrix, min, y, min)
-                .color(242f/255f, 66f/255f, 68f/255f, 1f)
+                .color(r,g,b,a)
                 .uv(u0, v0)
                 .uv2(light)
                 .normal(0, 1, 0)
                 .endVertex();
 
         vc.vertex(matrix, min, y, max)
-                .color(242f/255f, 66f/255f, 68f/255f, 1f)
+                .color(r,g,b,a)
                 .uv(u0, v1)
                 .uv2(light)
                 .normal(0, 1, 0)
                 .endVertex();
 
         vc.vertex(matrix, max, y, max)
-                .color(242f/255f, 66f/255f, 68f/255f, 1f)
+                .color(r,g,b,a)
                 .uv(u1, v1)
                 .uv2(light)
                 .normal(0, 1, 0)
                 .endVertex();
 
         vc.vertex(matrix, max, y, min)
-                .color(242f/255f, 66f/255f, 68f/255f, 1f)
+                .color(r,g,b,a)
                 .uv(u1, v0)
                 .uv2(light)
                 .normal(0, 1, 0)

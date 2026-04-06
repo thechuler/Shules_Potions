@@ -19,7 +19,7 @@ public class ProviderItemModel extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        simpleItem(ModItems.Test);
+        simpleItem(ModItems.HASTE_RECIPE);
     }
 
 

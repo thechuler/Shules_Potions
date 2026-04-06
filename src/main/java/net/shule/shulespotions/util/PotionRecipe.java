@@ -1,12 +1,14 @@
 package net.shule.shulespotions.util;
 
 import net.minecraft.world.effect.MobEffect;
+import net.shule.shulespotions.util.CauldronActions.CauldronAction;
 
 import java.util.List;
 
 public class PotionRecipe {
     private final List<CauldronAction> actions;
     private final MobEffect result;
+
 
 
     public PotionRecipe(List<CauldronAction> actions, MobEffect result) {
