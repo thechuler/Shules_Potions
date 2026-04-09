@@ -17,6 +17,7 @@ import net.shule.shulespotions.Blocks.ModBlockEntities;
 import net.shule.shulespotions.Blocks.ModBlocks;
 import net.shule.shulespotions.Items.ModCreativeTab;
 import net.shule.shulespotions.Items.ModItems;
+import net.shule.shulespotions.Recipes.ModRecipes;
 
 
 /*Este Archivo es el MAIN, o sea el mas importante. En el no vamos a hacer mucho
@@ -53,6 +54,7 @@ public class ShulesPotions
         ModBlocks.register(modEventBus); // <--- Esto agrega bloques
         ModCreativeTab.register(modEventBus); //<--- Esto les da un inventario en creativo
         ModBlockEntities.register(modEventBus);
+        ModRecipes.register(modEventBus); // Agrega PotionRecipe type y serializer
 
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);

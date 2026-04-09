@@ -77,7 +77,9 @@ public class PotionCauldron extends BaseEntityBlock {
 
 
                 if (cauldron.getRecipe() == null) {
-                    if (item.getItem() instanceof PotionRecipeItem recipe) cauldron.setRecipe(recipe.getRecipe());
+                    if (item.getItem() instanceof PotionRecipeItem recipe) {
+                        cauldron.setRecipe(recipe.getRecipe(pLevel).orElseThrow());
+                    }
                 } else {
                     cauldron.HandleActions(pPlayer);
                     pLevel.sendBlockUpdated(pPos, pState, pState, 3);
@@ -88,6 +90,8 @@ public class PotionCauldron extends BaseEntityBlock {
         }
         return InteractionResult.SUCCESS;
     }
+
+
 }
 
 

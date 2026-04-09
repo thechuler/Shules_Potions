@@ -1,17 +1,22 @@
 package net.shule.shulespotions.Blocks.Entities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.shule.shulespotions.Blocks.ModBlockEntities;
-import net.shule.shulespotions.util.PotionRecipe;
+import net.shule.shulespotions.Items.custom.PotionRecipeItem;
+import net.shule.shulespotions.Recipes.Potion.PotionRecipe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Random;
@@ -38,9 +43,13 @@ public class PotionCauldronBE extends BlockEntity {
         boolean flag = recipe.getActions().get(currentRecipeAction).PerformAction(this, player);
         if (flag) {
             currentRecipeAction++;
-            if(currentRecipeAction == recipe.getActions().size())
-                setLiquidColor(recipe.getResult().getColor());
-                else
+            if(currentRecipeAction == recipe.getActions().size()) {
+                MobEffect resultEffect = resolveMobEffect(player.level());
+                //aca se asignaria el efecto a la instancia de potion liquid
+
+                setLiquidColor(resultEffect.getColor());
+                player.addEffect(new MobEffectInstance(resultEffect));
+            }else
                     setLiquidColor(0xFF000000 | new Random().nextInt(0xFFFFFF));
         } else {
             currentRecipeAction = 0;
@@ -50,6 +59,11 @@ public class PotionCauldronBE extends BlockEntity {
 
     }
 
+    private MobEffect resolveMobEffect(Level level){
+        return level.registryAccess()
+                .registryOrThrow(Registries.MOB_EFFECT)
+                .get(ResourceLocation.parse(recipe.getEffectId()));
+    }
 
     public int getLiquidColor() {
         return liquidColor;
@@ -59,8 +73,8 @@ public class PotionCauldronBE extends BlockEntity {
         this.liquidColor = liquidColor;
     }
 
-    public void setLiquidLevel(float level) {
-        this.liquidLevel = level;
+    public void setLiquidLevel(float liquidLevel) {
+        this.liquidLevel = liquidLevel;
     }
 
     public float getLiquidLevel() {
@@ -85,6 +99,9 @@ public class PotionCauldronBE extends BlockEntity {
         pTag.putFloat("SPLiquidLevel", liquidLevel);
         pTag.putInt("SPCurrentState", currentRecipeAction);
         pTag.putInt("SPLiquidColor",liquidColor);
+        if(recipe != null){
+            pTag.putString("SPRecipeId", recipe.getId().toString());
+        }
     }
 
     @Override
@@ -93,6 +110,7 @@ public class PotionCauldronBE extends BlockEntity {
         currentRecipeAction = pTag.getInt("SPCurrentState");
         liquidLevel = pTag.getFloat("SPLiquidLevel");
         liquidColor = pTag.getInt("SPLiquidColor");
+        //recipe = PotionRecipeItem.getRecipe(tryParse(pTag.getString("SPRecipeId")), this.level);
     }
 
 
