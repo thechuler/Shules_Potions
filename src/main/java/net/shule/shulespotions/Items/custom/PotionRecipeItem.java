@@ -20,19 +20,19 @@ public class PotionRecipeItem extends Item {
         this.recipeId = recipeId;
     }
 
+    public ResourceLocation getRecipeId(){
+        return recipeId;
+    }
+
     public Optional<PotionRecipe> getRecipe(Level level) {
-        return  level.getRecipeManager()
-                .getAllRecipesFor(ModRecipes.POTION_TYPE.get())
-                .stream()
-                .filter(r -> r.getId().equals(this.recipeId))
-                .findFirst();
+        return  getRecipe(level, this.recipeId);
     }
 
     public static Optional<PotionRecipe> getRecipe(Level level, ResourceLocation recipeId) {
-        return  level.getRecipeManager()
-                .getAllRecipesFor(ModRecipes.POTION_TYPE.get())
-                .stream()
-                .filter(r -> r.getId().equals(recipeId))
-                .findFirst();
+        return level.getRecipeManager()
+                .byKey(recipeId)
+                .filter(r -> r instanceof PotionRecipe)
+                .map(r -> (PotionRecipe) r);
+
     }
 }

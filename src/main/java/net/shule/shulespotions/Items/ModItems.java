@@ -31,7 +31,8 @@ public class ModItems {
 
 
     public static final RegistryObject<Item> SPEED_RECIPE = ITEMS.register("speed_recipe",
-            () -> new PotionRecipeItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE),
+            () -> new PotionRecipeItem(
+                    new Item.Properties().stacksTo(1).rarity(Rarity.RARE),
                     ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID, "sp_potion_speed")));
 
 

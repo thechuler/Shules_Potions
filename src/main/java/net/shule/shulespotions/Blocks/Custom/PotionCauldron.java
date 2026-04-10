@@ -56,33 +56,36 @@ public class PotionCauldron extends BaseEntityBlock {
         if (!pLevel.isClientSide()) {
             BlockEntity CauldronBe = pLevel.getBlockEntity(pPos);
             if (CauldronBe instanceof PotionCauldronBE cauldron) {
-
+                //Este bloque es temporal para debugging
                 if (item.isEmpty()) {
-                    if (cauldron.getRecipe() != null) {
-                        pPlayer.sendSystemMessage(
-                                Component.literal("Paso" + cauldron.getCurrentRecipeAction()
-                                        + " Item Esperado: " +
-                                        cauldron.
-                                                getRecipe().
-                                                getActions().
-                                                get(cauldron.getCurrentRecipeAction())
-                                                .getExpectedItem()
-                                                .getItem().
-                                                getDefaultInstance()
-                                                .getHoverName()
-                                                .getString()));
+                    if (cauldron.getRecipeId() != null &&
+                            cauldron.getRecipeId().getNamespace().compareTo("shulespotions") == 0) {
+                        if(cauldron.getCurrentRecipeAction() < cauldron.getRecipe(pLevel).getActions().size()) {
+                            pPlayer.sendSystemMessage(
+                                    Component.literal("Paso" + cauldron.getCurrentRecipeAction()
+                                            + " Item Esperado: " +
+                                            cauldron.getRecipe(pLevel)
+                                                    .getActions()
+                                                    .get(cauldron.getCurrentRecipeAction())
+                                                    .getExpectedItem()
+                                                    .getItem()
+                                                    .getDefaultInstance()
+                                                    .getHoverName()
+                                                    .getString()));
+                        } else pPlayer.sendSystemMessage(Component.literal("Ya esta gordo"));
                     } else pPlayer.sendSystemMessage(Component.literal("Sin Receta"));
                     return InteractionResult.SUCCESS;
                 }
 
-
-                if (cauldron.getRecipe() == null) {
-                    if (item.getItem() instanceof PotionRecipeItem recipe) {
-                        cauldron.setRecipe(recipe.getRecipe(pLevel).orElseThrow());
-                    }
+                if (item.getItem() instanceof PotionRecipeItem recipe) {
+                        cauldron.setRecipeId(recipe.getRecipeId());
+                        cauldron.setCurrentRecipeAction(0);
                 } else {
-                    cauldron.HandleActions(pPlayer);
-                    pLevel.sendBlockUpdated(pPos, pState, pState, 3);
+                    if (cauldron.getRecipeId() != null &&
+                            cauldron.getRecipeId().getNamespace().compareTo("shulespotions") == 0) {
+                        cauldron.HandleActions(pPlayer);
+                        pLevel.sendBlockUpdated(pPos, pState, pState, 3);
+                    }
                 }
             }
 

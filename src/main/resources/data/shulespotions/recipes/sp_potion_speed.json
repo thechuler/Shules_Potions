@@ -1,0 +1,16 @@
+{
+  "type": "shulespotions:potion",
+  "actions": [
+    { "action": "add_item",
+      "item": {
+        "item" : "minecraft:water_bucket"
+      }
+    },
+    { "action": "add_item",
+      "item": {
+        "item" : "minecraft:feather"
+      }
+    }
+  ],
+  "result": "minecraft:speed"
+}
