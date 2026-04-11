@@ -1,7 +1,7 @@
 {
   "type": "shulespotions:potion",
   "actions": [
-    { "action": "add_item",
+    { "action": "add_liquid",
       "item": {
         "item" : "minecraft:water_bucket"
       }
@@ -9,6 +9,22 @@
     { "action": "add_item",
       "item": {
         "item" : "minecraft:feather"
+      }
+    },
+    { "action": "stir",
+      "item": {
+        "item" : "minecraft:wooden_shovel"
+      }
+    },
+    { "action": "add_item",
+      "item": {
+        "item" : "minecraft:sugar"
+      }
+    },
+
+    { "action": "stir",
+      "item": {
+        "item" : "minecraft:diamond_shovel"
       }
     }
   ],

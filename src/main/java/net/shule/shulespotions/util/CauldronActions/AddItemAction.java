@@ -1,10 +1,8 @@
 package net.shule.shulespotions.util.CauldronActions;
 
+
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
 
 public class AddItemAction implements CauldronAction {
     private final ItemStack expectedItem;
@@ -18,12 +16,6 @@ public class AddItemAction implements CauldronAction {
     }
 
 
-    @Override
-    public boolean PerformAction(PotionCauldronBE Cauldron, Player player){
-        ItemStack item = player.getItemInHand(InteractionHand.MAIN_HAND);
-        return ItemStack.matches(expectedItem,item);
-    }
-
     //estos son necesarios para compartir la accion, ya que es un objeto como la receta
     public void toNetwork(FriendlyByteBuf buffer){
         //leer el caso del metodo a ver si corresponde ese valor de limitedTag
@@ -35,7 +27,37 @@ public class AddItemAction implements CauldronAction {
         return "add_item";
     }
 
-    public ItemStack getExpectedItem() {
+    @Override
+    public void execute(CauldronActionContext ctx) {
+        ItemStack stack = ctx.itemEntity.getItem();
+        stack.shrink(1);
+
+        if (stack.isEmpty()) {
+            ctx.itemEntity.discard();
+        }
+    }
+
+    @Override
+    public boolean canTrigger(CauldronActionContext ctx) {
+        if (ctx.itemEntity == null) return false;
+        return ItemStack.matches(expectedItem, ctx.itemEntity.getItem());
+    }
+
+
+    @Override
+    public CauldronActionTrigger getTrigger() {
+        return CauldronActionTrigger.ITEM_INSIDE;
+    }
+
+    @Override
+    public String getActionDescription() {
+        return "Add: " + expectedItem.getHoverName().getString();
+    }
+
+    @Override
+    public ItemStack getAsociatedItem() {
         return expectedItem;
     }
+
+
 }

@@ -1,17 +1,6 @@
 {
 
-  "block.geoexpansion.therium_ore": "Therium Ore",
-  "item.geoexpansion.raw_therium": "Raw Therium",
-  "item.geoexpansion.therium_ingot": "Therium Ingot",
-  "item.geoexpansion.therium_sword": "Therium Sword",
-  "item.geoexpansion.therium_shovel": "Therium Shovel",
-  "item.geoexpansion.therium_pickaxe": "Therium Pickaxe",
-  "item.geoexpansion.therium_pickspear": "Therium Pickspear",
-  "item.geoexpansion.therium_dague": "Therium Dague",
-  "item.geoexpansion.therium_axe": "Therium Axe",
-
-
-  "block.geoexpansion.therium_ore": "Gronite Ore",
-  "item.geoexpansion.gronite": "Gronite",
-  "item.geoexpansion.gronite_mace": "Gronite Mace"
+  "block.shulespotions.potion_cauldron": "Potion Cauldron",
+  "item.geoexpansion.gronite_mace": "Potion Recipe",
+  "creativetab.main_tab": "Shule's Potions"
 }

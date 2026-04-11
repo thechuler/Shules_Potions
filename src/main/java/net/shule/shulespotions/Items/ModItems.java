@@ -7,12 +7,11 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.shule.shulespotions.Items.custom.SmallPotion;
 import net.shule.shulespotions.Items.custom.PotionRecipeItem;
 import net.shule.shulespotions.ShulesPotions;
 import net.shule.shulespotions.util.CauldronActions.AddItemAction;
-import net.shule.shulespotions.util.CauldronActions.CauldronAction;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,6 +34,10 @@ public class ModItems {
                     new Item.Properties().stacksTo(1).rarity(Rarity.RARE),
                     ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID, "sp_potion_speed")));
 
+
+
+    public static final RegistryObject<Item> SMALL_POTION = ITEMS.register("small_potion",
+            ()-> new SmallPotion(new Item.Properties()));
 
     public static void register(IEventBus bus) {
         ITEMS.register(bus);

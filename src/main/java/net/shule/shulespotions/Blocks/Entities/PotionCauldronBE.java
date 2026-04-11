@@ -16,66 +16,65 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.shule.shulespotions.Blocks.ModBlockEntities;
 import net.shule.shulespotions.Items.custom.PotionRecipeItem;
+import net.shule.shulespotions.Potions.PotionLiquid;
 import net.shule.shulespotions.Recipes.Potion.PotionRecipe;
+import net.shule.shulespotions.util.CauldronActions.CauldronAction;
+import net.shule.shulespotions.util.CauldronActions.CauldronActionContext;
+import net.shule.shulespotions.util.CauldronActions.CauldronActionTrigger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Random;
+
+import java.util.List;
 
 
 public class PotionCauldronBE extends BlockEntity {
     private float liquidLevel;
-    //private PotionRecipe recipe; PROBLEMA CON /RELOAD Y COSAS ASI
+
     private ResourceLocation recipeId;
     private int currentRecipeAction;
-    private int liquidColor;
+
+    private PotionLiquid liquid;
 
     public PotionCauldronBE(BlockPos pos, BlockState state) {
         super(ModBlockEntities.POTION_CAULDRON_BE.get(), pos, state);
         currentRecipeAction = 0;
-        liquidColor =0x3F76E4;
         liquidLevel = 0f;
+        liquid = new PotionLiquid();
     }
 
-    public void HandleActions(Player player) {
-        PotionRecipe recipe = PotionRecipeItem.getRecipe(player.level(), this.recipeId).orElseThrow();
-        liquidLevel = currentRecipeAction > 0 ? 1: 0;
 
-        if (recipe.getActions().size() <= currentRecipeAction) return;
+    public void handleTrigger(CauldronActionTrigger trigger, CauldronActionContext ctx) {
+        assert ctx.cauldron.level != null;
+        PotionRecipe recipe = PotionRecipeItem.getRecipe(ctx.cauldron.level, this.recipeId).orElseThrow();
+        if (recipe == null) return;
 
-        boolean flag = recipe.getActions().get(currentRecipeAction).PerformAction(this, player);
-        if (flag) {
+        if (currentRecipeAction >= recipe.getActions().size()) return;
+
+
+        CauldronAction action = recipe.getActions().get(currentRecipeAction);
+
+        if (action.getTrigger() != trigger) return;
+
+        if (action.canTrigger(ctx)) {
+            action.execute(ctx);
             currentRecipeAction++;
-            if(currentRecipeAction == recipe.getActions().size()) {
-                MobEffect resultEffect = resolveMobEffect(player.level(), recipe);
-                //aca se asignaria el efecto a la instancia de potion liquid
+            if(currentRecipeAction > 0)  this.liquid.setColor(0x8A2BE2);
+            if (currentRecipeAction == recipe.getActions().size()) {
 
-                setLiquidColor(resultEffect.getColor());
-                player.addEffect(new MobEffectInstance(resultEffect));
-            }else
-                    setLiquidColor(0xFF000000 | new Random().nextInt(0xFFFFFF));
-        } else {
-            currentRecipeAction = 0;
-            setLiquidColor(0xFFFF0000);
+                MobEffect resultEffect = resolveMobEffect(ctx.cauldron.level, recipe);
+                this.setPotionLiquid(new PotionLiquid(400, recipe.getActions().size(), 10.5f, 100.0f, List.of(resultEffect), resultEffect.getColor()));
+            }
+            setChanged();
         }
-
-        setChanged();
     }
 
-    private MobEffect resolveMobEffect(Level level, PotionRecipe recipe){
+
+    private MobEffect resolveMobEffect(Level level, PotionRecipe recipe) {
         //si mas adelante se agregan mobeffect custom que esten en otro registry, habra que filtrar
         //aca segun el prefijo del effectId para ver en que registro buscar
-        return level.registryAccess()
-                .registryOrThrow(Registries.MOB_EFFECT)
-                .get(ResourceLocation.parse(recipe.getEffectId()));
+        return level.registryAccess().registryOrThrow(Registries.MOB_EFFECT).get(ResourceLocation.parse(recipe.getEffectId()));
     }
 
-    public int getLiquidColor() {
-        return liquidColor;
-    }
-
-    public void setLiquidColor(int liquidColor) {
-        this.liquidColor = liquidColor;
-    }
 
     public void setLiquidLevel(float liquidLevel) {
         this.liquidLevel = liquidLevel;
@@ -86,13 +85,11 @@ public class PotionCauldronBE extends BlockEntity {
     }
 
     public PotionRecipe getRecipe(Level level) {
-        if(recipeId != null)
-            return PotionRecipeItem.getRecipe(level, this.recipeId).orElseThrow();
-        else
-            return null;
+        if (recipeId != null) return PotionRecipeItem.getRecipe(level, this.recipeId).orElseThrow();
+        else return null;
     }
 
-    public ResourceLocation getRecipeId(){
+    public ResourceLocation getRecipeId() {
         return recipeId;
     }
 
@@ -101,7 +98,7 @@ public class PotionCauldronBE extends BlockEntity {
         setChanged();
     }
 
-    public void setCurrentRecipeAction(int value){
+    public void setCurrentRecipeAction(int value) {
         this.currentRecipeAction = value;
         setChanged();
     }
@@ -115,11 +112,14 @@ public class PotionCauldronBE extends BlockEntity {
         super.saveAdditional(pTag);
         pTag.putFloat("SPLiquidLevel", liquidLevel);
         pTag.putInt("SPCurrentState", currentRecipeAction);
-        pTag.putInt("SPLiquidColor",liquidColor);
-        if(recipeId != null &&
-                recipeId.getNamespace().compareTo("shulespotions") == 0){
+        if (recipeId != null && recipeId.getNamespace().compareTo("shulespotions") == 0) {
             pTag.putString("SPRecipeId", recipeId.toString());
         }
+
+        if (liquid != null) {
+            pTag.put("SPPotionLiquid", liquid.save());
+        }
+
     }
 
     @Override
@@ -127,8 +127,10 @@ public class PotionCauldronBE extends BlockEntity {
         super.load(pTag);
         currentRecipeAction = pTag.getInt("SPCurrentState");
         liquidLevel = pTag.getFloat("SPLiquidLevel");
-        liquidColor = pTag.getInt("SPLiquidColor");
         recipeId = ResourceLocation.tryParse(pTag.getString("SPRecipeId"));
+        if (pTag.contains("SPPotionLiquid")) {
+            liquid = PotionLiquid.load(pTag.getCompound("SPPotionLiquid"));
+        }
     }
 
 
@@ -151,6 +153,27 @@ public class PotionCauldronBE extends BlockEntity {
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         assert pkt.getTag() != null;
         this.load(pkt.getTag());
+    }
+
+
+    public void setPotionLiquid(PotionLiquid liquid) {
+        this.liquid = liquid;
+        setChanged();
+        sync();
+    }
+
+    public PotionLiquid getPotionLiquid() {
+        return liquid;
+    }
+
+    private void sync() {
+        if (level != null && !level.isClientSide) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+
+    public boolean hasPotionLiquid() {
+        return liquid != null;
     }
 
 

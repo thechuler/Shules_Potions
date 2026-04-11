@@ -17,7 +17,7 @@ public class ModBlockEntities {
     public static final RegistryObject<BlockEntityType<PotionCauldronBE>> POTION_CAULDRON_BE =
             BLOCK_ENTITIES.register("potion_cauldron_be", () ->
                     BlockEntityType.Builder.of(PotionCauldronBE::new,
-                            ModBlocks.caldero.get()).build(null));
+                            ModBlocks.POTION_CAULDRON.get()).build(null));
 
 
 

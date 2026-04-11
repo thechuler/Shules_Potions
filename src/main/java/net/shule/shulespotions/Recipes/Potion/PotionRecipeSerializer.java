@@ -15,7 +15,9 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.storage.loot.Serializer;
 import net.shule.shulespotions.util.CauldronActions.AddItemAction;
+import net.shule.shulespotions.util.CauldronActions.AddLiquidAction;
 import net.shule.shulespotions.util.CauldronActions.CauldronAction;
+import net.shule.shulespotions.util.CauldronActions.StirAction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -36,7 +38,18 @@ public class PotionRecipeSerializer implements RecipeSerializer<PotionRecipe> {
                 case "add_item":
                     actions.add(new AddItemAction(
                             ShapedRecipe.itemStackFromJson(obj.get("item").getAsJsonObject())
-                            //Ingredient.fromJson(obj.get("item"))
+                    ));
+                    break;
+
+                case "add_liquid":
+                    actions.add(new AddLiquidAction(
+                            ShapedRecipe.itemStackFromJson(obj.get("item").getAsJsonObject())
+                    ));
+                    break;
+
+                case "stir":
+                    actions.add(new StirAction(
+                            ShapedRecipe.itemStackFromJson(obj.get("item").getAsJsonObject())
                     ));
                     break;
 
@@ -61,6 +74,8 @@ public class PotionRecipeSerializer implements RecipeSerializer<PotionRecipe> {
 
             CauldronAction action = switch (type) {
                 case "add_item" -> AddItemAction.fromNetwork(pBuffer);
+                case "add_liquid" -> AddLiquidAction.fromNetwork(pBuffer);
+                case "stir" -> StirAction.fromNetwork(pBuffer);
                 //agregar el resto de acciones o ver codec
                 default -> throw new RuntimeException("Unknown action: " + type);
             };

@@ -4,8 +4,16 @@ import net.minecraft.core.BlockPos;
 
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +32,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
 import net.shule.shulespotions.Items.custom.PotionRecipeItem;
+import net.shule.shulespotions.util.CauldronActions.CauldronActionContext;
+import net.shule.shulespotions.util.CauldronActions.CauldronActionTrigger;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -56,7 +66,6 @@ public class PotionCauldron extends BaseEntityBlock {
         if (!pLevel.isClientSide()) {
             BlockEntity CauldronBe = pLevel.getBlockEntity(pPos);
             if (CauldronBe instanceof PotionCauldronBE cauldron) {
-                //Este bloque es temporal para debugging
                 if (item.isEmpty()) {
                     if (cauldron.getRecipeId() != null &&
                             cauldron.getRecipeId().getNamespace().compareTo("shulespotions") == 0) {
@@ -67,12 +76,15 @@ public class PotionCauldron extends BaseEntityBlock {
                                             cauldron.getRecipe(pLevel)
                                                     .getActions()
                                                     .get(cauldron.getCurrentRecipeAction())
-                                                    .getExpectedItem()
-                                                    .getItem()
-                                                    .getDefaultInstance()
-                                                    .getHoverName()
-                                                    .getString()));
-                        } else pPlayer.sendSystemMessage(Component.literal("Ya esta gordo"));
+                                                    .getActionDescription()));
+                        } else {
+                            pPlayer.playSound(SoundEvents.GENERIC_DRINK,1,1);
+                           int duration = cauldron.getPotionLiquid().getDuration();
+                           float power = cauldron.getPotionLiquid().getPower();
+                            for(MobEffect effect : cauldron.getPotionLiquid().getEffect()){
+                            pPlayer.addEffect(new MobEffectInstance(effect,duration, (int) power));
+                            }
+                        }
                     } else pPlayer.sendSystemMessage(Component.literal("Sin Receta"));
                     return InteractionResult.SUCCESS;
                 }
@@ -83,7 +95,7 @@ public class PotionCauldron extends BaseEntityBlock {
                 } else {
                     if (cauldron.getRecipeId() != null &&
                             cauldron.getRecipeId().getNamespace().compareTo("shulespotions") == 0) {
-                        cauldron.HandleActions(pPlayer);
+                         cauldron.handleTrigger(CauldronActionTrigger.RIGHT_CLICK, new CauldronActionContext(cauldron, pPlayer, null));
                         pLevel.sendBlockUpdated(pPos, pState, pState, 3);
                     }
                 }
@@ -95,6 +107,21 @@ public class PotionCauldron extends BaseEntityBlock {
     }
 
 
+    @Override
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        if (level.isClientSide) return;
+
+        if (!(entity instanceof ItemEntity itemEntity)) return;
+
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof PotionCauldronBE cauldron) {
+
+            cauldron.handleTrigger(
+                    CauldronActionTrigger.ITEM_INSIDE,
+                    new CauldronActionContext(cauldron, null, itemEntity)
+            );
+        }
+    }
 }
 
 
