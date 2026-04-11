@@ -60,11 +60,12 @@ public class PotionCauldronBE extends BlockEntity {
             currentRecipeAction++;
             if(currentRecipeAction > 0)  this.liquid.setColor(0x8A2BE2);
             if (currentRecipeAction == recipe.getActions().size()) {
-
                 MobEffect resultEffect = resolveMobEffect(ctx.cauldron.level, recipe);
                 this.setPotionLiquid(new PotionLiquid(400, recipe.getActions().size(), 10.5f, 100.0f, List.of(resultEffect), resultEffect.getColor()));
+                currentRecipeAction = 0;
             }
             setChanged();
+            sync();
         }
     }
 
@@ -96,11 +97,13 @@ public class PotionCauldronBE extends BlockEntity {
     public void setRecipeId(ResourceLocation recipeId) {
         this.recipeId = recipeId;
         setChanged();
+        sync();
     }
 
     public void setCurrentRecipeAction(int value) {
         this.currentRecipeAction = value;
         setChanged();
+        sync();
     }
 
     public int getCurrentRecipeAction() {

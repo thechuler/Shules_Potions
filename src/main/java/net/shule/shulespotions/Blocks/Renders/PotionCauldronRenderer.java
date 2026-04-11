@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -35,26 +36,24 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
 
     private void  renderFloatingIcon(PotionCauldronBE be, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay){
 
+        if (be.getRecipeId() == null ||
+                be.getRecipeId().getNamespace().compareTo("shulespotions") != 0) return;
 
         poseStack.pushPose();
-
-        //  Centro del bloque + altura
         poseStack.translate(0.5, 1.5, 0.5);
 
         float time = be.getLevel().getGameTime() + partialTicks;
-        ItemStack stack = new ItemStack(Items.BUCKET);
-        //  Flotación (sube y baja)
+
+
+       ItemStack stack = be.getRecipe(be.getLevel())
+                .getActions()
+                .get(be.getCurrentRecipeAction()).getAsociatedItem();
+
         float bob = (float) Math.sin(time * 0.1f) * 0.05f;
         poseStack.translate(0, bob, 0);
-
-        // 🔄 Rotación
         float angle = time * 2f;
         poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(angle));
-
-        // 📏 Tamaño
         poseStack.scale(0.4f, 0.4f, 0.4f);
-
-        // 🖼️ TEXTURA (por ahora usamos una del atlas)
         TextureAtlasSprite sprite = Minecraft.getInstance()
                 .getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
                 .apply(ResourceLocation.fromNamespaceAndPath("shulespotions","item/cauldron_actionui1"));
@@ -69,7 +68,6 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
 
         float size = 0.5f;
 
-// 🔲 Quad vertical (mirando hacia un lado)
         vc.vertex(matrix, -size, -size, 0)
                 .color(1f,1f,1f,0.8f)
                 .uv(u0, v1)
@@ -98,7 +96,8 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
                 .normal(0, 0, 1)
                 .endVertex();
 
-        // 🔁 Cara trasera (invertida)
+
+
         vc.vertex(matrix, size, -size, 0)
                 .color(1f,1f,1f,0.8f)
                 .uv(u1, v1)
@@ -132,19 +131,15 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
 
         poseStack.pushPose();
 
-// 📍 Lo movemos un poquito hacia adelante (para que no z-fight con el quad)
+
         poseStack.translate(0, 0, 0.01);
 
-// 📏 Escala del item (probá valores)
         poseStack.scale(0.6f, 0.6f, 0.01f);
 
-// 🔄 Opcional: que rote junto con el icono
-// (ya está rotado por el poseStack anterior)
 
-// 🧱 Render del item
         itemRenderer.renderStatic(
                 stack,
-                ItemDisplayContext.GUI, // o GUI si querés plano
+                ItemDisplayContext.GUI,
                 light,
                 overlay,
                 poseStack,
@@ -159,6 +154,11 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
         poseStack.popPose();
         poseStack.popPose();
     }
+
+
+
+
+
 
     private  void renderLiquid(PotionCauldronBE be, PoseStack poseStack, MultiBufferSource buffer, int light){
         if(be.getLiquidLevel() <= 0)
@@ -194,7 +194,7 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
 
         Matrix4f matrix = poseStack.last().pose();
 
-        // 🔲 QUAD (orden importante)
+
         vc.vertex(matrix, min, y, min)
                 .color(r,g,b,a)
                 .uv(u0, v0)
