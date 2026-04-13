@@ -2,6 +2,7 @@ package net.shule.shulespotions.util.CauldronActions;
 
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -16,5 +17,5 @@ public interface CauldronAction {
     CauldronActionTrigger getTrigger();
     String getActionDescription();
     ItemStack getAsociatedItem();
-
+    ResourceLocation getFrameResource();
 }

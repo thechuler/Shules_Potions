@@ -1,6 +1,8 @@
 {
 
   "block.shulespotions.potion_cauldron": "Potion Cauldron",
-  "item.geoexpansion.gronite_mace": "Potion Recipe",
-  "creativetab.main_tab": "Shule's Potions"
+  "creativetab.main_tab": "Shule's Potions",
+  "item.shulespotions.potion_barrel": "Potion Barrel",
+  "item.shulespotions.recipe_book": "Recipe Book",
+  "item.shulespotions.wooden_spoon": "Wooden Spoon"
 }

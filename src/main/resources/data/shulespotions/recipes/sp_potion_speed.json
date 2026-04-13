@@ -13,7 +13,7 @@
     },
     { "action": "stir",
       "item": {
-        "item" : "minecraft:wooden_shovel"
+        "item" : "shulespotions:wooden_spoon"
       }
     },
     { "action": "add_item",
@@ -24,7 +24,7 @@
 
     { "action": "stir",
       "item": {
-        "item" : "minecraft:diamond_shovel"
+        "item" : "shulespotions:wooden_spoon"
       }
     }
   ],

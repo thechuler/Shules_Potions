@@ -2,13 +2,16 @@ package net.shule.shulespotions.util.CauldronActions;
 
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.shule.shulespotions.ShulesPotions;
 
 public class AddItemAction implements CauldronAction {
-    private final ItemStack expectedItem;
+    private final ItemStack EXPECTED_ITEM;
+    private final ResourceLocation FRAME = ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"item/frame/additem_action_frame");
 
     public AddItemAction(ItemStack pExpectedItem){
-        expectedItem = pExpectedItem;
+        EXPECTED_ITEM = pExpectedItem;
     }
 
     public static CauldronAction fromNetwork(FriendlyByteBuf pBuffer) {
@@ -19,7 +22,7 @@ public class AddItemAction implements CauldronAction {
     //estos son necesarios para compartir la accion, ya que es un objeto como la receta
     public void toNetwork(FriendlyByteBuf buffer){
         //leer el caso del metodo a ver si corresponde ese valor de limitedTag
-        buffer.writeItemStack(expectedItem, true);
+        buffer.writeItemStack(EXPECTED_ITEM, true);
     }
 
     @Override
@@ -40,7 +43,7 @@ public class AddItemAction implements CauldronAction {
     @Override
     public boolean canTrigger(CauldronActionContext ctx) {
         if (ctx.itemEntity == null) return false;
-        return ItemStack.matches(expectedItem, ctx.itemEntity.getItem());
+        return ItemStack.matches(EXPECTED_ITEM, ctx.itemEntity.getItem());
     }
 
 
@@ -51,12 +54,17 @@ public class AddItemAction implements CauldronAction {
 
     @Override
     public String getActionDescription() {
-        return "Add: " + expectedItem.getHoverName().getString();
+        return "Add: " + EXPECTED_ITEM.getHoverName().getString();
     }
 
     @Override
     public ItemStack getAsociatedItem() {
-        return expectedItem;
+        return EXPECTED_ITEM;
+    }
+
+    @Override
+    public ResourceLocation getFrameResource() {
+        return FRAME;
     }
 
 

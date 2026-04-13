@@ -6,6 +6,8 @@ import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.shule.shulespotions.Items.ModItems;
+import net.shule.shulespotions.Items.custom.PotionLiquidContainerItem;
+import net.shule.shulespotions.Potions.PotionLiquid;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ColorManager {
@@ -28,8 +30,25 @@ public class ColorManager {
                         return ColorManager.lerpColorsLoop(colors, time);
                     }
                     return 0xFFFFFFFF;
-                },
-                ModItems.SMALL_POTION.get());
+                }, ModItems.SMALL_POTION.get());
+
+
+        event.register((stack, tintIndex) -> {
+            if (tintIndex == 1) {
+
+                if (!(stack.getItem() instanceof PotionLiquidContainerItem potionContainer)) {
+                    return 0x00000000;
+                }
+
+                return !potionContainer.hasPotionLiquid(stack)
+                        ? 0x00000000
+                        : 0xFF000000 | potionContainer.getPotionLiquid(stack).getColor();
+            }
+
+            return 0x00FFFFFF;
+        }, ModItems.POTION_BARREL.get());
+
+
     }
 
 
@@ -65,5 +84,9 @@ public class ColorManager {
 
         return (r << 16) | (g << 8) | b;
     }
+
+
+
+
 
 }

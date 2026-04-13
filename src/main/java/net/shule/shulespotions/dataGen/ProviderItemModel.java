@@ -20,6 +20,8 @@ public class ProviderItemModel extends ItemModelProvider {
     @Override
     protected void registerModels() {
         simpleItem(ModItems.SPEED_RECIPE);
+        simpleItem(ModItems.POTION_BARREL);
+        simpleItem(ModItems.RECIPE_BOOK);
     }
 
 

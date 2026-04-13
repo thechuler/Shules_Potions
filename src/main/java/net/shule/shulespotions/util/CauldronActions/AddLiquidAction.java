@@ -1,15 +1,18 @@
 package net.shule.shulespotions.util.CauldronActions;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.shule.shulespotions.ShulesPotions;
 
 public class AddLiquidAction implements CauldronAction{
-    private final ItemStack expectedItem;
+    private final ItemStack EXPECTED_ITEM;
+    private final ResourceLocation FRAME = ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"item/frame/addliquid_action_frame");
 
     public AddLiquidAction(ItemStack expectedItem) {
-        this.expectedItem = expectedItem;
+        this.EXPECTED_ITEM = expectedItem;
     }
 
     public static CauldronAction fromNetwork(FriendlyByteBuf pBuffer) {
@@ -19,7 +22,7 @@ public class AddLiquidAction implements CauldronAction{
 
     @Override
     public void toNetwork(FriendlyByteBuf buffer) {
-        buffer.writeItemStack(expectedItem, true);
+        buffer.writeItemStack(EXPECTED_ITEM, true);
     }
 
     @Override
@@ -38,7 +41,7 @@ public class AddLiquidAction implements CauldronAction{
     @Override
     public boolean canTrigger(CauldronActionContext ctx) {
         return ctx.player != null && ctx.player
-                .getItemInHand(InteractionHand.MAIN_HAND).is(expectedItem.getItem());
+                .getItemInHand(InteractionHand.MAIN_HAND).is(EXPECTED_ITEM.getItem());
     }
 
     @Override
@@ -48,11 +51,16 @@ public class AddLiquidAction implements CauldronAction{
 
     @Override
     public String getActionDescription() {
-        return "AddLiquid" + expectedItem.getHoverName().getString();
+        return "AddLiquid" + EXPECTED_ITEM.getHoverName().getString();
     }
 
     @Override
     public ItemStack getAsociatedItem() {
-        return expectedItem;
+        return EXPECTED_ITEM;
+    }
+
+    @Override
+    public ResourceLocation getFrameResource() {
+        return FRAME;
     }
 }

@@ -31,6 +31,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
+import net.shule.shulespotions.Items.ModItems;
+import net.shule.shulespotions.Items.custom.PotionBarrel;
 import net.shule.shulespotions.Items.custom.PotionRecipeItem;
 import net.shule.shulespotions.util.CauldronActions.CauldronActionContext;
 import net.shule.shulespotions.util.CauldronActions.CauldronActionTrigger;
@@ -38,8 +40,16 @@ import org.jetbrains.annotations.Nullable;
 
 
 public class PotionCauldron extends BaseEntityBlock {
-    private static final VoxelShape INSIDE = box(2.0D, 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
-    protected static final VoxelShape SHAPE = Shapes.join(Shapes.block(), Shapes.or(box(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D), box(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D), box(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), INSIDE), BooleanOp.ONLY_FIRST);
+    private static final VoxelShape INSIDE =
+            box(2.0D, 3.0D, 2.0D, 14.0D, 15.0D, 14.0D);
+
+    protected static final VoxelShape SHAPE =
+            Shapes.or(
+                    box(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D),
+                    box(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D),
+                    box(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D),
+                    INSIDE
+            );
 
     public PotionCauldron(Properties pProperties) {
         super(pProperties);
@@ -65,36 +75,45 @@ public class PotionCauldron extends BaseEntityBlock {
         ItemStack item = pPlayer.getItemInHand(InteractionHand.MAIN_HAND);
         if (!pLevel.isClientSide()) {
             BlockEntity CauldronBe = pLevel.getBlockEntity(pPos);
+
+
+
             if (CauldronBe instanceof PotionCauldronBE cauldron) {
-                if (item.isEmpty()) {
-                    if (cauldron.getRecipeId() != null &&
-                            cauldron.getRecipeId().getNamespace().compareTo("shulespotions") == 0) {
-                        if(cauldron.getCurrentRecipeAction() < cauldron.getRecipe(pLevel).getActions().size()) {
-                            pPlayer.sendSystemMessage(
-                                    Component.literal("Paso" + cauldron.getCurrentRecipeAction()
-                                            + " Item Esperado: " +
-                                            cauldron.getRecipe(pLevel)
-                                                    .getActions()
-                                                    .get(cauldron.getCurrentRecipeAction())
-                                                    .getActionDescription()));
-                        } else {
-                            pPlayer.playSound(SoundEvents.GENERIC_DRINK,1,1);
-                           int duration = cauldron.getPotionLiquid().getDuration();
-                           float power = cauldron.getPotionLiquid().getPower();
-                            for(MobEffect effect : cauldron.getPotionLiquid().getEffect()){
-                            pPlayer.addEffect(new MobEffectInstance(effect,duration, (int) power));
+
+
+
+                        boolean flg2 = cauldron.IsRecipeFinished();
+                        if(flg2 ){
+                            if(pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof PotionBarrel pb) {
+                                pb.setPotionLiquid(pPlayer.getItemInHand(InteractionHand.MAIN_HAND), cauldron.getPotionLiquid());
+                                cauldron.setLiquidLevel(0);
+
                             }
                         }
-                    } else pPlayer.sendSystemMessage(Component.literal("Sin Receta"));
-                    return InteractionResult.SUCCESS;
-                }
+
+
+
+
+                      if(cauldron.HasRecipe()){
+                        if(cauldron.IsRecipeFinished()) {
+                            pPlayer.playSound(SoundEvents.GENERIC_DRINK,1,1);
+                            int duration = cauldron.getPotionLiquid().getDuration();
+                            float power = cauldron.getPotionLiquid().getPower();
+                            for(MobEffect effect : cauldron.getPotionLiquid().getEffect()){
+                                pPlayer.addEffect(new MobEffectInstance(effect,duration, (int) power));
+
+                            }
+                            return InteractionResult.SUCCESS;
+                        }
+                    }
+
 
                 if (item.getItem() instanceof PotionRecipeItem recipe) {
                         cauldron.setRecipeId(recipe.getRecipeId());
+                        cauldron.setRecipeFinished(false);
                         cauldron.setCurrentRecipeAction(0);
                 } else {
-                    if (cauldron.getRecipeId() != null &&
-                            cauldron.getRecipeId().getNamespace().compareTo("shulespotions") == 0) {
+                    if (cauldron.HasRecipe()) {
                          cauldron.handleTrigger(CauldronActionTrigger.RIGHT_CLICK, new CauldronActionContext(cauldron, pPlayer, null));
                         pLevel.sendBlockUpdated(pPos, pState, pState, 3);
                     }
