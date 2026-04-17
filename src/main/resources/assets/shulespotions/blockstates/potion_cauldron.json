@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "shulespotions:block/potion_cauldron" }
+    "state=base":  { "model": "shulespotions:block/potion_cauldron_base" },
+    "state=hot":   { "model": "shulespotions:block/potion_cauldron_hot" },
+    "state=cold":  { "model": "shulespotions:block/potion_cauldron_cold" }
   }
 }

@@ -2,14 +2,17 @@ package net.shule.shulespotions.util.CauldronActions;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.shule.shulespotions.ShulesPotions;
 
-public class AddLiquidAction implements CauldronAction{
+public class AddLiquidAction implements CauldronAction {
     private final ItemStack EXPECTED_ITEM;
-    private final ResourceLocation FRAME = ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"item/frame/addliquid_action_frame");
+    private final ResourceLocation FRAME = ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID, "item/frame/addliquid_action_frame");
 
     public AddLiquidAction(ItemStack expectedItem) {
         this.EXPECTED_ITEM = expectedItem;
@@ -32,10 +35,10 @@ public class AddLiquidAction implements CauldronAction{
 
     @Override
     public void execute(CauldronActionContext ctx) {
-        ctx.player.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(Items.BUCKET));
+        assert ctx.level != null;
+        ctx.level.playSound(null, ctx.pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0f, 1.0f);
+        if (!ctx.player.isCreative()) ctx.player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET));
         ctx.cauldron.setLiquidLevel(1);
-
-     // ctx.cauldron.getPotionLiquid().setColor();
     }
 
     @Override

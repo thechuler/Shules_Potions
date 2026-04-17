@@ -14,10 +14,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.storage.loot.Serializer;
-import net.shule.shulespotions.util.CauldronActions.AddItemAction;
-import net.shule.shulespotions.util.CauldronActions.AddLiquidAction;
-import net.shule.shulespotions.util.CauldronActions.CauldronAction;
-import net.shule.shulespotions.util.CauldronActions.StirAction;
+import net.shule.shulespotions.util.CauldronActions.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -53,6 +50,17 @@ public class PotionRecipeSerializer implements RecipeSerializer<PotionRecipe> {
                     ));
                     break;
 
+                case "freeze":
+                    actions.add(new FreezeAction( obj.has("temperature") ? obj.get("temperature").getAsInt() : -100));
+                    break;
+
+                case "heat":
+                    actions.add(new HeatAction( obj.has("temperature") ? obj.get("temperature").getAsInt() : 100));
+                    break;
+
+
+
+
                 //TODO agregar aca el resto de acciones(case) o ver implementacion con codec
             }
         }
@@ -76,6 +84,8 @@ public class PotionRecipeSerializer implements RecipeSerializer<PotionRecipe> {
                 case "add_item" -> AddItemAction.fromNetwork(pBuffer);
                 case "add_liquid" -> AddLiquidAction.fromNetwork(pBuffer);
                 case "stir" -> StirAction.fromNetwork(pBuffer);
+                case "freeze" -> FreezeAction.fromNetwork(pBuffer);
+                case "heat" -> HeatAction.fromNetwork(pBuffer);
                 //agregar el resto de acciones o ver codec
                 default -> throw new RuntimeException("Unknown action: " + type);
             };

@@ -3,6 +3,8 @@ package net.shule.shulespotions.util.CauldronActions;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.shule.shulespotions.ShulesPotions;
 
@@ -32,6 +34,7 @@ public class AddItemAction implements CauldronAction {
 
     @Override
     public void execute(CauldronActionContext ctx) {
+        ctx.level.playSound(null,ctx.pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS,1.0f,1.5f);
         ItemStack stack = ctx.itemEntity.getItem();
         stack.shrink(1);
 

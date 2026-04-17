@@ -11,21 +11,23 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldronBE> {
+
 
 
     public PotionCauldronRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(PotionCauldronBE be, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
+    public void render(@NotNull PotionCauldronBE be, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int light, int overlay) {
+
         renderLiquid(be, poseStack, buffer, light);
         renderFloatingIcon(be, partialTicks, poseStack, buffer, light, overlay);
 
@@ -34,11 +36,21 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
 
     private void renderFloatingIcon(PotionCauldronBE be, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
 
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) return;
+
+        ItemStack mainHand = mc.player.getMainHandItem();
+        ItemStack offHand = mc.player.getOffhandItem();
+
+        boolean hasBook = mainHand.is(Items.BOOK) || offHand.is(Items.BOOK);
+
+        if (!hasBook) return;
         if (!be.HasRecipe()) return;
 
         poseStack.pushPose();
         poseStack.translate(0.5, 1.5, 0.5);
 
+        assert be.getLevel() != null;
         float time = be.getLevel().getGameTime() + partialTicks;
 
 
@@ -111,7 +123,7 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
     private void renderLiquid(PotionCauldronBE be, PoseStack poseStack, MultiBufferSource buffer, int light) {
         if (be.getLiquidLevel() <= 0) return;
 
-        int color = be.hasPotionLiquid() ? be.getPotionLiquid().getColor() : 0x8A2BE2;
+        int color = be.getColor();
         float a = 1.0f;
         float r = ((color >> 16) & 0xFF) / 255f;
         float g = ((color >> 8) & 0xFF) / 255f;
@@ -152,4 +164,11 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
     }
 
 
+
+
+
+
 }
+
+
+

@@ -26,7 +26,8 @@
       "item": {
         "item" : "shulespotions:wooden_spoon"
       }
-    }
+    },
+    {"action":"heat","temperature":100}
   ],
   "result": "minecraft:speed"
 }

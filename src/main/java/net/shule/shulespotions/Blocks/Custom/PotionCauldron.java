@@ -17,14 +17,20 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -36,10 +42,17 @@ import net.shule.shulespotions.Items.custom.PotionBarrel;
 import net.shule.shulespotions.Items.custom.PotionRecipeItem;
 import net.shule.shulespotions.util.CauldronActions.CauldronActionContext;
 import net.shule.shulespotions.util.CauldronActions.CauldronActionTrigger;
+import net.shule.shulespotions.util.CauldronState;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 
 public class PotionCauldron extends BaseEntityBlock {
+
+    public static final EnumProperty<CauldronState> STATE =
+            EnumProperty.create("state", CauldronState.class);
+
     private static final VoxelShape INSIDE =
             box(2.0D, 3.0D, 2.0D, 14.0D, 15.0D, 14.0D);
 
@@ -53,6 +66,14 @@ public class PotionCauldron extends BaseEntityBlock {
 
     public PotionCauldron(Properties pProperties) {
         super(pProperties);
+        this.registerDefaultState(
+                this.stateDefinition.any().setValue(STATE, CauldronState.BASE));
+    }
+
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+       pBuilder.add(STATE);
     }
 
     @Override
@@ -70,13 +91,20 @@ public class PotionCauldron extends BaseEntityBlock {
         return new PotionCauldronBE(pPos, pState);
     }
 
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        return pLevel.isClientSide ? null : (lvl, pos, st, be) -> {
+            if (be instanceof PotionCauldronBE cauldron) {
+                PotionCauldronBE.tick(lvl, pos, st, cauldron);
+            }
+        };
+    }
+
 
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         ItemStack item = pPlayer.getItemInHand(InteractionHand.MAIN_HAND);
         if (!pLevel.isClientSide()) {
             BlockEntity CauldronBe = pLevel.getBlockEntity(pPos);
-
-
 
             if (CauldronBe instanceof PotionCauldronBE cauldron) {
 
@@ -107,6 +135,24 @@ public class PotionCauldron extends BaseEntityBlock {
                         }
                     }
 
+                BlockState state = pState;
+                CauldronState current = state.getValue(STATE);
+
+                if (current == CauldronState.BASE && item.is(Items.FLINT_AND_STEEL)) {
+                    state = state.setValue(STATE, CauldronState.HOT);
+                }
+
+                if (item.is(Items.WOODEN_SHOVEL)) {
+                    state = state.setValue(STATE, CauldronState.BASE);
+                }
+
+                if (item.is(Items.ICE)) {
+                    state = state.setValue(STATE, CauldronState.COLD);
+                }
+
+                if (state != pState) {
+                    pLevel.setBlock(pPos, state, Block.UPDATE_CLIENTS);
+                }
 
                 if (item.getItem() instanceof PotionRecipeItem recipe) {
                         cauldron.setRecipeId(recipe.getRecipeId());
@@ -142,6 +188,8 @@ public class PotionCauldron extends BaseEntityBlock {
         }
     }
 }
+
+
 
 
 
