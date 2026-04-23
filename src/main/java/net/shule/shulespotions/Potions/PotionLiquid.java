@@ -10,6 +10,7 @@ import net.minecraft.world.effect.MobEffects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public  class PotionLiquid {
@@ -147,4 +148,15 @@ public  class PotionLiquid {
     public int getDuration() {
         return duration;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        PotionLiquid liquid = (PotionLiquid) o;
+        return duration == liquid.duration && complexity == liquid.complexity && Float.compare(power, liquid.power) == 0 && Float.compare(purity, liquid.purity) == 0 && color == liquid.color && Objects.deepEquals(effect, liquid.effect);
+    }
+
+
+
+
 }

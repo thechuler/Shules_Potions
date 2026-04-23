@@ -38,7 +38,7 @@ public class AddLiquidAction implements CauldronAction {
         assert ctx.level != null;
         ctx.level.playSound(null, ctx.pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0f, 1.0f);
         if (!ctx.player.isCreative()) ctx.player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET));
-        ctx.cauldron.setLiquidLevel(1);
+        ctx.cauldron.setLiquidLevel(3);
     }
 
     @Override

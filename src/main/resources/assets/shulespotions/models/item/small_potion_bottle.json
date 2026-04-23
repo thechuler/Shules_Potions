@@ -1,0 +1,12 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "shulespotions:item/small_potion_bottle"
+  },
+  "overrides": [
+    {
+      "predicate": { "has_liquid": 1.0 },
+      "model": "shulespotions:item/small_potion_bottle_filled"
+    }
+  ]
+}

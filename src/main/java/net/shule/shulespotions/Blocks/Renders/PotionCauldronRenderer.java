@@ -15,11 +15,12 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
+import net.shule.shulespotions.Items.ModItems;
+import net.shule.shulespotions.util.CauldronUtils;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldronBE> {
-
 
 
     public PotionCauldronRenderer(BlockEntityRendererProvider.Context context) {
@@ -42,7 +43,7 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
         ItemStack mainHand = mc.player.getMainHandItem();
         ItemStack offHand = mc.player.getOffhandItem();
 
-        boolean hasBook = mainHand.is(Items.BOOK) || offHand.is(Items.BOOK);
+        boolean hasBook = mainHand.is(ModItems.RECIPE_BOOK.get()) || offHand.is(ModItems.RECIPE_BOOK.get());
 
         if (!hasBook) return;
         if (!be.HasRecipe()) return;
@@ -62,8 +63,7 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
         poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(angle));
         poseStack.scale(0.4f, 0.4f, 0.4f);
 
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
-                .apply(be.getRecipe(be.getLevel()).getActions().get(be.getCurrentRecipeAction()).getFrameResource());
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(be.getRecipe(be.getLevel()).getActions().get(be.getCurrentRecipeAction()).getFrameResource());
 
         float u0 = sprite.getU0();
         float u1 = sprite.getU1();
@@ -131,8 +131,15 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
 
         poseStack.pushPose();
 
-        //Altura del líquido
-        float y = 0.9f;
+        float y;
+        int pl = be.getLiquidLevel();
+        y = switch (pl) {
+            case 1 -> 0.2f;
+            case 2 -> 0.5f;
+            case 3 -> 0.9f;
+            default -> 0.0f;
+        };
+
 
         // Tamaño del quad
         float min = 0.1f;
@@ -162,10 +169,6 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
 
         poseStack.popPose();
     }
-
-
-
-
 
 
 }

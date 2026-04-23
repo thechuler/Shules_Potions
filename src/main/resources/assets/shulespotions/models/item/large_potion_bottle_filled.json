@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "shulespotions:item/large_potion_bottle",
+    "layer1": "shulespotions:item/large_potion_bottle_overlay"
+  }
+}

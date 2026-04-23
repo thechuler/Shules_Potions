@@ -3,12 +3,14 @@ package net.shule.shulespotions.Items;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.shule.shulespotions.Blocks.ModBlocks;
+import net.shule.shulespotions.Items.custom.RecipeSheetItem;
 import net.shule.shulespotions.ShulesPotions;
 
 
@@ -25,10 +27,25 @@ public class ModCreativeTab {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.POTION_CAULDRON.get().asItem())) //<---El icono depende del item que queramos pooner
                     .title(Component.translatable("creativetab.main_tab"))
                     .displayItems((pParameters, pOutput) -> {
+                        ModItems.ITEMS.getEntries().forEach(entry -> {
+                            Item item = entry.get();
 
-                        for (int i = 0; i < ModItems.ITEMS.getEntries().size(); i++) {
-                            pOutput.accept(ModItems.ITEMS.getEntries().stream().toList().get(i).get().asItem());
-                        }
+                            if (!(item instanceof RecipeSheetItem)) {
+                                pOutput.accept(item);
+                            }
+                        });
+                    })
+                    .build());
+
+
+    public static final RegistryObject<CreativeModeTab> RECIPE_TABS = CREATIVE_TABS.register("recipe_tab",
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.ABSORPTION_RECIPE.get())) //<---El icono depende del item que queramos pooner
+                    .title(Component.translatable("creativetab.recipe_tab"))
+                    .displayItems((pParameters, pOutput) -> {
+                        ModItems.ITEMS.getEntries().stream()
+                                .map(RegistryObject::get)
+                                .filter(item -> item instanceof RecipeSheetItem)
+                                .forEach(pOutput::accept);
                     })
                     .build());
 

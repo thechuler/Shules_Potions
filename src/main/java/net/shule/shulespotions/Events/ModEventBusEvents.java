@@ -1,11 +1,11 @@
-package net.shule.shulespotions.ModEvents;
+package net.shule.shulespotions.Events;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.shule.shulespotions.Items.custom.SmallPotion;
+import net.shule.shulespotions.Items.custom.PotionLiquidBottleItem;
 import net.shule.shulespotions.ShulesPotions;
 
 @Mod.EventBusSubscriber(
@@ -19,7 +19,7 @@ public class ModEventBusEvents {
     public static void OnToolTipRender(RenderTooltipEvent.Color event){
         ItemStack stack = event.getItemStack();
 
-        if(stack.getItem() instanceof SmallPotion){
+        if(stack.getItem() instanceof PotionLiquidBottleItem){
             event.setBackground(0xEE130000);
             event.setBorderEnd(0xFF000000);
             event.setBorderStart(0xFFd00e0e);

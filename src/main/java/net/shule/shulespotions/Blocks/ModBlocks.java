@@ -13,6 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.shule.shulespotions.Blocks.Custom.PotionCauldron;
+import net.shule.shulespotions.Blocks.Custom.RecipeLectern;
 import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.ShulesPotions;
 
@@ -33,6 +34,11 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> POTION_CAULDRON = registerBlock("potion_cauldron",
             () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON)));
+
+
+
+    public static final RegistryObject<Block> RECIPE_LECTERN = registerBlock("recipe_lectern",
+            () -> new RecipeLectern(BlockBehaviour.Properties.copy(Blocks.LECTERN)));
 
 
 

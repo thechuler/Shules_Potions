@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "shulespotions:item/potion_barrel"
-  }
-}

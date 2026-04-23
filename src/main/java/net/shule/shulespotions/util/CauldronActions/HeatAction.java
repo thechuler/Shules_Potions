@@ -9,7 +9,7 @@ import net.shule.shulespotions.ShulesPotions;
 import net.shule.shulespotions.util.CauldronState;
 
 public class HeatAction implements CauldronAction {
-    private final ResourceLocation FRAME = ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID, "item/frame/freeze_action_frame");
+    private final ResourceLocation FRAME = ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID, "item/frame/heat_action_frame");
     private final int EXPECTED_TEMPERATURE;
 
     public HeatAction(int expectedTemperature) {

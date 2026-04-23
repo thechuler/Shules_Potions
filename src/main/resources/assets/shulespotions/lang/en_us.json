@@ -1,8 +1,52 @@
 {
-
   "block.shulespotions.potion_cauldron": "Potion Cauldron",
   "creativetab.main_tab": "Shule's Potions",
+
+  "item.shulespotions.rotten_fish": "Rotten Fish",
+  "item.shulespotions.emerald_dust": "Emerald Dust",
+  "item.shulespotions.iron_dust": "Iron Dust",
+  "item.shulespotions.onyx": "Onyx",
   "item.shulespotions.potion_barrel": "Potion Barrel",
   "item.shulespotions.recipe_book": "Recipe Book",
-  "item.shulespotions.wooden_spoon": "Wooden Spoon"
+  "item.shulespotions.wooden_spoon": "Wooden Spoon",
+
+  "item.shulespotions.speed_recipe": "Speed Recipe",
+  "item.shulespotions.slowness_recipe": "Slowness Recipe",
+  "item.shulespotions.fire_resistance_recipe": "Fire Resistance Recipe",
+  "item.shulespotions.water_breathing_recipe": "Water Breathing Recipe",
+
+  "item.shulespotions.luck_recipe": "Luck Recipe",
+  "item.shulespotions.unluck_recipe": "Unluck Recipe",
+  "item.shulespotions.hero_of_the_village_recipe": "Hero of the Village Recipe",
+  "item.shulespotions.bad_omen_recipe": "Bad Omen Recipe",
+
+  "item.shulespotions.hunger_recipe": "Hunger Recipe",
+  "item.shulespotions.saturation_recipe": "Saturation Recipe",
+
+  "item.shulespotions.nausea_recipe": "Nausea Recipe",
+  "item.shulespotions.health_boost_recipe": "Health Boost Recipe",
+  "item.shulespotions.regeneration_recipe": "Regeneration Recipe",
+
+  "item.shulespotions.instant_damage_recipe": "Instant Damage Recipe",
+  "item.shulespotions.instant_health_recipe": "Instant Health Recipe",
+
+  "item.shulespotions.absorption_recipe": "Absorption Recipe",
+  "item.shulespotions.weakness_recipe": "Weakness Recipe",
+  "item.shulespotions.poison_recipe": "Poison Recipe",
+  "item.shulespotions.wither_recipe": "Wither Recipe",
+
+  "item.shulespotions.darkness_recipe": "Darkness Recipe",
+  "item.shulespotions.blindness_recipe": "Blindness Recipe",
+  "item.shulespotions.invisibility_recipe": "Invisibility Recipe",
+  "item.shulespotions.glowing_recipe": "Glowing Recipe",
+
+  "item.shulespotions.night_vision_recipe": "Night Vision Recipe",
+  "item.shulespotions.jump_recipe": "Jump Boost Recipe",
+  "item.shulespotions.slow_falling_recipe": "Slow Falling Recipe",
+  "item.shulespotions.levitation_recipe": "Levitation Recipe",
+
+  "item.shulespotions.dig_speed_recipe": "Haste Recipe",
+  "item.shulespotions.dig_slowdown_recipe": "Mining Fatigue Recipe",
+
+  "item.shulespotions.damage_resistance_recipe": "Resistance Recipe"
 }

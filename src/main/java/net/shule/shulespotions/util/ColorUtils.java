@@ -36,4 +36,13 @@ public class ColorUtils {
         return (a << 24) | (r << 16) | (g << 8) | b;
     }
 
+    public static float[] intToRGB(int color) {
+        float r = ((color >> 16) & 0xFF) / 255.0F;
+        float g = ((color >> 8) & 0xFF) / 255.0F;
+        float b = (color & 0xFF) / 255.0F;
+
+        return new float[]{r, g, b};
+    }
+
+
 }

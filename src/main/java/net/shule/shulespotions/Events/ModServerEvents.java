@@ -1,13 +1,6 @@
-package net.shule.shulespotions.ModEvents;
+package net.shule.shulespotions.Events;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.shule.shulespotions.MobEffects.ModMobEffects;
 import net.shule.shulespotions.ShulesPotions;
 
 @Mod.EventBusSubscriber(modid = ShulesPotions.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

@@ -31,4 +31,16 @@ public abstract class PotionLiquidContainerItem extends Item  {
         return tag != null && tag.contains("PotionLiquid");
     }
 
+    public void removePotionLiquid(ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+
+        if (tag != null && tag.contains("PotionLiquid")) {
+            tag.remove("PotionLiquid");
+
+            if (tag.isEmpty()) {
+                stack.setTag(null);
+            }
+        }
+    }
+
 }
