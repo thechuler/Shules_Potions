@@ -10,6 +10,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.shule.shulespotions.Blocks.ModBlockEntities;
@@ -21,11 +22,15 @@ import net.shule.shulespotions.util.CauldronActions.CauldronActionContext;
 import net.shule.shulespotions.util.CauldronActions.CauldronActionTrigger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Random;
 
+import static net.shule.shulespotions.util.CauldronUtils.countBlocksInArea;
 import static net.shule.shulespotions.util.ColorUtils.lerpColor;
 import static net.shule.shulespotions.util.ColorUtils.randomColor;
+import static net.shule.shulespotions.util.RecipeUtils.resolveMobEffect;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -73,9 +78,9 @@ public class PotionCauldronBE extends BlockEntity {
                 startColorTransition(randomColor());
             }
             if (currentRecipeAction == recipe.getActions().size()) {
-                MobEffect resultEffect = resolveMobEffect(ctx.cauldron.level, recipe);
+                MobEffect resultEffect = resolveMobEffect(ctx.cauldron.level, recipe.getEffectId());
                 //Aca se genera el potion liquid.
-                this.setPotionLiquid(new PotionLiquid(400, recipe.getActions().size(), 10.5f, 100.0f, List.of(resultEffect), resultEffect.getColor()));
+                this.setPotionLiquid(resolvePotionLiquid(ctx,resultEffect));
                 startColorTransition(resultEffect.getColor());
                 isRecipeFinished = true;
                 //Cleanea la receta mantiene el liquido
@@ -88,16 +93,29 @@ public class PotionCauldronBE extends BlockEntity {
     }
 
 
-    private MobEffect resolveMobEffect(Level level, PotionRecipe recipe) {
-        //si mas adelante se agregan mobeffect custom que esten en otro registry, habra que filtrar
-        //aca segun el prefijo del effectId para ver en que registro buscar
-        return level.registryAccess().registryOrThrow(Registries.MOB_EFFECT).get(ResourceLocation.parse(recipe.getEffectId()));
+
+
+    public  PotionLiquid resolvePotionLiquid(CauldronActionContext ctx,MobEffect effect){
+        Random random = new Random();
+        int baseDuration = random.nextInt(600 - 100 + 1) + 100;
+        float basePower = random.nextInt(4) + 1;
+        float basePurity = 0.10f + (float)Math.pow(random.nextFloat(), 2) * 0.25f;
+        int baseComplexity = ctx.cauldron.getRecipe(ctx.level).getActions().size();
+
+        List<MobEffect> effects = new ArrayList<>(List.of(effect));
+        int bookCount = countBlocksInArea(ctx.level,ctx.pos,3, Blocks.BOOKSHELF);
+        baseDuration += bookCount < 5 ? bookCount * 100 : 500 ;
+
+
+        return new PotionLiquid(baseDuration,baseComplexity,basePower,basePurity,effects,effect.getColor());
     }
+
+
 
 
     //Esto despues se llama en el bloque como tal xq el be no tiene metodo tick
     //de momento solo se usa para los CauldronAction de tipo TICK, y para el lerp de colores
-    public static void tick(Level level, BlockPos pos, BlockState state, PotionCauldronBE be) {
+    public static void tick(Level level, PotionCauldronBE be) {
         if (level.isClientSide) return;
 
         if (be.lerpProgress < 1.0f) {
@@ -113,6 +131,8 @@ public class PotionCauldronBE extends BlockEntity {
 
         be.handleTrigger(CauldronActionTrigger.TICK, new CauldronActionContext(be, null, null));
     }
+
+
 
     @Override
     protected void saveAdditional(@NotNull CompoundTag pTag) {

@@ -1,8 +1,10 @@
 package net.shule.shulespotions.util;
 
 import net.minecraft.core.BlockPos;
+
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+
 
 
 import java.util.ArrayList;
@@ -25,6 +27,25 @@ public class CauldronUtils {
 
         return found;
     }
+
+    public static int countBlocksInArea(Level level, BlockPos center, int distance, Block target) {
+        int count = 0;
+
+        BlockPos min = center.offset(-distance, -distance, -distance);
+        BlockPos max = center.offset(distance, distance, distance);
+
+        for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
+            if (level.getBlockState(pos).is(target)) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+
+
+
 
 
 

@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 import net.shule.shulespotions.Guis.Menus.RecipeBookMenu;
+import net.shule.shulespotions.Player.PlayerRecipesProvider;
 
 public class RecipeBook extends Item {
     public RecipeBook(Properties pProperties) {
@@ -22,14 +23,22 @@ public class RecipeBook extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 
         if (!level.isClientSide) {
-            NetworkHooks.openScreen((ServerPlayer) player,
-                    new SimpleMenuProvider(
-                            (id, inventory, p) -> new RecipeBookMenu(id, inventory),
-                            Component.literal("Recipe Book")
-                    )
-            );
-        }
 
+            player.getCapability(PlayerRecipesProvider.PLAYER_RECIPES).ifPresent(data -> {
+
+                NetworkHooks.openScreen((ServerPlayer) player,
+                        new SimpleMenuProvider(
+                                (id, inventory, p) -> new RecipeBookMenu(id, inventory, data.getRecipes()),
+                                Component.literal("Recipe Book")
+                        ),
+                        buf -> {
+                            buf.writeInt(data.getRecipes().size());
+                            data.getRecipes().forEach(buf::writeResourceLocation);
+                        }
+                );
+
+            });
+        }
         return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
     }
 }

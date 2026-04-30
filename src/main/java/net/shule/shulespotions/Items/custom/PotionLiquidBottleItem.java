@@ -134,18 +134,19 @@ public class PotionLiquidBottleItem extends PotionLiquidContainerItem {
 
     private List<MobEffectInstance> resolvePotionEffects(ItemStack stack) {
         PotionLiquid pl = getPotionLiquid(stack);
+        float purity = pl.getPurity();
+        float power = pl.getPower();
+        float  complexity    = pl.getComplexity();
 
-        if (pl != null) {
-            List<MobEffectInstance> effects = new ArrayList<>();
 
-            for (MobEffect effect : pl.getEffect()) {
-                effects.add(new MobEffectInstance(effect, pl.getDuration(), (int) pl.getPower()));
-            }
+        List<MobEffectInstance> effects = new ArrayList<>();
 
-            return effects;
+        for (MobEffect effect : pl.getEffect()) {
+            effects.add(new MobEffectInstance(effect, pl.getDuration(), (int) power));
         }
 
-        return Collections.emptyList();
+        return effects;
+
     }
 
 
@@ -158,14 +159,14 @@ public class PotionLiquidBottleItem extends PotionLiquidContainerItem {
     @Override
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
         if(getLiquidLevel(pStack )< 1) return;
-        pTooltipComponents.add(Component.literal("LiquidLevel: " + (this.hasLiquidLevel(pStack) ? this.getLiquidLevel(pStack) : "-")).withStyle(ChatFormatting.WHITE));
+        pTooltipComponents.add(Component.literal("Liquid uses: " + (this.hasLiquidLevel(pStack) ? this.getLiquidLevel(pStack) : "-")).withStyle(ChatFormatting.WHITE));
 
 
         pTooltipComponents.add(Component.literal("Power: " + (this.hasPotionLiquid(pStack) ? this.getPotionLiquid(pStack).getPower() : "-")).withStyle(ChatFormatting.RED));
 
         pTooltipComponents.add(Component.literal("Purity: " + (this.hasPotionLiquid(pStack) ? this.getPotionLiquid(pStack).getPurity() : "-") + "%").withStyle(ChatFormatting.BLUE));
 
-        pTooltipComponents.add(Component.literal("Duration: " + (this.hasPotionLiquid(pStack) ? this.getPotionLiquid(pStack).getDuration() : "-")).withStyle(ChatFormatting.GREEN));
+        pTooltipComponents.add(Component.literal("Duration: " + (this.hasPotionLiquid(pStack) ? this.getPotionLiquid(pStack).getDuration()/20 : "-")).withStyle(ChatFormatting.GREEN));
 
 
         pTooltipComponents.add(Component.literal("Complexity: " + (this.hasPotionLiquid(pStack) ? this.getPotionLiquid(pStack).getComplexity() : "-")).withStyle(ChatFormatting.YELLOW));

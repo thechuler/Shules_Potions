@@ -18,6 +18,10 @@ public class ModParticles {
     public static final RegistryObject<SimpleParticleType> BUBBLE =
             PARTICLES.register("bubble", () -> new SimpleParticleType(true));
 
+    public static final RegistryObject<SimpleParticleType> RUNE =
+            PARTICLES.register("rune", () -> new SimpleParticleType(true));
+
+
 
 
     public static void register(IEventBus bus) {

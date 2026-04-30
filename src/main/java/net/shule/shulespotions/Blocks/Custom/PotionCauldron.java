@@ -88,7 +88,7 @@ public class PotionCauldron extends BaseEntityBlock {
 
 
                 if (!lvl.isClientSide) {
-                    PotionCauldronBE.tick(lvl, pos, st, cauldron);
+                    PotionCauldronBE.tick(lvl, cauldron);
                 }
 
 
@@ -152,7 +152,7 @@ public class PotionCauldron extends BaseEntityBlock {
 
 
                     if (pLevel instanceof ServerLevel serverLevel) {
-                        serverLevel.sendParticles(ModParticles.BUBBLE.get(), pPos.getX() + 0.5, pPos.getY() + 1.2, pPos.getZ() + 0.5, 20, 0.3, 0.3, 0.3, 0.01);
+                        serverLevel.sendParticles(ModParticles.RUNE.get(), pPos.getX() + 0.5, pPos.getY() + 1.2, pPos.getZ() + 0.5, 20, 0.3, 0.3, 0.3, 0.01);
                     }
 
                     //Si no esta en creativo consume la receta

@@ -92,6 +92,11 @@ public class ShulesPotions {
                     ModParticles.BUBBLE.get(),
                     BubbleProvider::new
             );
+
+            event.registerSpriteSet(
+                    ModParticles.RUNE.get(),
+                    BubbleProvider::new
+            );
         }
 
 
@@ -138,7 +143,6 @@ public class ShulesPotions {
             event.enqueueWork(() -> {
                 MenuScreens.register(ModMenus.RECIPE_BOOK_MENU.get(), RecipeBookScreen::new);
             });
-
 
             registerBottle(ModItems.SMALL_POTION_BOTTLE.get());
             registerBottle(ModItems.LARGE_POTION_BOTTLE.get());

@@ -1,8 +1,14 @@
 package net.shule.shulespotions.Items.custom;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.shule.shulespotions.Player.PlayerRecipesProvider;
 import net.shule.shulespotions.Recipes.Potion.PotionRecipe;
 
 import java.util.Optional;
@@ -35,5 +41,26 @@ public class RecipeSheetItem extends Item {
 
     public int getColor() {
         return color;
+    }
+
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+
+        if (!level.isClientSide) {
+            player.getCapability(PlayerRecipesProvider.PLAYER_RECIPES).ifPresent(data -> {
+
+                if (data.addRecipeIfAbsent(recipeId)) {
+                    player.sendSystemMessage(Component.literal("Aprendiste: " + recipeId));
+
+                    stack.shrink(1); // Aca se le podrian agregar mas efectos
+                } else {
+                    player.sendSystemMessage(Component.literal("Ya conoces esta receta"));
+                }
+            });
+        }
+
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 }
