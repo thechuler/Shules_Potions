@@ -2,7 +2,6 @@ package net.shule.shulespotions;
 
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
@@ -23,15 +22,13 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.shule.shulespotions.Blocks.ModBlockEntities;
 import net.shule.shulespotions.Blocks.ModBlocks;
-import net.shule.shulespotions.Guis.ModMenus;
-import net.shule.shulespotions.Guis.Screens.RecipeBookScreen;
+
 import net.shule.shulespotions.Items.ModCreativeTab;
 import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.Items.custom.PotionLiquidBottleItem;
-import net.shule.shulespotions.Items.custom.RecipeSheetItem;
 import net.shule.shulespotions.Particles.Custom.BubbleProvider;
 import net.shule.shulespotions.Particles.ModParticles;
-import net.shule.shulespotions.Recipes.ModRecipes;
+
 
 
 /*Este Archivo es el MAIN, o sea el mas importante. En el no vamos a hacer mucho
@@ -63,8 +60,6 @@ public class ShulesPotions {
         ModBlocks.register(modEventBus); // <--- Esto agrega bloques
         ModCreativeTab.register(modEventBus); //<--- Esto les da un inventario en creativo
         ModBlockEntities.register(modEventBus);
-        ModRecipes.register(modEventBus); // Agrega PotionRecipe type y serializer
-        ModMenus.register(modEventBus);
         ModParticles.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
@@ -140,10 +135,6 @@ public class ShulesPotions {
 
 
 
-            event.enqueueWork(() -> {
-                MenuScreens.register(ModMenus.RECIPE_BOOK_MENU.get(), RecipeBookScreen::new);
-            });
-
             registerBottle(ModItems.SMALL_POTION_BOTTLE.get());
             registerBottle(ModItems.LARGE_POTION_BOTTLE.get());
             registerBottle(ModItems.BIG_POTION_BOTTLE.get());
@@ -152,54 +143,6 @@ public class ShulesPotions {
 
 
 
-            event.enqueueWork(() -> {
-                Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
-                            if (tintIndex == 1) {
-                                if (stack.getItem() instanceof RecipeSheetItem rs) {
-                                    return rs.getColor();
-                                }
-                            }
-                            return -1;
-                        },
-                        ModItems.SPEED_RECIPE.get(),
-                        ModItems.SLOWNESS_RECIPE.get(),
-                        ModItems.FIRE_RESISTANCE_RECIPE.get(),
-
-                        ModItems.WATER_BREATHING_RECIPE.get(),
-                        ModItems.LUCK_RECIPE.get(),
-                        ModItems.UNLUCK_RECIPE.get(),
-                        ModItems.HERO_OF_THE_VILLAGE_RECIPE.get(),
-                        ModItems.BAD_OMEN_RECIPE.get(),
-                        ModItems.HUNGER_RECIPE.get(),
-                        ModItems.SATURATION_RECIPE.get(),
-
-                        ModItems.NAUSEA_RECIPE.get(),
-                        ModItems.HEALTH_BOOST_RECIPE.get(),
-                        ModItems.REGENERATION_RECIPE.get(),
-
-                        ModItems.INSTANT_DAMAGE_RECIPE.get(),
-                        ModItems.INSTANT_HEALTH_RECIPE.get(),
-
-                        ModItems.ABSORPTION_RECIPE.get(),
-                        ModItems.WEAKNESS_RECIPE.get(),
-                        ModItems.POISON_RECIPE.get(),
-                        ModItems.WITHER_RECIPE.get(),
-
-                        ModItems.DARKNESS_RECIPE.get(),
-                        ModItems.BLINDNESS_RECIPE.get(),
-                        ModItems.INVISIBILITY_RECIPE.get(),
-                        ModItems.GLOWING_RECIPE.get(),
-
-                        ModItems.NIGHT_VISION_RECIPE.get(),
-                        ModItems.JUMP_RECIPE.get(),
-                        ModItems.SLOW_FALLING_RECIPE.get(),
-                        ModItems.LEVITATION_RECIPE.get(),
-
-                        ModItems.DIG_SPEED_RECIPE.get(),
-                        ModItems.DIG_SLOWDOWN_RECIPE.get(),
-                        ModItems.DAMAGE_RESISTANCE_RECIPE.get()
-                );
-            });
 
         }
     }

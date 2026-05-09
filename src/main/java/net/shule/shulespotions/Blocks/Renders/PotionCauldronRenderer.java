@@ -13,10 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
 import net.shule.shulespotions.Items.ModItems;
-import net.shule.shulespotions.util.CauldronUtils;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
@@ -28,102 +26,17 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
 
     @Override
     public void render(@NotNull PotionCauldronBE be, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int light, int overlay) {
-
         renderLiquid(be, poseStack, buffer, light);
-        renderFloatingIcon(be, partialTicks, poseStack, buffer, light, overlay);
 
     }
 
 
-    private void renderFloatingIcon(PotionCauldronBE be, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
-
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null) return;
-
-        ItemStack mainHand = mc.player.getMainHandItem();
-        ItemStack offHand = mc.player.getOffhandItem();
-
-        boolean hasBook = mainHand.is(ModItems.RECIPE_BOOK.get()) || offHand.is(ModItems.RECIPE_BOOK.get());
-
-        if (!hasBook) return;
-        if (!be.HasRecipe()) return;
-
-        poseStack.pushPose();
-        poseStack.translate(0.5, 1.5, 0.5);
-
-        assert be.getLevel() != null;
-        float time = be.getLevel().getGameTime() + partialTicks;
-
-
-        ItemStack stack = be.getRecipe(be.getLevel()).getActions().get(be.getCurrentRecipeAction()).getAsociatedItem();
-
-        float bob = (float) Math.sin(time * 0.1f) * 0.05f;
-        poseStack.translate(0, bob, 0);
-        float angle = time * 2f;
-        poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(angle));
-        poseStack.scale(0.4f, 0.4f, 0.4f);
-
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(be.getRecipe(be.getLevel()).getActions().get(be.getCurrentRecipeAction()).getFrameResource());
-
-        float u0 = sprite.getU0();
-        float u1 = sprite.getU1();
-        float v0 = sprite.getV0();
-        float v1 = sprite.getV1();
-
-        VertexConsumer vc = buffer.getBuffer(RenderType.translucent());
-        Matrix4f matrix = poseStack.last().pose();
-
-        float size = 0.5f;
-
-        vc.vertex(matrix, -size, -size, 0).color(1f, 1f, 1f, 0.8f).uv(u0, v1).uv2(light).normal(0, 0, 1).endVertex();
-
-        vc.vertex(matrix, -size, size, 0).color(1f, 1f, 1f, 0.8f).uv(u0, v0).uv2(light).normal(0, 0, 1).endVertex();
-
-        vc.vertex(matrix, size, size, 0).color(1f, 1f, 1f, 0.8f).uv(u1, v0).uv2(light).normal(0, 0, 1).endVertex();
-
-        vc.vertex(matrix, size, -size, 0).color(1f, 1f, 1f, 0.8f).uv(u1, v1).uv2(light).normal(0, 0, 1).endVertex();
-
-
-        vc.vertex(matrix, size, -size, 0).color(1f, 1f, 1f, 0.8f).uv(u1, v1).uv2(light).normal(0, 0, -1).endVertex();
-
-        vc.vertex(matrix, size, size, 0).color(1f, 1f, 1f, 0.8f).uv(u1, v0).uv2(light).normal(0, 0, -1).endVertex();
-
-        vc.vertex(matrix, -size, size, 0).color(1f, 1f, 1f, 0.8f).uv(u0, v0).uv2(light).normal(0, 0, -1).endVertex();
-
-        vc.vertex(matrix, -size, -size, 0).color(1f, 1f, 1f, 0.8f).uv(u0, v1).uv2(light).normal(0, 0, -1).endVertex();
-
-
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-
-        poseStack.pushPose();
-
-
-        poseStack.translate(0, 0, 0.01);
-
-        poseStack.scale(0.6f, 0.6f, 0.01f);
-
-
-        itemRenderer.renderStatic(stack, ItemDisplayContext.GUI, light, overlay, poseStack, buffer, be.getLevel(), 0);
-
-        poseStack.popPose();
-
-
-        poseStack.pushPose();
-        poseStack.translate(0, 0, -0.01);
-        poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(180));
-        poseStack.scale(0.6f, 0.6f, 0.01f);
-
-        itemRenderer.renderStatic(stack, ItemDisplayContext.GUI, light, overlay, poseStack, buffer, be.getLevel(), 0);
-
-        poseStack.popPose();
-        poseStack.popPose();
-    }
 
 
     private void renderLiquid(PotionCauldronBE be, PoseStack poseStack, MultiBufferSource buffer, int light) {
         if (be.getLiquidLevel() <= 0) return;
 
-        int color = be.getColor();
+        int color = be.getRenderColor();
         float a = 1.0f;
         float r = ((color >> 16) & 0xFF) / 255f;
         float g = ((color >> 8) & 0xFF) / 255f;

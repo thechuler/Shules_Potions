@@ -1,47 +1,47 @@
 package net.shule.shulespotions.Blocks.Entities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.network.Connection;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.shule.shulespotions.Blocks.Custom.PotionCauldron;
 import net.shule.shulespotions.Blocks.ModBlockEntities;
-import net.shule.shulespotions.Items.custom.RecipeSheetItem;
+import net.shule.shulespotions.Potions.IngredientStat;
+import net.shule.shulespotions.Potions.ItemStatRegistry;
 import net.shule.shulespotions.Potions.PotionLiquid;
-import net.shule.shulespotions.Recipes.Potion.PotionRecipe;
-import net.shule.shulespotions.util.CauldronActions.CauldronAction;
-import net.shule.shulespotions.util.CauldronActions.CauldronActionContext;
-import net.shule.shulespotions.util.CauldronActions.CauldronActionTrigger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Random;
+import net.shule.shulespotions.util.ColorUtils;
 
-import static net.shule.shulespotions.util.CauldronUtils.countBlocksInArea;
-import static net.shule.shulespotions.util.ColorUtils.lerpColor;
-import static net.shule.shulespotions.util.ColorUtils.randomColor;
-import static net.shule.shulespotions.util.RecipeUtils.resolveMobEffect;
-
+import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.shule.shulespotions.util.ColorUtils.lerpColor;
+import static net.shule.shulespotions.util.ColorUtils.randomColor;
 
 public class PotionCauldronBE extends BlockEntity {
+
+    private PotionLiquid pl;
     private int liquidLevel;
-    private ResourceLocation recipeId;
-    private int currentRecipeAction;
-    private PotionLiquid liquid;
-    private boolean isRecipeFinished;
-    private int temperature;
-    private int color;
+    private final List<Item> ingredients = new ArrayList<>();
+
+
+    private int renderColor;
     private int startColor;
     private int targetColor;
     private float lerpProgress = 1.0f;
@@ -49,134 +49,67 @@ public class PotionCauldronBE extends BlockEntity {
 
     public PotionCauldronBE(BlockPos pos, BlockState state) {
         super(ModBlockEntities.POTION_CAULDRON_BE.get(), pos, state);
-        currentRecipeAction = 0;
-        liquidLevel = 0;
-        liquid = new PotionLiquid();
-        isRecipeFinished = false;
-        color = randomColor();
-        temperature = 0;
+        liquidLevel = 3;
+        pl = new PotionLiquid();
+        renderColor = randomColor();
     }
 
 
-    //Metodo que comprueba si una accion puede ser activada y en base a ello avanza la receta
-    public void handleTrigger(CauldronActionTrigger trigger, CauldronActionContext ctx) {
-        assert ctx.cauldron.level != null;
-        if (!ctx.cauldron.HasRecipe()) return;
-        PotionRecipe recipe = RecipeSheetItem.getRecipe(ctx.cauldron.level, this.recipeId).orElseThrow();
-        if (currentRecipeAction >= recipe.getActions().size()) return;
+    public void checkItem(ItemStack item) {
+        if (this.level == null || this.level.isClientSide) return;
+
+        if (ingredients.size() >= getMaxIngredients()) return;
+
+        ingredients.add(item.getItem());
+
+        int color = randomColor();
+        startColorTransition(color);
+        pl.setColor(color);
+        // 1. Obtener stats del item
+        IngredientStat stats = ItemStatRegistry.get(item);
+
+        // 2. Sumarlos al líquido
+        this.pl.addStats(stats);
+
+        this.setChanged();
+        sync();
+
+        // 3. Debug
+        sendDebugToNearbyPlayers(item, stats);
+    }
 
 
-        CauldronAction action = recipe.getActions().get(currentRecipeAction);
+    public PotionLiquid getPotionLiquid() {
+        return pl;
+    }
 
-        if (action.getTrigger() != trigger) return;
 
-        if (action.canTrigger(ctx)) {
-            action.execute(ctx);
-            currentRecipeAction++;
-            //Aca pickea un color random por paso, pero se podria hacer que tenga algun patron.
-            if (currentRecipeAction > 0) {
-                startColorTransition(randomColor());
+    private void sendDebugToNearbyPlayers(ItemStack item, IngredientStat addedStats) {
+
+        double radius = 10.0;
+
+        String message = "Item: " + item.getHoverName().getString() +
+                " | +" +
+                " P:" + addedStats.getPurity() +
+                " V:" + addedStats.getVitality() +
+                " F:" + addedStats.getFlavor() +
+                " S:" + addedStats.getStability() +
+                " || TOTAL ->" +
+                " P:" + pl.getStats().getPurity() +
+                " V:" + pl.getStats().getVitality() +
+                " F:" + pl.getStats().getFlavor() +
+                " S:" + pl.getStats().getStability();
+
+        for (Player player : this.level.players()) {
+            if (player.distanceToSqr(
+                    this.worldPosition.getX() + 0.5,
+                    this.worldPosition.getY() + 0.5,
+                    this.worldPosition.getZ() + 0.5
+            ) <= radius * radius) {
+
+                player.sendSystemMessage(Component.literal(message));
             }
-            if (currentRecipeAction == recipe.getActions().size()) {
-                MobEffect resultEffect = resolveMobEffect(ctx.cauldron.level, recipe.getEffectId());
-                //Aca se genera el potion liquid.
-                this.setPotionLiquid(resolvePotionLiquid(ctx,resultEffect));
-                startColorTransition(resultEffect.getColor());
-                isRecipeFinished = true;
-                //Cleanea la receta mantiene el liquido
-                removeRecipe();
-                currentRecipeAction = 0;
-            }
-            setChanged();
-            sync();
         }
-    }
-
-
-
-
-    public  PotionLiquid resolvePotionLiquid(CauldronActionContext ctx,MobEffect effect){
-        Random random = new Random();
-        int baseDuration = random.nextInt(600 - 100 + 1) + 100;
-        float basePower = random.nextInt(4) + 1;
-        float basePurity = 0.10f + (float)Math.pow(random.nextFloat(), 2) * 0.25f;
-        int baseComplexity = ctx.cauldron.getRecipe(ctx.level).getActions().size();
-
-        List<MobEffect> effects = new ArrayList<>(List.of(effect));
-        int bookCount = countBlocksInArea(ctx.level,ctx.pos,3, Blocks.BOOKSHELF);
-        baseDuration += bookCount < 5 ? bookCount * 100 : 500 ;
-
-
-        return new PotionLiquid(baseDuration,baseComplexity,basePower,basePurity,effects,effect.getColor());
-    }
-
-
-
-
-    //Esto despues se llama en el bloque como tal xq el be no tiene metodo tick
-    //de momento solo se usa para los CauldronAction de tipo TICK, y para el lerp de colores
-    public static void tick(Level level, PotionCauldronBE be) {
-        if (level.isClientSide) return;
-
-        if (be.lerpProgress < 1.0f) {
-            be.lerpProgress += 0.05f;
-
-            if (be.lerpProgress > 1.0f) be.lerpProgress = 1.0f;
-
-            be.color = lerpColor(be.startColor, be.targetColor, be.lerpProgress);
-
-            be.setChanged();
-            be.sync();
-        }
-
-        be.handleTrigger(CauldronActionTrigger.TICK, new CauldronActionContext(be, null, null));
-    }
-
-
-
-    @Override
-    protected void saveAdditional(@NotNull CompoundTag pTag) {
-        super.saveAdditional(pTag);
-        pTag.putInt("SPLiquidLevel", liquidLevel);
-        pTag.putInt("SPCurrentRecipeAction", currentRecipeAction);
-        pTag.putBoolean("SPrecipeFinished", isRecipeFinished);
-        pTag.putInt("SPcolor", color);
-        pTag.putInt("SPTemperature", temperature);
-
-        if (recipeId != null && recipeId.getNamespace().compareTo("shulespotions") == 0) {
-            pTag.putString("SPRecipeId", recipeId.toString());
-        }
-
-        if (liquid != null) {
-            pTag.put("SPPotionLiquid", liquid.save());
-        }
-
-    }
-
-    @Override
-    public void load(@NotNull CompoundTag pTag) {
-        super.load(pTag);
-        currentRecipeAction = pTag.getInt("SPCurrentRecipeAction");
-        liquidLevel = pTag.getInt("SPLiquidLevel");
-        isRecipeFinished = pTag.getBoolean("SPrecipeFinished");
-        color = pTag.getInt("SPcolor");
-        temperature = pTag.getInt("SPTemperature");
-        recipeId = ResourceLocation.tryParse(pTag.getString("SPRecipeId"));
-
-        if (pTag.contains("SPPotionLiquid")) {
-            liquid = PotionLiquid.load(pTag.getCompound("SPPotionLiquid"));
-        }
-    }
-
-
-    @Override
-    public @NotNull CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
-    }
-
-    @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        load(tag);
     }
 
     @Override
@@ -186,42 +119,14 @@ public class PotionCauldronBE extends BlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        assert pkt.getTag() != null;
         this.load(pkt.getTag());
     }
 
-
-    public void setTemperature(int temperature) {
-        this.temperature = temperature;
-        setChanged();
-        sync();
+    @Override
+    public CompoundTag getUpdateTag() {
+        return saveWithoutMetadata();
     }
 
-    public int getTemperature() {
-        return temperature;
-    }
-
-    public void setPotionLiquid(PotionLiquid liquid) {
-        this.liquid = liquid;
-        setChanged();
-        sync();
-    }
-
-
-    public PotionLiquid getPotionLiquid() {
-        return liquid;
-    }
-
-    public boolean hasPotionLiquid() {
-        return liquid != null;
-    }
-
-    public void removePotionLiquid(){
-        liquid = null;
-        this.setChanged();
-        sync();
-
-    }
 
     public void sync() {
         if (level != null && !level.isClientSide) {
@@ -230,72 +135,114 @@ public class PotionCauldronBE extends BlockEntity {
     }
 
 
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        load(tag);
+    }
+
+
+    @Override
+    protected void saveAdditional(CompoundTag pTag) {
+        super.saveAdditional(pTag);
+        pTag.put("sppotionliquid", this.pl.save());
+        pTag.putInt("SPcolor", renderColor);
+
+        ListTag list = new ListTag();
+        for (Item item : ingredients) {
+            list.add(StringTag.valueOf(
+                    BuiltInRegistries.ITEM.getKey(item).toString()
+            ));
+        }
+
+        pTag.put("spingredients", list);
+    }
+
+
+    @Override
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
+        renderColor = pTag.getInt("SPcolor");
+        if (pTag.contains("sppotionliquid")) {
+            this.pl = PotionLiquid.load(pTag.getCompound("sppotionliquid"));
+        } else {
+            this.pl = new PotionLiquid();
+        }
+
+        ingredients.clear();
+
+        if (pTag.contains("spingredients")) {
+            ListTag list = pTag.getList("spingredients", pTag.TAG_STRING);
+
+            for (int i = 0; i < list.size(); i++) {
+                String id = list.getString(i);
+                Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(id));
+                ingredients.add(item);
+            }
+        }
+
+
+    }
+
 
     public void setLiquidLevel(int liquidLevel) {
         this.liquidLevel = liquidLevel;
-        setChanged();
-        sync();
-
     }
 
     public int getLiquidLevel() {
         return liquidLevel;
     }
 
-    public PotionRecipe getRecipe(Level level) {
-        if (recipeId != null) return RecipeSheetItem.getRecipe(level, this.recipeId).orElseThrow();
-        else return null;
+
+
+    private int getMaxIngredients() {
+        if (this.level == null) return 0;
+
+        BlockState state = this.getBlockState();
+        if (state.getBlock() instanceof PotionCauldron cauldron) {
+            return cauldron.getMAX_INGREDIENT_COUNT();
+        }
+
+        return 0;
     }
 
-    public void setRecipeFinished(boolean recipeFinished) {
-        isRecipeFinished = recipeFinished;
+
+    public static void tick(Level level, PotionCauldronBE be) {
+        if (level.isClientSide) return;
+
+        if (be.lerpProgress < 1.0f) {
+            be.lerpProgress += 0.05f;
+
+            if (be.lerpProgress > 1.0f) be.lerpProgress = 1.0f;
+
+            be.renderColor = lerpColor(be.startColor, be.targetColor, be.lerpProgress);
+
+            be.setChanged();
+            be.sync();
+        }
+
+
     }
 
-    public void setRecipeId(ResourceLocation recipeId) {
-        this.recipeId = recipeId;
-        setChanged();
-        sync();
-    }
 
-    public void removeRecipe() {
-        if (!this.HasRecipe()) return;
-        this.recipeId = null;
-        this.setChanged();
-    }
 
-    public void setCurrentRecipeAction(int value) {
-        this.currentRecipeAction = value;
-        setChanged();
-        sync();
-    }
 
-    public int getCurrentRecipeAction() {
-        return currentRecipeAction;
-    }
-
-    public boolean HasRecipe() {
-        return recipeId != null && recipeId.getNamespace().compareTo("shulespotions") == 0;
-    }
-
-    public boolean IsRecipeFinished() {
-        return isRecipeFinished;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
-        setChanged();
-        sync();
-    }
-
-    public int getColor() {
-        return color;
-    }
-
-    private void startColorTransition(int newColor) {
-        this.startColor = this.color;
+    public void startColorTransition(int newColor) {
+        this.startColor = this.renderColor;
         this.targetColor = newColor;
         this.lerpProgress = 0.0f;
     }
 
-}
+    public int getRenderColor() {
+        return this.renderColor;
+    }
 
+    public void setRenderColor(int renderColor) {
+        this.renderColor = renderColor;
+        setChanged();
+        sync();
+    }
+
+
+
+
+}

@@ -33,7 +33,7 @@ public class ModBlocks {
 
 
     public static final RegistryObject<Block> POTION_CAULDRON = registerBlock("potion_cauldron",
-            () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON)));
+            () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON),5));
 
 
 

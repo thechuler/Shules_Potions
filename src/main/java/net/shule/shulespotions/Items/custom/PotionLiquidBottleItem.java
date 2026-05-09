@@ -20,11 +20,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
 import net.shule.shulespotions.Potions.PotionLiquid;
+import net.shule.shulespotions.Potions.PotionLiquidUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static net.minecraft.world.InteractionResult.FAIL;
@@ -54,12 +54,14 @@ public class PotionLiquidBottleItem extends PotionLiquidContainerItem {
         if (!pLevel.isClientSide) {
             setLiquidLevel(pStack,getLiquidLevel(pStack) - 1 );
 
-            List<MobEffectInstance> effects = resolvePotionEffects(pStack);
+           List<MobEffect> effects = PotionLiquidUtils.resolve(this.getPotionLiquid(pStack));
 
-            for (MobEffectInstance effect : effects) {
-                assert player != null;
-                player.addEffect(effect);
-            }
+           if(!effects.isEmpty()) {
+               for (MobEffect effect : effects) {
+                   assert player != null;
+                   player.addEffect(new MobEffectInstance(effect, 300)); //ESTO HAY QUE CAMBIARLO PARA LA DURACION Y POWER
+               }
+           }
 
             if(getLiquidLevel(pStack) <= 0){
                 removePotionLiquid(pStack);
@@ -68,7 +70,6 @@ public class PotionLiquidBottleItem extends PotionLiquidContainerItem {
 
         return super.finishUsingItem(pStack, pLevel, pLivingEntity);
     }
-
 
     @Override
     public @NotNull UseAnim getUseAnimation(@NotNull ItemStack pStack) {
@@ -97,7 +98,7 @@ public class PotionLiquidBottleItem extends PotionLiquidContainerItem {
         if (pContext.getLevel().isClientSide) return InteractionResult.PASS;
 
         BlockEntity be = pContext.getLevel().getBlockEntity(pContext.getClickedPos());
-        if (be instanceof PotionCauldronBE cauldron && cauldron.hasPotionLiquid()) {
+        if (be instanceof PotionCauldronBE cauldron ) {
             ItemStack stack = pContext.getItemInHand();
             PotionLiquid cauldronPL = cauldron.getPotionLiquid();
             PotionLiquid bottlePL = getPotionLiquid(stack);
@@ -132,23 +133,6 @@ public class PotionLiquidBottleItem extends PotionLiquidContainerItem {
     }
 
 
-    private List<MobEffectInstance> resolvePotionEffects(ItemStack stack) {
-        PotionLiquid pl = getPotionLiquid(stack);
-        float purity = pl.getPurity();
-        float power = pl.getPower();
-        float  complexity    = pl.getComplexity();
-
-
-        List<MobEffectInstance> effects = new ArrayList<>();
-
-        for (MobEffect effect : pl.getEffect()) {
-            effects.add(new MobEffectInstance(effect, pl.getDuration(), (int) power));
-        }
-
-        return effects;
-
-    }
-
 
     @Override
     public @NotNull String getDescriptionId() {
@@ -164,32 +148,34 @@ public class PotionLiquidBottleItem extends PotionLiquidContainerItem {
 
         pTooltipComponents.add(Component.literal("Power: " + (this.hasPotionLiquid(pStack) ? this.getPotionLiquid(pStack).getPower() : "-")).withStyle(ChatFormatting.RED));
 
-        pTooltipComponents.add(Component.literal("Purity: " + (this.hasPotionLiquid(pStack) ? this.getPotionLiquid(pStack).getPurity() : "-") + "%").withStyle(ChatFormatting.BLUE));
+      
 
         pTooltipComponents.add(Component.literal("Duration: " + (this.hasPotionLiquid(pStack) ? this.getPotionLiquid(pStack).getDuration()/20 : "-")).withStyle(ChatFormatting.GREEN));
-
-
-        pTooltipComponents.add(Component.literal("Complexity: " + (this.hasPotionLiquid(pStack) ? this.getPotionLiquid(pStack).getComplexity() : "-")).withStyle(ChatFormatting.YELLOW));
 
 
         pTooltipComponents.add(Component.empty());
 
         if (this.hasPotionLiquid(pStack)) {
             MutableComponent line = Component.literal("Effects: ");
+            List<MobEffect> effects = PotionLiquidUtils.resolve(this.getPotionLiquid(pStack));
             boolean first = true;
-            for (MobEffect effect : this.getPotionLiquid(pStack).getEffect()) {
-                if (!first) {
-                    line.append(Component.literal(" | ").withStyle(ChatFormatting.DARK_GRAY));
+            if(!effects.isEmpty()) {
+                for (MobEffect effect : effects) {
+                    if (!first) {
+                        line.append(Component.literal(" | ").withStyle(ChatFormatting.DARK_GRAY));
+                    }
+                    line.append(Component.literal(effect.getDisplayName().getString()).withStyle(style -> style.withColor(effect.getColor())));
+                    first = false;
                 }
-                line.append(Component.literal(effect.getDisplayName().getString()).withStyle(style -> style.withColor(effect.getColor())));
-                first = false;
-            }
-            pTooltipComponents.add(line);
+                pTooltipComponents.add(line);
+            }// ACA SE LE PODRIA AGREGAR QUE DIGA NONE
 
 
         }
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
+
+
 
 
 
