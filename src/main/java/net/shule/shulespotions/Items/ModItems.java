@@ -8,6 +8,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Items.custom.*;
 import net.shule.shulespotions.ShulesPotions;
 
@@ -27,7 +28,9 @@ public class ModItems {
 
 
 
-    public static final RegistryObject<Item> POTION_BARREL = ITEMS.register("potion_barrel", () -> new PotionBarrel(new Item.Properties()));
+    public static final RegistryObject<Item> POTION_BARREL = ITEMS.register(
+            "potion_barrel", () -> new BucketItem(ModFluids.SOURCE_SOAP_WATER
+                    ,new Item.Properties()));
 
     public static final RegistryObject<Item> SMALL_POTION_BOTTLE = ITEMS.register("small_potion_bottle", () -> new PotionLiquidBottleItem(new Item.Properties(),5,10,1));
     public static final RegistryObject<Item> LARGE_POTION_BOTTLE = ITEMS.register("large_potion_bottle", () -> new PotionLiquidBottleItem(new Item.Properties(),15,30,3));

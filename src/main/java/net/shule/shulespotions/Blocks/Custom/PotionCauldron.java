@@ -50,6 +50,7 @@ import static net.shule.shulespotions.util.ColorUtils.intToRGB;
 public class PotionCauldron extends BaseEntityBlock {
 
     private final int MAX_INGREDIENT_COUNT;
+    private final int MAX_LIQUID_LEVEL;
 
     public static final EnumProperty<CauldronState> STATE = EnumProperty.create("state", CauldronState.class);
 
@@ -57,9 +58,10 @@ public class PotionCauldron extends BaseEntityBlock {
 
     protected static final VoxelShape SHAPE = Shapes.or(box(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D), box(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D), box(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), INSIDE);
 
-    public PotionCauldron(Properties pProperties, int maxIngredientCount) {
+    public PotionCauldron(Properties pProperties, int maxIngredientCount, int maxLiquidLevel) {
         super(pProperties);
         MAX_INGREDIENT_COUNT = maxIngredientCount;
+        MAX_LIQUID_LEVEL = maxLiquidLevel;
         this.registerDefaultState(this.stateDefinition.any().setValue(STATE, CauldronState.BASE));
     }
 
@@ -84,38 +86,40 @@ public class PotionCauldron extends BaseEntityBlock {
         return new PotionCauldronBE(pPos, pState);
     }
 
-/*
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (pLevel.isClientSide) return InteractionResult.SUCCESS;
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
+                                 Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
 
-        BlockEntity be = pLevel.getBlockEntity(pPos);
-        if (be instanceof PotionCauldronBE cauldron) {
-
-            PotionLiquid pl = cauldron.getPotionLiquid();
-
-            String message = "PL -> " +
-                    " P:" + pl.getStats().getPurity() +
-                    " V:" + pl.getStats().getVitality() +
-                    " F:" + pl.getStats().getFlavor() +
-                    " S:" + pl.getStats().getStability();
-
-            List<MobEffect> effects = PotionLiquidUtils.resolve(pl);
-
-            String effectText = effects.stream()
-                    .map(e -> e.getDisplayName().getString())
-                    .toList()
-                    .toString();
+        ItemStack stack = pPlayer.getItemInHand(pHand);
 
 
-            pPlayer.sendSystemMessage(Component.literal(
-                    "PL -> " + message + " | Effects: " + effectText
-            ));
+        if (stack.is(Items.WATER_BUCKET)) {
+
+            if (!pLevel.isClientSide()) {
+
+                BlockEntity be = pLevel.getBlockEntity(pPos);
+
+                if (be instanceof PotionCauldronBE cauldron) {
+
+                    cauldron.setLiquidLevel(MAX_LIQUID_LEVEL);
+
+                    if (!pPlayer.getAbilities().instabuild) {
+                        pPlayer.setItemInHand(pHand, new ItemStack(Items.BUCKET));
+                    }
+
+                    cauldron.setChanged();
+                    cauldron.sync();
+                }
+            }
+
+
+            return InteractionResult.sidedSuccess(pLevel.isClientSide());
         }
 
-        return InteractionResult.SUCCESS;
+
+        return InteractionResult.PASS;
     }
-*/
+
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (level.isClientSide) return;
@@ -124,6 +128,8 @@ public class PotionCauldron extends BaseEntityBlock {
 
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof PotionCauldronBE cauldron) {
+
+            if(cauldron.getLiquidLevel() < 1 || cauldron.getIngredients().size() >= MAX_INGREDIENT_COUNT) return;
 
             cauldron.checkItem(itemEntity.getItem());
             itemEntity.discard();
@@ -137,37 +143,56 @@ public class PotionCauldron extends BaseEntityBlock {
 
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(
+            Level pLevel,
+            BlockState pState,
+            BlockEntityType<T> pBlockEntityType
+    ) {
         return (lvl, pos, st, be) -> {
-            if (be instanceof PotionCauldronBE cauldron) {
+
+            if (!(be instanceof PotionCauldronBE cauldron)) return;
 
 
-                if (!lvl.isClientSide) {
-                    PotionCauldronBE.tick(lvl, cauldron);
-                }
+            PotionCauldronBE.tick(lvl, cauldron);
 
 
-                if (lvl.isClientSide) {
-                    int color = cauldron.getRenderColor();
-                    float[] rgb = intToRGB(color);
-                    float chance =  0.4f;
+            if(cauldron.getLiquidLevel() < 1 ||
+                    cauldron.getIngredients().size() >= MAX_INGREDIENT_COUNT) {
+                return;
+            }
 
-                    if (lvl.random.nextFloat() < chance) {
-                        double offsetX = (lvl.random.nextDouble() - 0.5) * 0.5; // ancho
-                        double offsetZ = (lvl.random.nextDouble() - 0.5) * 0.5; //largo
 
-                        lvl.addParticle(ModParticles.BUBBLE.get(), pos.getX() + 0.5 + offsetX, pos.getY() + 1.0, pos.getZ() + 0.5 + offsetZ, rgb[0], rgb[1], rgb[2]);
-                    }
+            if (lvl.isClientSide) {
 
+                int color = cauldron.getRenderColor();
+                float[] rgb = intToRGB(color);
+
+                float chance = 0.4f;
+
+                if (lvl.random.nextFloat() < chance) {
+
+                    double offsetX = (lvl.random.nextDouble() - 0.5) * 0.5;
+                    double offsetZ = (lvl.random.nextDouble() - 0.5) * 0.5;
+
+                    lvl.addParticle(
+                            ModParticles.BUBBLE.get(),
+                            pos.getX() + 0.5 + offsetX,
+                            pos.getY() + 1.0,
+                            pos.getZ() + 0.5 + offsetZ,
+                            rgb[0],
+                            rgb[1],
+                            rgb[2]
+                    );
                 }
             }
         };
+    }
     }
 
 
 
 
-}
+
 
 
 

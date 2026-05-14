@@ -3,6 +3,7 @@ package net.shule.shulespotions.Potions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -28,42 +29,38 @@ public class IngredientStatLoader extends SimpleJsonResourceReloadListener {
 
         ItemStatRegistry.clear();
 
-        for (Map.Entry<ResourceLocation, JsonElement> entry : object.entrySet()) {
+        for (Map.Entry<ResourceLocation, JsonElement> fileEntry : object.entrySet()) {
 
-            ResourceLocation fileId = entry.getKey();
+            JsonObject root = fileEntry.getValue().getAsJsonObject();
 
-            String path = fileId.getPath();
+            for (Map.Entry<String, JsonElement> ingredientEntry : root.entrySet()) {
 
-            String[] split = path.split("/", 2);
+                ResourceLocation itemId =
+                        ResourceLocation.tryParse(ingredientEntry.getKey());
 
-            if (split.length < 2) {
-                System.out.println("Invalid ingredient path: " + fileId);
-                continue;
+                if (itemId == null) {
+                    System.out.println("Invalid item id: " + ingredientEntry.getKey());
+                    continue;
+                }
+
+                if (!BuiltInRegistries.ITEM.containsKey(itemId)) {
+                    System.out.println("Unknown item: " + itemId);
+                    continue;
+                }
+
+                Item item = BuiltInRegistries.ITEM.get(itemId);
+
+                IngredientStat stat = IngredientStat.CODEC
+                        .parse(JsonOps.INSTANCE, ingredientEntry.getValue())
+                        .resultOrPartial(System.out::println)
+                        .orElse(null);
+
+                if (stat == null) continue;
+
+                ItemStatRegistry.register(item, stat);
+
+                System.out.println("Loaded stats for " + itemId);
             }
-
-            ResourceLocation itemId =
-                    ResourceLocation.fromNamespaceAndPath(split[0], split[1]);
-
-            if (!BuiltInRegistries.ITEM.containsKey(itemId)) {
-                System.out.println("[ShulesPotions] Unknown item: " + itemId);
-                continue;
-            }
-
-            Item item = BuiltInRegistries.ITEM.get(itemId);
-
-
-            IngredientStat stat = IngredientStat.CODEC
-                    .parse(JsonOps.INSTANCE, entry.getValue())
-                    .resultOrPartial(error ->
-                            System.out.println("[ShulesPotions] " + error)
-                    )
-                    .orElse(null);
-
-            if (stat == null) continue;
-
-            ItemStatRegistry.register(item, stat);
-
-            System.out.println("[ShulesPotions] Loaded stats for " + itemId);
         }
     }
 }

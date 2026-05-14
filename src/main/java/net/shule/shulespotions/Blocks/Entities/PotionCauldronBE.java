@@ -19,14 +19,24 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.shule.shulespotions.Blocks.Custom.PotionCauldron;
 import net.shule.shulespotions.Blocks.ModBlockEntities;
+import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Potions.IngredientStat;
 import net.shule.shulespotions.Potions.ItemStatRegistry;
 import net.shule.shulespotions.Potions.PotionLiquid;
-import net.shule.shulespotions.util.ColorUtils;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
+
+import net.minecraft.core.Direction;
+import org.jetbrains.annotations.Nullable;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,21 +49,49 @@ public class PotionCauldronBE extends BlockEntity {
     private PotionLiquid pl;
     private int liquidLevel;
     private final List<Item> ingredients = new ArrayList<>();
-
-
     private int renderColor;
     private int startColor;
     private int targetColor;
     private float lerpProgress = 1.0f;
 
+    private final FluidTank tank = new FluidTank(4000) {
+
+        @Override
+        protected void onContentsChanged() {
+            setChanged();
+
+            if(level != null && !level.isClientSide) {
+                sync();
+            }
+        }
+
+        @Override
+        public boolean isFluidValid(FluidStack stack) {
+            return stack.getFluid() == ModFluids.SOURCE_SOAP_WATER.get();
+        }
+    };
+
+    private final LazyOptional<IFluidHandler> fluidHandler =
+            LazyOptional.of(() -> tank);
+
 
     public PotionCauldronBE(BlockPos pos, BlockState state) {
         super(ModBlockEntities.POTION_CAULDRON_BE.get(), pos, state);
-        liquidLevel = 3;
+        liquidLevel = 0;
         pl = new PotionLiquid();
-        renderColor = randomColor();
+        int color = randomColor();
+        renderColor = color;
+        pl.setColor(color);
     }
 
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.FLUID_HANDLER) {
+            return fluidHandler.cast();
+        }
+
+        return super.getCapability(cap, side);
+    }
 
     public void checkItem(ItemStack item) {
         if (this.level == null || this.level.isClientSide) return;
@@ -65,16 +103,10 @@ public class PotionCauldronBE extends BlockEntity {
         int color = randomColor();
         startColorTransition(color);
         pl.setColor(color);
-        // 1. Obtener stats del item
         IngredientStat stats = ItemStatRegistry.get(item);
-
-        // 2. Sumarlos al líquido
         this.pl.addStats(stats);
-
         this.setChanged();
         sync();
-
-        // 3. Debug
         sendDebugToNearbyPlayers(item, stats);
     }
 
@@ -144,10 +176,14 @@ public class PotionCauldronBE extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
+
         pTag.put("sppotionliquid", this.pl.save());
         pTag.putInt("SPcolor", renderColor);
 
+        pTag.putInt("SPLiquidLevel", liquidLevel);
+
         ListTag list = new ListTag();
+
         for (Item item : ingredients) {
             list.add(StringTag.valueOf(
                     BuiltInRegistries.ITEM.getKey(item).toString()
@@ -161,7 +197,12 @@ public class PotionCauldronBE extends BlockEntity {
     @Override
     public void load(CompoundTag pTag) {
         super.load(pTag);
+
         renderColor = pTag.getInt("SPcolor");
+
+
+        liquidLevel = pTag.getInt("SPLiquidLevel");
+
         if (pTag.contains("sppotionliquid")) {
             this.pl = PotionLiquid.load(pTag.getCompound("sppotionliquid"));
         } else {
@@ -179,13 +220,23 @@ public class PotionCauldronBE extends BlockEntity {
                 ingredients.add(item);
             }
         }
-
-
     }
 
 
     public void setLiquidLevel(int liquidLevel) {
         this.liquidLevel = liquidLevel;
+
+        if (this.liquidLevel <= 0) {
+            this.liquidLevel = 0;
+
+            this.pl = new PotionLiquid();
+            this.ingredients.clear();
+
+            startColorTransition(randomColor());
+        }
+
+        setChanged();
+        sync();
     }
 
     public int getLiquidLevel() {
@@ -242,7 +293,7 @@ public class PotionCauldronBE extends BlockEntity {
         sync();
     }
 
-
-
-
+    public List<Item> getIngredients() {
+        return ingredients;
+    }
 }

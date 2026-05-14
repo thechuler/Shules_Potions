@@ -6,6 +6,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -14,6 +15,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import net.shule.shulespotions.Blocks.Custom.PotionCauldron;
 import net.shule.shulespotions.Blocks.Custom.RecipeLectern;
+import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.ShulesPotions;
 
@@ -33,7 +35,7 @@ public class ModBlocks {
 
 
     public static final RegistryObject<Block> POTION_CAULDRON = registerBlock("potion_cauldron",
-            () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON),5));
+            () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON),3,3));
 
 
 
@@ -54,6 +56,9 @@ public class ModBlocks {
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
+
+    public static final RegistryObject<LiquidBlock> SOAP_WATER_BLOCK = BLOCKS.register("soap_water_block",
+            ()-> new LiquidBlock(ModFluids.SOURCE_SOAP_WATER,BlockBehaviour.Properties.copy(Blocks.WATER)));
 
     public static void register(IEventBus bus){
         BLOCKS.register(bus);

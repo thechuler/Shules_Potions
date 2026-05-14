@@ -1,7 +1,8 @@
 package net.shule.shulespotions;
 
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +24,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.shule.shulespotions.Blocks.ModBlockEntities;
 import net.shule.shulespotions.Blocks.ModBlocks;
 
+
+import net.shule.shulespotions.Fluids.ModFluidTypes;
+import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Items.ModCreativeTab;
 import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.Items.custom.PotionLiquidBottleItem;
@@ -61,6 +65,8 @@ public class ShulesPotions {
         ModCreativeTab.register(modEventBus); //<--- Esto les da un inventario en creativo
         ModBlockEntities.register(modEventBus);
         ModParticles.register(modEventBus);
+        ModFluids.register(modEventBus);
+        ModFluidTypes.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
@@ -140,9 +146,8 @@ public class ShulesPotions {
             registerBottle(ModItems.BIG_POTION_BOTTLE.get());
 
 
-
-
-
+            ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_SOAP_WATER.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_SOAP_WATER.get(), RenderType.translucent());
 
         }
     }

@@ -1,0 +1,106 @@
+{
+  "minecraft:potato": {
+    "flavor": 10,
+    "stability": 2
+  },
+
+  "minecraft:carrot": {
+    "vitality": 8,
+    "flavor": 6
+  },
+
+  "minecraft:beetroot": {
+    "vitality": 12,
+    "purity": -2
+  },
+
+  "minecraft:apple": {
+    "flavor": 14,
+    "vitality": 4
+  },
+
+  "minecraft:melon_slice": {
+    "vitality": 6,
+    "stability": 1
+  },
+
+  "minecraft:sugar": {
+    "flavor": 20,
+    "stability": -5
+  },
+
+  "minecraft:honey_bottle": {
+    "flavor": 18,
+    "stability": 8,
+    "vitality": 5
+  },
+
+  "minecraft:spider_eye": {
+    "vitality": -10,
+    "purity": -15
+  },
+
+  "minecraft:fermented_spider_eye": {
+    "vitality": -18,
+    "purity": -25,
+    "stability": 6
+  },
+
+  "minecraft:blaze_powder": {
+    "purity": 15,
+    "stability": -3
+  },
+
+  "minecraft:ghast_tear": {
+    "purity": 20,
+    "vitality": 10
+  },
+
+  "minecraft:redstone": {
+    "stability": 15
+  },
+
+  "minecraft:glowstone_dust": {
+    "purity": 12,
+    "stability": -10
+  },
+
+  "minecraft:gunpowder": {
+    "stability": -20,
+    "purity": -5
+  },
+
+  "minecraft:phantom_membrane": {
+    "purity": 8,
+    "vitality": 14
+  },
+
+  "minecraft:magma_cream": {
+    "vitality": 10,
+    "stability": -4,
+    "flavor": -6
+  },
+
+  "minecraft:slime_ball": {
+    "stability": 12,
+    "flavor": -3
+  },
+
+  "minecraft:chorus_fruit": {
+    "purity": 6,
+    "vitality": 6,
+    "stability": -8
+  },
+
+  "minecraft:golden_carrot": {
+    "purity": 18,
+    "vitality": 15,
+    "flavor": 10
+  },
+
+  "minecraft:nether_wart": {
+    "purity": 10,
+    "stability": 5,
+    "flavor": -2
+  }
+}
