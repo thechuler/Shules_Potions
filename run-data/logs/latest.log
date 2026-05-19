@@ -1,34 +1,31 @@
-[23abr2026 16:09:16.340] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgedatauserdev, --assetIndex, 5, --assetsDir, C:\Users\campo\.gradle\caches\forge_gradle\assets, --gameDir, ., --fml.forgeVersion, 47.4.10, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, --mod, shulespotions, --all, --output, C:\Users\campo\Desktop\1.20.1-template-Mod\src\generated\resources, --existing, C:\Users\campo\Desktop\1.20.1-template-Mod\src\main\resources]
-[23abr2026 16:09:16.345] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.15 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
-[23abr2026 16:09:16.470] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forgedatauserdev
-[23abr2026 16:09:16.524] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/C:/Users/campo/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23128!/ Service=ModLauncher Env=CLIENT
-[23abr2026 16:09:16.916] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\campo\.gradle\caches\modules-2\files-2.1\net.minecraftforge\javafmllanguage\1.20.1-47.4.10\ccc533c7dd67e0983217197d7549c8b49e7ab453\javafmllanguage-1.20.1-47.4.10.jar is missing mods.toml file
-[23abr2026 16:09:16.918] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\campo\.gradle\caches\modules-2\files-2.1\net.minecraftforge\lowcodelanguage\1.20.1-47.4.10\e9a2879fe3612ea34b9728ec2633304a1e67d480\lowcodelanguage-1.20.1-47.4.10.jar is missing mods.toml file
-[23abr2026 16:09:16.920] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\campo\.gradle\caches\modules-2\files-2.1\net.minecraftforge\mclanguage\1.20.1-47.4.10\ec5cefbbc65c67302b8fac317010faab85fa14b9\mclanguage-1.20.1-47.4.10.jar is missing mods.toml file
-[23abr2026 16:09:16.923] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\campo\.gradle\caches\modules-2\files-2.1\net.minecraftforge\fmlcore\1.20.1-47.4.10\94dae566be650566ea9115a1414ab76bfcf5a804\fmlcore-1.20.1-47.4.10.jar is missing mods.toml file
-[23abr2026 16:09:17.108] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: Found 1 dependencies adding them to mods collection
-[23abr2026 16:09:18.804] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
-[23abr2026 16:09:18.805] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgedatauserdev' with arguments [--gameDir, ., --assetsDir, C:\Users\campo\.gradle\caches\forge_gradle\assets, --assetIndex, 5, --mod, shulespotions, --all, --output, C:\Users\campo\Desktop\1.20.1-template-Mod\src\generated\resources, --existing, C:\Users\campo\Desktop\1.20.1-template-Mod\src\main\resources]
-[23abr2026 16:09:19.122] [main/INFO] [mixin/]: Remapping refMap geckolib.refmap.json using C:\Users\campo\Desktop\1.20.1-template-Mod\build\createSrgToMcp\output.srg
-[23abr2026 16:09:19.554] [main/INFO] [net.minecraftforge.data.loading.DatagenModLoader/]: Initializing Data Gatherer for mods [shulespotions]
-[23abr2026 16:09:24.181] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 47.4.10, for MC 1.20.1 with MCP 20230612.114412
-[23abr2026 16:09:24.188] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v47.4.10 Initialized
-[23abr2026 16:09:24.292] [modloading-worker-0/WARN] [software.bernie.geckolib.GeckoLib/]: Minecraft.getInstance() was null, could not register reload listeners
-[23abr2026 16:09:24.805] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/campo/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1/forge-1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1-recomp.jar%23191!/assets/.mcassetsroot' uses unexpected schema
-[23abr2026 16:09:24.806] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/campo/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1/forge-1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1-recomp.jar%23191!/data/.mcassetsroot' uses unexpected schema
-[23abr2026 16:09:25.147] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Item Models: shulespotions
-[23abr2026 16:09:25.180] [main/INFO] [net.minecraft.data.DataGenerator/]: Item Models: shulespotions finished after 33 ms
-[23abr2026 16:09:25.181] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Block States: shulespotions
-[23abr2026 16:09:25.181] [main/INFO] [net.minecraft.data.DataGenerator/]: Block States: shulespotions finished after 0 ms
-[23abr2026 16:09:25.181] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:block mod id shulespotions
-[23abr2026 16:09:25.191] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:block mod id shulespotions finished after 8 ms
-[23abr2026 16:09:25.191] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:item mod id shulespotions
-[23abr2026 16:09:25.192] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:item mod id shulespotions finished after 1 ms
-[23abr2026 16:09:25.192] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Registries
-[23abr2026 16:09:25.194] [main/INFO] [net.minecraft.data.DataGenerator/]: Registries finished after 2 ms
-[23abr2026 16:09:25.194] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Recipes
-[23abr2026 16:09:25.224] [main/INFO] [net.minecraft.data.DataGenerator/]: Recipes finished after 29 ms
-[23abr2026 16:09:25.224] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Loot Tables
-[23abr2026 16:09:25.252] [main/INFO] [net.minecraft.data.DataGenerator/]: Loot Tables finished after 28 ms
-[23abr2026 16:09:25.252] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 105 ms
-[23abr2026 16:09:25.262] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 76, old count: 68, new count: 76, removed stale: 1, written: 10
+[17may2026 23:57:07.366] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgedatauserdev, --assetIndex, 5, --assetsDir, C:\Users\campo\.gradle\caches\forge_gradle\assets, --gameDir, ., --fml.forgeVersion, 47.4.10, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, --mod, shulespotions, --all, --output, C:\Users\campo\Desktop\1.20.1-template-Mod\src\generated\resources, --existing, C:\Users\campo\Desktop\1.20.1-template-Mod\src\main\resources]
+[17may2026 23:57:07.370] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.15 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
+[17may2026 23:57:07.575] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forgedatauserdev
+[17may2026 23:57:07.671] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/C:/Users/campo/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23128!/ Service=ModLauncher Env=CLIENT
+[17may2026 23:57:08.034] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\campo\.gradle\caches\modules-2\files-2.1\net.minecraftforge\javafmllanguage\1.20.1-47.4.10\ccc533c7dd67e0983217197d7549c8b49e7ab453\javafmllanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[17may2026 23:57:08.036] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\campo\.gradle\caches\modules-2\files-2.1\net.minecraftforge\lowcodelanguage\1.20.1-47.4.10\e9a2879fe3612ea34b9728ec2633304a1e67d480\lowcodelanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[17may2026 23:57:08.039] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\campo\.gradle\caches\modules-2\files-2.1\net.minecraftforge\mclanguage\1.20.1-47.4.10\ec5cefbbc65c67302b8fac317010faab85fa14b9\mclanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[17may2026 23:57:08.041] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\campo\.gradle\caches\modules-2\files-2.1\net.minecraftforge\fmlcore\1.20.1-47.4.10\94dae566be650566ea9115a1414ab76bfcf5a804\fmlcore-1.20.1-47.4.10.jar is missing mods.toml file
+[17may2026 23:57:08.185] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[17may2026 23:57:09.699] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgedatauserdev' with arguments [--gameDir, ., --assetsDir, C:\Users\campo\.gradle\caches\forge_gradle\assets, --assetIndex, 5, --mod, shulespotions, --all, --output, C:\Users\campo\Desktop\1.20.1-template-Mod\src\generated\resources, --existing, C:\Users\campo\Desktop\1.20.1-template-Mod\src\main\resources]
+[17may2026 23:57:10.332] [main/INFO] [net.minecraftforge.data.loading.DatagenModLoader/]: Initializing Data Gatherer for mods [shulespotions]
+[17may2026 23:57:15.172] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 47.4.10, for MC 1.20.1 with MCP 20230612.114412
+[17may2026 23:57:15.176] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v47.4.10 Initialized
+[17may2026 23:57:15.654] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/campo/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1/forge-1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1-recomp.jar%23191!/assets/.mcassetsroot' uses unexpected schema
+[17may2026 23:57:15.661] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/campo/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1/forge-1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1-recomp.jar%23191!/data/.mcassetsroot' uses unexpected schema
+[17may2026 23:57:15.997] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Item Models: shulespotions
+[17may2026 23:57:16.015] [main/INFO] [net.minecraft.data.DataGenerator/]: Item Models: shulespotions finished after 17 ms
+[17may2026 23:57:16.016] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Block States: shulespotions
+[17may2026 23:57:16.016] [main/INFO] [net.minecraft.data.DataGenerator/]: Block States: shulespotions finished after 0 ms
+[17may2026 23:57:16.016] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:block mod id shulespotions
+[17may2026 23:57:16.026] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:block mod id shulespotions finished after 9 ms
+[17may2026 23:57:16.026] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:item mod id shulespotions
+[17may2026 23:57:16.028] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:item mod id shulespotions finished after 1 ms
+[17may2026 23:57:16.028] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Registries
+[17may2026 23:57:16.033] [main/INFO] [net.minecraft.data.DataGenerator/]: Registries finished after 4 ms
+[17may2026 23:57:16.033] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Recipes
+[17may2026 23:57:16.051] [main/INFO] [net.minecraft.data.DataGenerator/]: Recipes finished after 18 ms
+[17may2026 23:57:16.051] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Loot Tables
+[17may2026 23:57:16.082] [main/INFO] [net.minecraft.data.DataGenerator/]: Loot Tables finished after 30 ms
+[17may2026 23:57:16.083] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 86 ms
+[17may2026 23:57:16.090] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 19, old count: 18, new count: 20, removed stale: 0, written: 1

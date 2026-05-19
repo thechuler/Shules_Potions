@@ -6,6 +6,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
+import net.shule.shulespotions.Blocks.Entities.SmallPotionBlockBE;
 import net.shule.shulespotions.ShulesPotions;
 
 public class ModBlockEntities {
@@ -20,6 +21,16 @@ public class ModBlockEntities {
                             ModBlocks.POTION_CAULDRON.get()).build(null));
 
 
+
+    public static final RegistryObject<BlockEntityType<SmallPotionBlockBE>>
+            SMALL_POTION_BE =
+            BLOCK_ENTITIES.register(
+                    "small_potion_be",
+                    () -> BlockEntityType.Builder.of(
+                            SmallPotionBlockBE::new,
+                            ModBlocks.SMALL_POTION_BLOCK.get()
+                    ).build(null)
+            );
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

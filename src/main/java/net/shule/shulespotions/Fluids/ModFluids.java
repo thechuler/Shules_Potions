@@ -15,15 +15,16 @@ public class ModFluids {
     public static final DeferredRegister<Fluid> FLUIDS =
             DeferredRegister.create(ForgeRegistries.FLUIDS, ShulesPotions.MODID);
 
-    public static final RegistryObject<FlowingFluid> SOURCE_SOAP_WATER = FLUIDS.register("soap_water_fluid",
-            () -> new ForgeFlowingFluid.Source(ModFluids.SOAP_WATER_FLUID_PROPERTIES));
-    public static final RegistryObject<FlowingFluid> FLOWING_SOAP_WATER = FLUIDS.register("flowing_soap_water",
-            () -> new ForgeFlowingFluid.Flowing(ModFluids.SOAP_WATER_FLUID_PROPERTIES));
+    public static final RegistryObject<FlowingFluid> SOURCE_POTION_FLUID = FLUIDS.register("potion_fluid",
+            () -> new ForgeFlowingFluid.Source(ModFluids.POTION_FLUID_PROPERTIES));
+
+    public static final RegistryObject<FlowingFluid> FLOWING_POTION_FLUID = FLUIDS.register("flowing_potion_fluid",
+            () -> new ForgeFlowingFluid.Flowing(ModFluids.POTION_FLUID_PROPERTIES));
 
 
-    public static final ForgeFlowingFluid.Properties SOAP_WATER_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
-            ModFluidTypes.SOAP_WATER_FLUID_TYPE, SOURCE_SOAP_WATER, FLOWING_SOAP_WATER)
-            .slopeFindDistance(2).levelDecreasePerBlock(2).block(ModBlocks.SOAP_WATER_BLOCK)
+    public static final ForgeFlowingFluid.Properties POTION_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
+            ModFluidTypes.POTION_FLUID_TYPE, SOURCE_POTION_FLUID, FLOWING_POTION_FLUID)
+            .slopeFindDistance(2).levelDecreasePerBlock(2).block(ModBlocks.POTION_FLUID_BLOCK)
             .bucket(ModItems.POTION_BARREL);
 
 

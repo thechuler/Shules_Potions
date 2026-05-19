@@ -26,6 +26,9 @@ public class ProviderItemModel extends ItemModelProvider {
         simpleItem(ModItems.ONYX);
         simpleItem(ModItems.IRON_DUST);
         simpleItem(ModItems.EMERALD_DUST);
+        simpleItem(ModItems.RECIPE_SCROLL);
+        simpleItem(ModItems.ALCHEMIST_MONOCLE);
+        simpleItem(ModItems.MANDRAKE_SEED);
 
 
 

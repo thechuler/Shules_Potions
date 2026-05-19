@@ -48,7 +48,8 @@
 
   "minecraft:blaze_powder": {
     "purity": 15,
-    "stability": -3
+    "stability": -3,
+    "flavor": 6
   },
 
   "minecraft:ghast_tear": {
@@ -62,17 +63,20 @@
 
   "minecraft:glowstone_dust": {
     "purity": 12,
-    "stability": -10
+    "stability": -10,
+    "flavor": 8
   },
 
   "minecraft:gunpowder": {
     "stability": -20,
-    "purity": -5
+    "purity": -5,
+    "flavor": 10
   },
 
   "minecraft:phantom_membrane": {
     "purity": 8,
-    "vitality": 14
+    "vitality": 14,
+    "stability": 10
   },
 
   "minecraft:magma_cream": {
@@ -89,7 +93,8 @@
   "minecraft:chorus_fruit": {
     "purity": 6,
     "vitality": 6,
-    "stability": -8
+    "stability": -8,
+    "flavor": 14
   },
 
   "minecraft:golden_carrot": {
@@ -102,5 +107,32 @@
     "purity": 10,
     "stability": 5,
     "flavor": -2
+  },
+
+  "minecraft:rabbit_foot": {
+    "purity": 14,
+    "flavor": 18,
+    "vitality": 8
+  },
+
+  "minecraft:turtle_helmet": {
+    "stability": 20,
+    "purity": 12
+  },
+
+  "minecraft:prismarine_crystals": {
+    "stability": 18,
+    "purity": 14,
+    "flavor": 4
+  },
+
+  "minecraft:prismarine_shard": {
+    "stability": 12,
+    "purity": 8
+  },
+
+  "minecraft:echo_shard": {
+    "purity": 22,
+    "stability": -18
   }
 }

@@ -3,10 +3,19 @@
   "textures": {
     "layer0": "shulespotions:item/large_potion_bottle"
   },
+
   "overrides": [
     {
-      "predicate": { "has_liquid": 1.0 },
-      "model": "shulespotions:item/large_potion_bottle_filled"
+      "predicate": {
+        "fill_level": 0.34
+      },
+      "model": "shulespotions:item/large_potion_bottle_half"
+    },
+    {
+      "predicate": {
+        "fill_level": 0.67
+      },
+      "model": "shulespotions:item/large_potion_bottle_full"
     }
   ]
 }

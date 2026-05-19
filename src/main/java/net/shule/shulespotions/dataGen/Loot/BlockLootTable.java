@@ -24,11 +24,8 @@ public class BlockLootTable extends BlockLootSubProvider {
                 block -> createOreDrop(ModBlocks.POTION_CAULDRON.get(), ModBlocks.POTION_CAULDRON.get().asItem())
         );
 
-        this.add(ModBlocks. RECIPE_LECTERN.get(),
-                block -> createOreDrop(ModBlocks.POTION_CAULDRON.get(), ModBlocks.RECIPE_LECTERN.get().asItem())
-        );
 
-
+        this.add(ModBlocks.POTION_FLUID_BLOCK.get(), noDrop());
     }
 
 

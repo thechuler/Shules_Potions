@@ -3,11 +3,10 @@ package net.shule.shulespotions.Blocks.Custom;
 import net.minecraft.core.BlockPos;
 
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -29,20 +28,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
 
-import net.shule.shulespotions.Blocks.ModBlockEntities;
 import net.shule.shulespotions.Particles.ModParticles;
-import net.shule.shulespotions.Potions.PotionLiquid;
-import net.shule.shulespotions.Potions.PotionLiquidUtils;
-import net.shule.shulespotions.util.CauldronState;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 import static net.shule.shulespotions.util.ColorUtils.intToRGB;
 
@@ -52,7 +48,6 @@ public class PotionCauldron extends BaseEntityBlock {
     private final int MAX_INGREDIENT_COUNT;
     private final int MAX_LIQUID_LEVEL;
 
-    public static final EnumProperty<CauldronState> STATE = EnumProperty.create("state", CauldronState.class);
 
     private static final VoxelShape INSIDE = box(2.0D, 3.0D, 2.0D, 14.0D, 15.0D, 14.0D);
 
@@ -62,14 +57,10 @@ public class PotionCauldron extends BaseEntityBlock {
         super(pProperties);
         MAX_INGREDIENT_COUNT = maxIngredientCount;
         MAX_LIQUID_LEVEL = maxLiquidLevel;
-        this.registerDefaultState(this.stateDefinition.any().setValue(STATE, CauldronState.BASE));
+
     }
 
 
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(STATE);
-    }
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
@@ -87,38 +78,58 @@ public class PotionCauldron extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
-                                 Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 
-        ItemStack stack = pPlayer.getItemInHand(pHand);
-
+        ItemStack stack = player.getItemInHand(hand);
 
         if (stack.is(Items.WATER_BUCKET)) {
 
-            if (!pLevel.isClientSide()) {
+            if (!level.isClientSide()) {
 
-                BlockEntity be = pLevel.getBlockEntity(pPos);
+                BlockEntity be = level.getBlockEntity(pos);
 
                 if (be instanceof PotionCauldronBE cauldron) {
 
-                    cauldron.setLiquidLevel(MAX_LIQUID_LEVEL);
+                    FluidStack water = new FluidStack(
+                            Fluids.WATER,
+                            1000
+                    );
 
-                    if (!pPlayer.getAbilities().instabuild) {
-                        pPlayer.setItemInHand(pHand, new ItemStack(Items.BUCKET));
+                    int filled = cauldron.getTank().fill(
+                            water,
+                            IFluidHandler.FluidAction.EXECUTE
+                    );
+
+                    if (filled == 1000) {
+
+                        if (!player.getAbilities().instabuild) {
+                            player.setItemInHand(
+                                    hand,
+                                    new ItemStack(Items.BUCKET)
+                            );
+                        }
+
+                        cauldron.setChanged();
+                        cauldron.sync();
+
+                        level.playSound(
+                                null,
+                                pos,
+                                SoundEvents.BUCKET_FILL,
+                                SoundSource.BLOCKS,
+                                1.0F,
+                                1.0F
+                        );
                     }
-
-                    cauldron.setChanged();
-                    cauldron.sync();
                 }
             }
 
-
-            return InteractionResult.sidedSuccess(pLevel.isClientSide());
+            return InteractionResult.sidedSuccess(level.isClientSide());
         }
-
 
         return InteractionResult.PASS;
     }
+
 
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
@@ -129,10 +140,23 @@ public class PotionCauldron extends BaseEntityBlock {
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof PotionCauldronBE cauldron) {
 
-            if(cauldron.getLiquidLevel() < 1 || cauldron.getIngredients().size() >= MAX_INGREDIENT_COUNT) return;
+            if(cauldron.getTank().isEmpty() || cauldron.getIngredients().size() >= MAX_INGREDIENT_COUNT) return;
+            ItemStack stack = itemEntity.getItem();
+            cauldron.checkItem(stack);
+            level.playSound(
+                    null,
+                    pos,
+                    SoundEvents.AMBIENT_UNDERWATER_ENTER,
+                    SoundSource.BLOCKS,
+                    0.6F,
+                    2F + level.random.nextFloat() * 0.2F
+            );
 
-            cauldron.checkItem(itemEntity.getItem());
-            itemEntity.discard();
+            if(stack.getCount() > 1){
+                stack.shrink(1);
+            }else {
+                itemEntity.discard();
+            }
         }
     }
 
@@ -142,12 +166,9 @@ public class PotionCauldron extends BaseEntityBlock {
     }
 
 
+
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(
-            Level pLevel,
-            BlockState pState,
-            BlockEntityType<T> pBlockEntityType
-    ) {
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return (lvl, pos, st, be) -> {
 
             if (!(be instanceof PotionCauldronBE cauldron)) return;
@@ -156,11 +177,14 @@ public class PotionCauldron extends BaseEntityBlock {
             PotionCauldronBE.tick(lvl, cauldron);
 
 
-            if(cauldron.getLiquidLevel() < 1 ||
+            if(cauldron.getTank().isEmpty()||
                     cauldron.getIngredients().size() >= MAX_INGREDIENT_COUNT) {
                 return;
             }
 
+            if (cauldron.getTank().getFluid().getFluid() == Fluids.WATER) {
+                return;
+            }
 
             if (lvl.isClientSide) {
 
@@ -187,6 +211,35 @@ public class PotionCauldron extends BaseEntityBlock {
             }
         };
     }
+
+
+
+    /*No tengo idea de como implementar esto, necesita la velocidad de las particulas pero tambien el canal de color
+    /*
+    private void spawnPotionSplash(Level level, BlockPos pos, PotionCauldronBE cauldron, ItemStack stack) {
+
+        if (!(level instanceof ServerLevel serverLevel)) return;
+
+        // ejemplo: obtener color del potion liquid actual
+        int color = cauldron.getPotionLiquid().getColor(); // o calculado desde stats
+
+        float r = ((color >> 16) & 0xFF) / 255f;
+        float g = ((color >> 8) & 0xFF) / 255f;
+        float b = (color & 0xFF) / 255f;
+
+        serverLevel.sendParticles(
+                ModParticles.POTION_SPLASH.get(),
+                pos.getX() + 0.5,
+                pos.getY() + 1,
+                pos.getZ() + 0.5,
+                30,      // cantidad
+                0.25,   // spread X
+                0.2,    // spread Y
+                0.25,   // spread Z
+                0.05    // speed
+        );
+    }
+*/
     }
 
 

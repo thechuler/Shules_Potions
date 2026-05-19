@@ -2,6 +2,9 @@ package net.shule.shulespotions.Potions;
 
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import net.shule.shulespotions.Fluids.PotionFluidHelper;
 
 
 public class PotionLiquid {
@@ -82,6 +85,7 @@ public class PotionLiquid {
     public int getDuration() {
         return duration;
     }
+
 
 
 

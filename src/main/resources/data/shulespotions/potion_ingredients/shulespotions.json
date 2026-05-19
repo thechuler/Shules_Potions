@@ -1,0 +1,41 @@
+{
+  "shulespotions:mandrake_seed": {
+    "purity": 18,
+    "vitality": 26,
+    "stability": -12,
+    "flavor": -8
+  },
+
+  "shulespotions:potion_homunculus": {
+    "purity": 35,
+    "vitality": 40,
+    "stability": -25,
+    "flavor": 10
+  },
+
+  "shulespotions:rotten_fish": {
+    "purity": -22,
+    "vitality": -14,
+    "stability": -8,
+    "flavor": -18
+  },
+
+  "shulespotions:emerald_dust": {
+    "purity": 16,
+    "stability": 22,
+    "flavor": 6
+  },
+
+  "shulespotions:iron_dust": {
+    "stability": 18,
+    "vitality": 10,
+    "flavor": -4
+  },
+
+  "shulespotions:onyx": {
+    "purity": -10,
+    "stability": 28,
+    "vitality": 6,
+    "flavor": -12
+  }
+}

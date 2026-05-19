@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -15,6 +16,7 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
 
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -27,10 +29,13 @@ import net.shule.shulespotions.Blocks.ModBlocks;
 
 import net.shule.shulespotions.Fluids.ModFluidTypes;
 import net.shule.shulespotions.Fluids.ModFluids;
+import net.shule.shulespotions.Fluids.PotionFluidHelper;
 import net.shule.shulespotions.Items.ModCreativeTab;
 import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.Items.custom.PotionLiquidBottleItem;
+import net.shule.shulespotions.Items.custom.RecipeScroll;
 import net.shule.shulespotions.Particles.Custom.BubbleProvider;
+import net.shule.shulespotions.Particles.Custom.PotionSplashProvider;
 import net.shule.shulespotions.Particles.ModParticles;
 
 
@@ -95,42 +100,98 @@ public class ShulesPotions {
             );
 
             event.registerSpriteSet(
-                    ModParticles.RUNE.get(),
-                    BubbleProvider::new
+                    ModParticles.POTION_SPLASH.get(),
+                    PotionSplashProvider::new
             );
+
+
         }
 
 
 
         @SubscribeEvent
         public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+
             event.register((stack, tintIndex) -> {
-                if (tintIndex == 1) {
-                    if (stack.getItem() instanceof PotionLiquidBottleItem bottle) {
-                        if (bottle.hasPotionLiquid(stack)) {
-                            return bottle.getPotionLiquid(stack).getColor();
+
+                        /*
+                         * SCROLL
+                         */
+                        if (stack.getItem() instanceof RecipeScroll) {
+
+                            if (tintIndex == 1) {
+
+                                if (RecipeScroll.hasRecipeData(stack)) {
+
+                                    FluidStack fluid = RecipeScroll.getPotionFluid(stack);
+
+                                    if (!fluid.isEmpty()) {
+                                        return PotionFluidHelper
+                                                .getPotionLiquid(fluid)
+                                                .getColor();
+                                    }
+                                }
+
+                                return 0xFFFFFF;
+                            }
                         }
-                    }
-                }
-                return -1;
-            }, ModItems.SMALL_POTION_BOTTLE.get(),
+
+                        /*
+                         * BOTTLES
+                         */
+                        if (tintIndex == 1) {
+
+                            if (stack.getItem() instanceof PotionLiquidBottleItem bottle) {
+
+                                FluidStack fluid = bottle.getFluid(stack);
+
+                                if (!fluid.isEmpty()) {
+                                    return PotionFluidHelper
+                                            .getPotionLiquid(fluid)
+                                            .getColor();
+                                }
+                            }
+                        }
+
+                        return -1;
+
+                    },
+                    ModItems.SMALL_POTION_BOTTLE.get(),
                     ModItems.LARGE_POTION_BOTTLE.get(),
-                    ModItems.BIG_POTION_BOTTLE.get());
+                    ModItems.BIG_POTION_BOTTLE.get(),
+                    ModItems.RECIPE_SCROLL.get()
+            );
         }
 
+        private static final ItemPropertyFunction FILL_LEVEL =
+                (stack, level, entity, seed) -> {
+
+                    if (stack.getItem() instanceof PotionLiquidBottleItem bottle) {
+
+                        FluidStack fluid = bottle.getFluid(stack);
+
+                        if (fluid.isEmpty()) {
+                            return 0.0F;
+                        }
+
+                        return Mth.clamp(
+                                (float) fluid.getAmount() / bottle.capacity,
+                                0.0F,
+                                1.0F
+                        );
+                    }
+
+                    return 0.0F;
+                };
 
 
-        private static final ItemPropertyFunction HAS_LIQUID = (stack, level, entity, seed) -> {
-            if (stack.getItem() instanceof PotionLiquidBottleItem bottle) {
-                return bottle.getLiquidLevel(stack) > 0 ? 1.0F : 0.0F;
-            }
-            return 0.0F;
-        };
 
         private static void registerBottle(Item item) {
-            ItemProperties.register(item,
-                    ResourceLocation.parse("has_liquid"),
-                    HAS_LIQUID
+
+            ItemProperties.register(
+                    item,
+                    ResourceLocation.parse("fill_level"),
+                    FILL_LEVEL
             );
         }
 
@@ -140,15 +201,23 @@ public class ShulesPotions {
         public static void onClientSetup(FMLClientSetupEvent event) {
 
 
+            ItemProperties.register(
+                    ModItems.RECIPE_SCROLL.get(),
+                    ResourceLocation.parse("written"),
+                    (stack, level, entity, seed) -> {
+                        return RecipeScroll.hasRecipeData(stack) ? 1.0F : 0.0F;
+                    }
+            );
+
 
             registerBottle(ModItems.SMALL_POTION_BOTTLE.get());
             registerBottle(ModItems.LARGE_POTION_BOTTLE.get());
             registerBottle(ModItems.BIG_POTION_BOTTLE.get());
 
 
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_SOAP_WATER.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_SOAP_WATER.get(), RenderType.translucent());
-
+            ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_POTION_FLUID.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_POTION_FLUID.get(), RenderType.translucent());
+          //  ItemBlockRenderTypes.setRenderLayer(ModBlocks.SMALL_POTION_BLOCK.get(), RenderType.translucent());
         }
     }
 }

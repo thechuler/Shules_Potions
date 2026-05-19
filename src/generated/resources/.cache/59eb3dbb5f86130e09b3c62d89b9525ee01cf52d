@@ -1,3 +1,4 @@
-// 1.20.1	2026-04-23T16:09:25.2548244	Loot Tables
+// 1.20.1	2026-05-17T01:35:25.3634424	Loot Tables
 719ad6eaf6a8dfd5c6bef386fc5ea21c1a604ba0 data/shulespotions/loot_tables/blocks/potion_cauldron.json
+e48352cb9596797c3fce80fb0d183af79fcee736 data/shulespotions/loot_tables/blocks/potion_fluid_block.json
 acd61a7081933c699a1a828f8f08650ec4660fbc data/shulespotions/loot_tables/blocks/recipe_lectern.json

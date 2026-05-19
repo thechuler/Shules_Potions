@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "shulespotions:item/recipe_scroll",
+    "layer1": "shulespotions:item/recipe_scroll_overlay"
+  }
+}

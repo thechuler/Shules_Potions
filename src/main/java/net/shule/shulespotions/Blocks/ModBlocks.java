@@ -1,9 +1,7 @@
 package net.shule.shulespotions.Blocks;
 
-import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -14,7 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.shule.shulespotions.Blocks.Custom.PotionCauldron;
-import net.shule.shulespotions.Blocks.Custom.RecipeLectern;
+import net.shule.shulespotions.Blocks.Custom.SmallPotionBlock;
 import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.ShulesPotions;
@@ -35,12 +33,12 @@ public class ModBlocks {
 
 
     public static final RegistryObject<Block> POTION_CAULDRON = registerBlock("potion_cauldron",
-            () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON),3,3));
+            () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON),3,1000));
+
+    public static final RegistryObject<Block> SMALL_POTION_BLOCK = registerBlock("small_potion_block",
+            () -> new SmallPotionBlock(BlockBehaviour.Properties.copy(Blocks.GLASS)));
 
 
-
-    public static final RegistryObject<Block> RECIPE_LECTERN = registerBlock("recipe_lectern",
-            () -> new RecipeLectern(BlockBehaviour.Properties.copy(Blocks.LECTERN)));
 
 
 
@@ -57,8 +55,8 @@ public class ModBlocks {
     }
 
 
-    public static final RegistryObject<LiquidBlock> SOAP_WATER_BLOCK = BLOCKS.register("soap_water_block",
-            ()-> new LiquidBlock(ModFluids.SOURCE_SOAP_WATER,BlockBehaviour.Properties.copy(Blocks.WATER)));
+    public static final RegistryObject<LiquidBlock> POTION_FLUID_BLOCK = BLOCKS.register("potion_fluid_block",
+            ()-> new LiquidBlock(ModFluids.SOURCE_POTION_FLUID,BlockBehaviour.Properties.copy(Blocks.WATER)));
 
     public static void register(IEventBus bus){
         BLOCKS.register(bus);

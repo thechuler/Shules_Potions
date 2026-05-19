@@ -8,7 +8,9 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
+import net.shule.shulespotions.Potions.PotionLiquid;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -79,8 +81,9 @@ public class BaseFluidType extends FluidType {
             }
 
             @Override
-            public int getTintColor() {
-                return tintColor;
+            public int getTintColor(FluidStack stack) {
+                PotionLiquid pl = PotionFluidHelper.getPotionLiquid(stack);
+                return 0xFF000000 | pl.getColor();
             }
 
             @Override

@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "shulespotions:item/recipe_scroll"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "written": 1
+      },
+      "model": "shulespotions:item/recipe_scroll_written"
+    }
+  ]
+}

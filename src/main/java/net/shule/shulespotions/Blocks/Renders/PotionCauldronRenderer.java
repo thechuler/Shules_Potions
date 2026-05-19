@@ -3,6 +3,7 @@ package net.shule.shulespotions.Blocks.Renders;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -13,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluids;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
 import net.shule.shulespotions.Items.ModItems;
 import org.jetbrains.annotations.NotNull;
@@ -34,9 +36,16 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
 
 
     private void renderLiquid(PotionCauldronBE be, PoseStack poseStack, MultiBufferSource buffer, int light) {
-        if (be.getLiquidLevel() <= 0) return;
+        if (be.getTank().isEmpty()) return;
 
-        int color = be.getRenderColor();
+        int color;
+        if (be.getTank().getFluid().getFluid() == Fluids.WATER) {
+            assert be.getLevel() != null;
+            color = BiomeColors.getAverageWaterColor(be.getLevel(), be.getBlockPos());
+        }else{
+            color= be.getRenderColor();
+        }
+
         float a = 1.0f;
         float r = ((color >> 16) & 0xFF) / 255f;
         float g = ((color >> 8) & 0xFF) / 255f;
@@ -44,14 +53,14 @@ public class PotionCauldronRenderer implements BlockEntityRenderer<PotionCauldro
 
         poseStack.pushPose();
 
-        float y;
-        int pl = be.getLiquidLevel();
-        y = switch (pl) {
-            case 1 -> 0.2f;
-            case 2 -> 0.5f;
-            case 3 -> 0.9f;
-            default -> 0.0f;
-        };
+        int amount = be.getTank().getFluidAmount();
+
+        float minY = 0.2f;
+        float maxY = 0.9f;
+
+        float fill = amount / (float) be.getTank().getCapacity();
+
+        float y = minY + (maxY - minY) * fill;
 
 
         // Tamaño del quad

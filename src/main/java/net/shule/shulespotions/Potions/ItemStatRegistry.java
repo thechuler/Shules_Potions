@@ -33,4 +33,7 @@ public class ItemStatRegistry {
                 base.getStability()
         );
     }
+    public static boolean hasStats(Item item) {
+        return ITEM_STATS.containsKey(item);
+    }
 }
