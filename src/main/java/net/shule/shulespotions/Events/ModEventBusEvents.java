@@ -1,7 +1,11 @@
 package net.shule.shulespotions.Events;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -16,6 +20,8 @@ import net.shule.shulespotions.Items.custom.PotionLiquidBottleItem;
 import net.shule.shulespotions.Potions.IngredientStat;
 import net.shule.shulespotions.Potions.ItemStatRegistry;
 import net.shule.shulespotions.ShulesPotions;
+
+import java.util.Map;
 
 @Mod.EventBusSubscriber(
         modid = ShulesPotions.MODID,
@@ -49,7 +55,7 @@ public class ModEventBusEvents {
 
     private static void ComingSoonTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
-        boolean flg = stack.is(ModItems.WOODEN_SPOON.get()) ||
+        boolean flg =
                 stack.is(ModItems.MANDRAKE_SEED.get()) ||
                 stack.is(ModItems.POTION_HOMUNCULUS.get()) ||
                 stack.is(ModItems.RECIPE_BOOK.get()) ||
@@ -134,5 +140,38 @@ public class ModEventBusEvents {
                 )
                         .withStyle(ChatFormatting.AQUA)
         );
+        if (!stats.getEffectWeights().isEmpty()) {
+
+            event.getToolTip().add(Component.empty());
+
+            event.getToolTip().add(
+                    Component.literal("Effects")
+                            .withStyle(ChatFormatting.LIGHT_PURPLE)
+            );
+
+            for (Map.Entry<ResourceLocation, Integer> entry :
+                    stats.getEffectWeights().entrySet()) {
+
+                MobEffect effect =
+                        BuiltInRegistries.MOB_EFFECT.get(entry.getKey());
+
+                if (effect == null) continue;
+
+                int chance = entry.getValue();
+
+                MutableComponent line = Component.literal(
+                                chance + "% "
+                        ).withStyle(ChatFormatting.GRAY)
+
+                        .append(
+                                Component.translatable(effect.getDescriptionId())
+                                        .withStyle(style -> style.withColor(effect.getColor()))
+                        );
+
+                event.getToolTip().add(line);
+            }
+        }
+
     }
+
 }

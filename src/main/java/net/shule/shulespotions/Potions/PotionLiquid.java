@@ -22,7 +22,7 @@ public class PotionLiquid {
     }
 
     public PotionLiquid() {
-        this(0, 0, 0, new IngredientStat());
+        this(100, 0, 0x3F76E4, new IngredientStat());
     }
 
 

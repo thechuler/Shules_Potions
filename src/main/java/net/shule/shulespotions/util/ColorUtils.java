@@ -15,6 +15,7 @@ public class ColorUtils {
         return (a << 24) | (r << 16) | (g << 8) | b;
     }
 
+
     public static int lerpColor(int colorA, int colorB, float t) {
         t = Math.max(0, Math.min(1, t));
 
@@ -35,6 +36,7 @@ public class ColorUtils {
 
         return (a << 24) | (r << 16) | (g << 8) | b;
     }
+
 
     public static float[] intToRGB(int color) {
         float r = ((color >> 16) & 0xFF) / 255.0F;

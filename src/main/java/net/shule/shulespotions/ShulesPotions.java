@@ -37,37 +37,24 @@ import net.shule.shulespotions.Items.custom.RecipeScroll;
 import net.shule.shulespotions.Particles.Custom.BubbleProvider;
 import net.shule.shulespotions.Particles.Custom.PotionSplashProvider;
 import net.shule.shulespotions.Particles.ModParticles;
+import net.shule.shulespotions.util.CauldronActions.AddIngredientAction;
+import net.shule.shulespotions.util.CauldronActions.CauldronActionRegistry;
+import net.shule.shulespotions.util.CauldronActions.StirAction;
 
 
-
-/*Este Archivo es el MAIN, o sea el mas importante. En el no vamos a hacer mucho
-principalmente conexiones a otros archivos. Este es el que "se levanta primero y
-despierta a los demas".
-Literalmente este archivo es el primero que Minecraft ejecuta y sirve como conexion para
-el resto
- */
 
 
 @Mod(net.shule.shulespotions.ShulesPotions.MODID)
 public class ShulesPotions {
-
-    /*Este es tu MODID O Identificador, (una forma bonita de decir que es el dni de tu mod
-    Como en la vida real sirve para que si hay mas mods, puedas identificar al tuyo
-    (y para muchas cosas mas que vamos a ver mas adelante)
-    */
     public static final String MODID = "shulespotions";
 
 
     public ShulesPotions(FMLJavaModLoadingContext context) {
-
-        //Aca es donde vamos a hacer las conexiones con el resto de los archivos.
-
-
         IEventBus modEventBus = context.getModEventBus();
 
-        ModItems.register(modEventBus); //<---Esto agrega items a tu mod
-        ModBlocks.register(modEventBus); // <--- Esto agrega bloques
-        ModCreativeTab.register(modEventBus); //<--- Esto les da un inventario en creativo
+        ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
+        ModCreativeTab.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModParticles.register(modEventBus);
         ModFluids.register(modEventBus);
@@ -80,6 +67,18 @@ public class ShulesPotions {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
 
+        event.enqueueWork(() -> {
+
+            CauldronActionRegistry.register("add_ingredient",
+                    AddIngredientAction::load
+            );
+
+            CauldronActionRegistry.register(
+                    "stir",
+                    StirAction::load
+            );
+
+        });
     }
 
 
@@ -91,18 +90,11 @@ public class ShulesPotions {
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
 
-
         @SubscribeEvent
         public static void  registerParticles(RegisterParticleProvidersEvent event){
-            event.registerSpriteSet(
-                    ModParticles.BUBBLE.get(),
-                    BubbleProvider::new
-            );
 
-            event.registerSpriteSet(
-                    ModParticles.POTION_SPLASH.get(),
-                    PotionSplashProvider::new
-            );
+            event.registerSpriteSet(ModParticles.BUBBLE.get(), BubbleProvider::new);
+            event.registerSpriteSet(ModParticles.POTION_SPLASH.get(), PotionSplashProvider::new);
 
 
         }
@@ -113,14 +105,10 @@ public class ShulesPotions {
         public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
 
             event.register((stack, tintIndex) -> {
-
-                        /*
-                         * SCROLL
-                         */
+                //-----------------------SCROLL-------------------//
                         if (stack.getItem() instanceof RecipeScroll) {
 
                             if (tintIndex == 1) {
-
                                 if (RecipeScroll.hasRecipeData(stack)) {
 
                                     FluidStack fluid = RecipeScroll.getPotionFluid(stack);
@@ -136,9 +124,8 @@ public class ShulesPotions {
                             }
                         }
 
-                        /*
-                         * BOTTLES
-                         */
+
+                        //-----------------------------BOTTLES-------------------------
                         if (tintIndex == 1) {
 
                             if (stack.getItem() instanceof PotionLiquidBottleItem bottle) {
@@ -152,7 +139,6 @@ public class ShulesPotions {
                                 }
                             }
                         }
-
                         return -1;
 
                     },
@@ -162,6 +148,9 @@ public class ShulesPotions {
                     ModItems.RECIPE_SCROLL.get()
             );
         }
+
+
+
 
         private static final ItemPropertyFunction FILL_LEVEL =
                 (stack, level, entity, seed) -> {
@@ -217,7 +206,7 @@ public class ShulesPotions {
 
             ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_POTION_FLUID.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_POTION_FLUID.get(), RenderType.translucent());
-          //  ItemBlockRenderTypes.setRenderLayer(ModBlocks.SMALL_POTION_BLOCK.get(), RenderType.translucent());
+
         }
     }
 }

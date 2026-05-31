@@ -1,199 +1,52 @@
 package net.shule.shulespotions.Potions;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.shule.shulespotions.Fluids.PotionFluidHelper;
 import org.joml.Random;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 
 public class PotionLiquidUtils {
 
 
+
     public static List<MobEffect> resolve(PotionLiquid pl) {
 
-        List<MobEffect> effects = new ArrayList<>();
+        Map<ResourceLocation, Integer> weights = pl.getStats().getEffectWeights();
 
-        int purity = pl.getStats().getPurity();
-        int vitality = pl.getStats().getVitality();
-        int flavor = pl.getStats().getFlavor();
-        int stability = pl.getStats().getStability();
+        List<MobEffect> result = new ArrayList<>();
 
+        Random random = new Random();
 
-        // =====================================================
-        // POSITIVOS
-        // =====================================================
+        for (Map.Entry<ResourceLocation, Integer> entry : weights.entrySet()) {
 
-        // Curación y soporte
+            int chance = entry.getValue();
 
-        if (purity >= 70) {
-            effects.add(MobEffects.REGENERATION);
+            if (random.nextInt(100) < chance) {
+
+                MobEffect effect = BuiltInRegistries.MOB_EFFECT.get(entry.getKey());
+
+                if (effect != null) {
+                    result.add(effect);
+                }
+            }
         }
 
-        if (vitality >= 40) {
-            effects.add(MobEffects.HEALTH_BOOST);
-        }
-
-        if (purity >= 40 && vitality >= 20) {
-            effects.add(MobEffects.ABSORPTION);
-        }
-
-        if (flavor >= 35 && vitality >= 15) {
-            effects.add(MobEffects.SATURATION);
-        }
-
-        if (purity >= 55 && vitality >= 35) {
-            effects.add(MobEffects.HEAL);
-        }
-
-
-        // Visión y percepción
-
-        if (stability >= 55 && purity >= 30) {
-            effects.add(MobEffects.NIGHT_VISION);
-        }
-
-        if (purity >= 65 && stability >= 40) {
-            effects.add(MobEffects.WATER_BREATHING);
-        }
-
-        if (purity >= 45 && stability >= 15) {
-            effects.add(MobEffects.GLOWING);
-        }
-
-
-        // Defensa
-
-        if (stability >= 40) {
-            effects.add(MobEffects.FIRE_RESISTANCE);
-        }
-
-        if (purity >= 20 && stability >= 20 && vitality >= 20) {
-            effects.add(MobEffects.DAMAGE_RESISTANCE);
-        }
-
-        if (stability >= 65 && purity >= 20) {
-            effects.add(MobEffects.CONDUIT_POWER);
-        }
-
-
-        // Movimiento
-
-        if (flavor >= 40 && vitality >= 10) {
-            effects.add(MobEffects.MOVEMENT_SPEED);
-        }
-
-        if (vitality >= 45 && flavor >= 20) {
-            effects.add(MobEffects.JUMP);
-        }
-
-        if (purity >= 35 && stability >= 35 && flavor >= 10) {
-            effects.add(MobEffects.SLOW_FALLING);
-        }
-
-        if (purity >= 50 && stability < 0) {
-            effects.add(MobEffects.INVISIBILITY);
-        }
-
-        if (flavor >= 65 && stability >= 25) {
-            effects.add(MobEffects.DIG_SPEED);
-        }
-
-        if (flavor >= 25 && purity >= 25 && vitality >= 25) {
-            effects.add(MobEffects.DOLPHINS_GRACE);
-        }
-
-
-        // Combate
-
-        if (vitality >= 25 && flavor < 0) {
-            effects.add(MobEffects.DAMAGE_BOOST);
-        }
-
-        if (vitality >= 70 && purity < 10) {
-            effects.add(MobEffects.DAMAGE_RESISTANCE);
-            effects.add(MobEffects.DAMAGE_BOOST);
-        }
-
-        if (purity >= 50 && vitality >= 50 && stability >= 50) {
-            effects.add(MobEffects.HERO_OF_THE_VILLAGE);
-        }
-
-        if (purity >= 80 && stability >= 80 && vitality >= 40) {
-            effects.add(MobEffects.LUCK);
-        }
-
-
-        // =====================================================
-        // NEGATIVOS
-        // =====================================================
-
-        if (vitality <= -10) {
-            effects.add(MobEffects.POISON);
-        }
-
-        if (stability <= -35) {
-            effects.add(MobEffects.WEAKNESS);
-        }
-
-        if (purity <= -20) {
-            effects.add(MobEffects.BLINDNESS);
-        }
-
-        if (flavor <= -15) {
-            effects.add(MobEffects.HUNGER);
-        }
-
-        if (stability <= -50 && purity < 0) {
-            effects.add(MobEffects.WITHER);
-        }
-        if (vitality <= -30 && flavor < 0) {
-            effects.add(MobEffects.CONFUSION);
-        }
-
-        if (purity <= -10 && vitality <= -10) {
-            effects.add(MobEffects.MOVEMENT_SLOWDOWN);
-        }
-
-        if (stability <= -20 && flavor > 20) {
-            effects.add(MobEffects.LEVITATION);
-        }
-
-        if (purity <= -45 && stability <= -10) {
-            effects.add(MobEffects.DARKNESS);
-        }
-
-        if (vitality <= -40 && purity <= -20) {
-            effects.add(MobEffects.HARM);
-        }
-
-        if (stability <= -65) {
-            effects.add(MobEffects.UNLUCK);
-        }
-
-        if (flavor <= -35 && vitality <= -20) {
-            effects.add(MobEffects.DIG_SLOWDOWN);
-        }
-
-        if (purity <= -30 && flavor >= 30) {
-            effects.add(MobEffects.BAD_OMEN);
-        }
-
-        if (stability <= -45 && vitality >= 20) {
-            effects.add(MobEffects.WEAKNESS);
-            effects.add(MobEffects.MOVEMENT_SLOWDOWN);
-        }
-
-        return effects;
+        return result;
     }
 
 
-    public static int generatePotionColor(
-            int purity,
-            int vitality,
-            int flavor,
-            int stability
-    ) {
+
+
+    public static int generatePotionColor(int purity, int vitality, int flavor, int stability) {
 
         // -----------------------------------
         // HASH DETERMINISTA
@@ -264,6 +117,47 @@ public class PotionLiquidUtils {
         );
     }
 
+
+
     private static float clamp(float value, float min, float max) {
         return Math.max(min, Math.min(max, value));
-    }}
+    }
+
+
+
+
+    public static List<MobEffect> getPossibleEffects(PotionLiquid pl) {
+        return new ArrayList<>(pl.getStats()
+                .getEffectWeights()
+                .keySet()
+                .stream()
+                .map(BuiltInRegistries.MOB_EFFECT::get)
+                .toList());
+    }
+
+    public static PotionLiquid getPotionLiquidFromStack(ItemStack stack) {
+
+        CompoundTag tag = stack.getTag();
+        if (tag == null || !tag.contains("SPPotionFluid")) return null;
+
+        CompoundTag fluidTag = tag.getCompound("SPPotionFluid");
+
+        FluidStack fluid = FluidStack.loadFluidStackFromNBT(fluidTag);
+
+        return PotionFluidHelper.getPotionLiquid(fluid);
+    }
+
+
+    public static int getEffectChance(PotionLiquid potion, MobEffect effect) {
+
+        ResourceLocation id =
+                ForgeRegistries.MOB_EFFECTS.getKey(effect);
+
+        if (id == null) {
+            return 0;
+        }
+
+        return potion.getStats().getEffectWeight(id);
+    }
+}
+

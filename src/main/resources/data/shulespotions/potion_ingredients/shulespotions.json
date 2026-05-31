@@ -3,39 +3,70 @@
     "purity": 18,
     "vitality": 26,
     "stability": -12,
-    "flavor": -8
+    "flavor": -8,
+    "effects": {
+      "minecraft:regeneration": 65,
+      "minecraft:strength": 25,
+      "minecraft:nausea": 15
+    }
   },
 
   "shulespotions:potion_homunculus": {
     "purity": 35,
     "vitality": 40,
     "stability": -25,
-    "flavor": 10
+    "flavor": 10,
+    "effects": {
+      "minecraft:regeneration": 80,
+      "minecraft:absorption": 40,
+      "minecraft:strength": 35,
+      "minecraft:weakness": 20
+    }
   },
 
   "shulespotions:rotten_fish": {
     "purity": -22,
     "vitality": -14,
     "stability": -8,
-    "flavor": -18
+    "flavor": -18,
+    "effects": {
+      "minecraft:poison": 75,
+      "minecraft:hunger": 50,
+      "minecraft:nausea": 30
+    }
   },
 
   "shulespotions:emerald_dust": {
     "purity": 16,
     "stability": 22,
-    "flavor": 6
+    "flavor": 6,
+    "effects": {
+      "minecraft:hero_of_the_village": 50,
+      "minecraft:luck": 40,
+      "minecraft:resistance": 15
+    }
   },
 
   "shulespotions:iron_dust": {
     "stability": 18,
     "vitality": 10,
-    "flavor": -4
+    "flavor": -4,
+    "effects": {
+      "minecraft:resistance": 60,
+      "minecraft:strength": 25,
+      "minecraft:slowness": 10
+    }
   },
 
   "shulespotions:onyx": {
     "purity": -10,
     "stability": 28,
     "vitality": 6,
-    "flavor": -12
+    "flavor": -12,
+    "effects": {
+      "minecraft:darkness": 55,
+      "minecraft:resistance": 35,
+      "minecraft:night_vision": 15
+    }
   }
 }

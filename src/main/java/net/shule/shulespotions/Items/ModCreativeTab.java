@@ -12,11 +12,6 @@ import net.shule.shulespotions.Blocks.ModBlocks;
 import net.shule.shulespotions.ShulesPotions;
 
 
-/*Esta clase se encarga de crear un espaciecito en el inventario creativo para nuestras cosas
-Este codigo agrega automaticamente las cosas a nuestra pestaña.
-Aca podemos configurar por ejemplo, que icono va a tener en creativo.
- */
-
 public class ModCreativeTab {
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ShulesPotions.MODID);

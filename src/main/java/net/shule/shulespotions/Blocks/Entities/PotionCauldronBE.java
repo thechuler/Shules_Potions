@@ -1,17 +1,14 @@
 package net.shule.shulespotions.Blocks.Entities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,28 +25,25 @@ import net.shule.shulespotions.Blocks.Custom.PotionCauldron;
 import net.shule.shulespotions.Blocks.ModBlockEntities;
 import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Fluids.PotionFluidHelper;
-import net.shule.shulespotions.Potions.IngredientStat;
-import net.shule.shulespotions.Potions.ItemStatRegistry;
 import net.shule.shulespotions.Potions.PotionLiquid;
+import net.shule.shulespotions.Potions.PotionLiquidUtils;
+import net.shule.shulespotions.util.CauldronActions.AddIngredientAction;
+import net.shule.shulespotions.util.CauldronActions.CauldronAction;
+import net.shule.shulespotions.util.CauldronActions.CauldronActionRegistry;
+import net.shule.shulespotions.util.CauldronActions.CauldronContext;
 import org.jetbrains.annotations.NotNull;
-
-
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.Nullable;
-
-
-import java.security.cert.TrustAnchor;
 import java.util.ArrayList;
 import java.util.List;
-
-import static net.shule.shulespotions.Potions.PotionLiquidUtils.generatePotionColor;
 import static net.shule.shulespotions.util.ColorUtils.lerpColor;
 import static net.shule.shulespotions.util.ColorUtils.randomColor;
 
 public class PotionCauldronBE extends BlockEntity {
 
 
-    private final List<Item> ingredients = new ArrayList<>();
+
+    private final List<CauldronAction> actions = new ArrayList<>();
     private int renderColor;
     private int startColor;
     private int targetColor;
@@ -58,11 +52,11 @@ public class PotionCauldronBE extends BlockEntity {
 
         @Override
         protected void onContentsChanged() {
-            if (isEmpty() && !ingredients.isEmpty()) {
-                ingredients.clear();
+            if (isEmpty() && !actions.isEmpty()) {
+                actions.clear();
             }
-
             setChanged();
+
             if (level != null && !level.isClientSide) {
                 sync();
             }
@@ -70,12 +64,11 @@ public class PotionCauldronBE extends BlockEntity {
 
         @Override
         public boolean isFluidValid(FluidStack stack) {
-
             Fluid fluid = stack.getFluid();
-
             return fluid == Fluids.WATER ||
                     fluid == ModFluids.SOURCE_POTION_FLUID.get();
         }
+
     };
 
 
@@ -87,7 +80,6 @@ public class PotionCauldronBE extends BlockEntity {
         super(ModBlockEntities.POTION_CAULDRON_BE.get(), pos, state);
         int color = randomColor();
         renderColor = color;
-
     }
 
     @Override
@@ -95,7 +87,6 @@ public class PotionCauldronBE extends BlockEntity {
         if (cap == ForgeCapabilities.FLUID_HANDLER) {
             return fluidHandler.cast();
         }
-
         return super.getCapability(cap, side);
     }
 
@@ -104,7 +95,7 @@ public class PotionCauldronBE extends BlockEntity {
 
         if (level == null || level.isClientSide) return;
 
-        if (ingredients.size() >= getMaxIngredients()) return;
+        if (actions.size() >= getMaxIngredients()) return;
 
         if (tank.isEmpty()) return;
 
@@ -123,43 +114,69 @@ public class PotionCauldronBE extends BlockEntity {
             );
 
             tank.setFluid(potionFluid);
-
-            fluid = tank.getFluid();
         }
 
-
-        PotionLiquid pl = PotionFluidHelper.getPotionLiquid(fluid);
-
-
-        IngredientStat stats = ItemStatRegistry.get(item);
-
-        pl.addStats(stats);
+        applyAction(new AddIngredientAction(item.getItem()), null);
+    }
 
 
-        int color = generatePotionColor(
-                pl.getStats().getPurity(),
-                pl.getStats().getVitality(),
-                pl.getStats().getFlavor(),
-                pl.getStats().getStability()
-        );
 
-        pl.setColor(color);
+    public void applyAction(CauldronAction action, @Nullable Player player) {
 
+        CauldronContext ctx = new CauldronContext(this, player);
 
-        PotionFluidHelper.withPotionLiquid(fluid, pl);
+        action.apply(ctx);
 
-
-        ingredients.add(item.getItem());
-
-        startColorTransition(color);
+        actions.add(action);
 
         setChanged();
         sync();
     }
 
+
+
+
     public PotionLiquid getPotionLiquid() {
         return PotionFluidHelper.getPotionLiquid(this.tank.getFluid());
     }
+
+
+    public void setPotionLiquid(PotionLiquid potion) {
+
+        PotionLiquid oldPotion = getPotionLiquid();
+        int oldStability = oldPotion.getStats().getStability();
+        int newStability = potion.getStats().getStability();
+
+        if (oldStability != newStability) {
+            onStabilityChanged(oldStability, newStability);
+        }
+
+        FluidStack fluid = this.tank.getFluid();
+
+        int color = PotionLiquidUtils.generatePotionColor(
+                potion.getStats().getPurity(),
+                potion.getStats().getVitality(),
+                potion.getStats().getFlavor(),
+                potion.getStats().getStability()
+        );
+
+        potion.setColor(color);
+
+        PotionFluidHelper.withPotionLiquid(fluid, potion);
+
+        startColorTransition(color);
+
+
+        sync();
+        setChanged();
+    }
+
+
+    public void onStabilityChanged(int old, int current){
+
+    }
+
+
 
 
     @Override
@@ -192,43 +209,75 @@ public class PotionCauldronBE extends BlockEntity {
 
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
-        pTag.put("SPTank", tank.writeToNBT(new CompoundTag()));
-        pTag.putInt("SPcolor", renderColor);
+    protected void saveAdditional(CompoundTag tag) {
 
-        ListTag list = new ListTag();
+        super.saveAdditional(tag);
 
-        for (Item item : ingredients) {
-            list.add(StringTag.valueOf(
-                    BuiltInRegistries.ITEM.getKey(item).toString()
-            ));
+        tag.put("SPTank", tank.writeToNBT(new CompoundTag()));
+        tag.putInt("SPcolor", renderColor);
+
+        ListTag actionList = new ListTag();
+
+        for (CauldronAction action : actions) {
+
+            CompoundTag actionTag = new CompoundTag();
+
+            actionTag.putString(
+                    "Type",
+                    action.getType()
+            );
+
+            actionTag.put(
+                    "Data",
+                    action.save()
+            );
+
+            actionList.add(actionTag);
         }
 
-        pTag.put("spingredients", list);
+        tag.put("Actions", actionList);
     }
 
-
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
-        tank.readFromNBT(pTag.getCompound("SPTank"));
-        renderColor = pTag.getInt("SPcolor");
-        ingredients.clear();
+    public void load(CompoundTag tag) {
 
-        if (pTag.contains("spingredients")) {
-            ListTag list = pTag.getList("spingredients", pTag.TAG_STRING);
+        super.load(tag);
 
-            for (int i = 0; i < list.size(); i++) {
-                String id = list.getString(i);
-                Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(id));
-                ingredients.add(item);
+        tank.readFromNBT(tag.getCompound("SPTank"));
+
+        renderColor = tag.getInt("SPcolor");
+
+        actions.clear();
+
+        if (tag.contains("Actions")) {
+
+            ListTag actionList =
+                    tag.getList("Actions", Tag.TAG_COMPOUND);
+
+            for (int i = 0; i < actionList.size(); i++) {
+
+                CompoundTag actionTag =
+                        actionList.getCompound(i);
+
+                String type =
+                        actionTag.getString("Type");
+
+                CompoundTag data =
+                        actionTag.getCompound("Data");
+
+                CauldronAction action =
+                        CauldronActionRegistry.load(
+                                type,
+                                data
+                        );
+
+                actions.add(action);
             }
         }
     }
 
 
-    private int getMaxIngredients() {
+    public int getMaxIngredients() {
         if (this.level == null) return 0;
 
         BlockState state = this.getBlockState();
@@ -277,8 +326,8 @@ public class PotionCauldronBE extends BlockEntity {
         sync();
     }
 
-    public List<Item> getIngredients() {
-        return ingredients;
+    public List<CauldronAction> getActions() {
+        return actions;
     }
 
     public FluidTank getTank() {

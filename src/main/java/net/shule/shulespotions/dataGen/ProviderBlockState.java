@@ -5,6 +5,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
+import net.shule.shulespotions.Blocks.ModBlocks;
 import net.shule.shulespotions.ShulesPotions;
 
 
@@ -15,7 +16,7 @@ public class ProviderBlockState extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-       // blockWithItem(ModBlocks.THERIUM_ORE);
+        blockWithItem(ModBlocks.ALCHEMIST_WOOD);
 
     }
 

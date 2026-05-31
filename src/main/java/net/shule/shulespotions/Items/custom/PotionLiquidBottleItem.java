@@ -2,13 +2,16 @@ package net.shule.shulespotions.Items.custom;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,27 +19,27 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
-import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Fluids.PotionFluidHelper;
 import net.shule.shulespotions.Potions.PotionLiquid;
 import net.shule.shulespotions.Potions.PotionLiquidUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PotionLiquidBottleItem extends Item {
 
     private static final String FLUID_TAG = "StoredFluid";
-
+    private static final String EFFECTS_TAG = "ResolvedEffects";
 
     private final int useDuration;
     public final int capacity;
@@ -64,12 +67,14 @@ public class PotionLiquidBottleItem extends Item {
         tag.put(FLUID_TAG, fluid.writeToNBT(new CompoundTag()));
     }
 
-
     public FluidStack getFluid(ItemStack stack) {
+
         CompoundTag tag = stack.getTag();
+
         if (tag == null || !tag.contains(FLUID_TAG)) {
             return FluidStack.EMPTY;
         }
+
         return FluidStack.loadFluidStackFromNBT(
                 tag.getCompound(FLUID_TAG)
         );
@@ -85,12 +90,75 @@ public class PotionLiquidBottleItem extends Item {
 
         if (tag != null) {
             tag.remove(FLUID_TAG);
+            tag.remove(EFFECTS_TAG);
         }
     }
 
+    /*
+     *
+     * =========================================
+     * RESOLVED EFFECTS
+     * =========================================
+     *
+     */
 
+    public void setResolvedEffects(ItemStack stack,
+                                   List<MobEffect> effects) {
 
+        CompoundTag tag = stack.getOrCreateTag();
 
+        ListTag list = new ListTag();
+
+        for (MobEffect effect : effects) {
+
+            CompoundTag effectTag = new CompoundTag();
+
+            effectTag.putString(
+                    "Id",
+                    BuiltInRegistries.MOB_EFFECT
+                            .getKey(effect)
+                            .toString()
+            );
+
+            list.add(effectTag);
+        }
+
+        tag.put(EFFECTS_TAG, list);
+    }
+
+    public List<MobEffect> getResolvedEffects(ItemStack stack) {
+
+        List<MobEffect> effects = new ArrayList<>();
+
+        CompoundTag tag = stack.getTag();
+
+        if (tag == null || !tag.contains(EFFECTS_TAG)) {
+            return effects;
+        }
+
+        ListTag list =
+                tag.getList(EFFECTS_TAG, Tag.TAG_COMPOUND);
+
+        for (int i = 0; i < list.size(); i++) {
+
+            CompoundTag effectTag =
+                    list.getCompound(i);
+
+            ResourceLocation id =
+                    ResourceLocation.parse(
+                            effectTag.getString("Id")
+                    );
+
+            MobEffect effect =
+                    BuiltInRegistries.MOB_EFFECT.get(id);
+
+            if (effect != null) {
+                effects.add(effect);
+            }
+        }
+
+        return effects;
+    }
 
     /*
      *
@@ -101,49 +169,77 @@ public class PotionLiquidBottleItem extends Item {
      */
 
     @Override
-    public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity) {
+    public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack,
+                                              @NotNull Level level,
+                                              @NotNull LivingEntity livingEntity) {
 
-        Player player = livingEntity instanceof Player p ? p : null;
+        Player player =
+                livingEntity instanceof Player p ? p : null;
 
         if (player instanceof ServerPlayer serverPlayer) {
-            CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, stack);
+
+            CriteriaTriggers.CONSUME_ITEM.trigger(
+                    serverPlayer,
+                    stack
+            );
         }
 
         if (!level.isClientSide) {
 
             FluidStack fluid = getFluid(stack);
+            PotionLiquid pl = PotionFluidHelper.getPotionLiquid(fluid);
 
             if (!fluid.isEmpty()) {
 
-                PotionLiquid pl = PotionFluidHelper.getPotionLiquid(fluid);
-
-                List<MobEffect> effects = PotionLiquidUtils.resolve(pl);
+                List<MobEffect> effects = getResolvedEffects(stack);
 
                 for (MobEffect effect : effects) {
 
                     if (player != null) {
-
-                        player.addEffect(
-                                new MobEffectInstance(
-                                        effect,
-                                        300
-                                )
-                        );
+                        int amplifier = Math.min(4, pl.getStats().getPurity() / 20);
+                        player.addEffect(new MobEffectInstance(effect,pl.getDuration(),amplifier));
                     }
                 }
+                int flavor = pl.getStats().getFlavor();
+                int vitality = pl.getStats().getVitality();
+
+
+                float healthChange = (vitality / 100.0f) * player.getMaxHealth();
+
+                float newHealth = player.getHealth() + healthChange;
+
+                newHealth = Math.max(0, Math.min(newHealth, player.getMaxHealth()));
+
+                player.setHealth(newHealth);
+
+                int hungerChange = Math.round((flavor / 100.0f) * 20);
+
+                FoodData foodData = player.getFoodData();
+
+                int newFood = foodData.getFoodLevel() + hungerChange;
+
+                newFood = Math.max(0, Math.min(newFood, 20));
+
+                foodData.setFoodLevel(newFood);
 
                 fluid.shrink(250);
 
                 if (fluid.getAmount() <= 0) {
+
                     removeFluid(stack);
 
                 } else {
+
                     setFluid(stack, fluid);
                 }
             }
         }
 
-        return super.finishUsingItem(stack, level, livingEntity);
+        return super.finishUsingItem(
+                stack,
+                level,
+                livingEntity
+        );
     }
 
     @Override
@@ -157,14 +253,23 @@ public class PotionLiquidBottleItem extends Item {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(
+            @NotNull Level level,
+            @NotNull Player player,
+            @NotNull InteractionHand hand) {
 
-        ItemStack stack = player.getItemInHand(hand);
+        ItemStack stack =
+                player.getItemInHand(hand);
 
         FluidStack fluid = getFluid(stack);
 
         if (!fluid.isEmpty()) {
-            return ItemUtils.startUsingInstantly(level, player, hand);
+
+            return ItemUtils.startUsingInstantly(
+                    level,
+                    player,
+                    hand
+            );
         }
 
         return InteractionResultHolder.pass(stack);
@@ -179,13 +284,18 @@ public class PotionLiquidBottleItem extends Item {
      */
 
     @Override
-    public @NotNull InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(
+            UseOnContext context) {
 
         if (context.getLevel().isClientSide) {
             return InteractionResult.PASS;
         }
 
-        BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
+        BlockEntity be =
+                context.getLevel()
+                        .getBlockEntity(
+                                context.getClickedPos()
+                        );
 
         if (!(be instanceof PotionCauldronBE cauldron)) {
             return super.useOn(context);
@@ -193,9 +303,11 @@ public class PotionLiquidBottleItem extends Item {
 
         ItemStack stack = context.getItemInHand();
 
-        FluidStack bottleFluid = getFluid(stack);
+        FluidStack bottleFluid =
+                getFluid(stack);
 
-        FluidStack cauldronFluid = cauldron.getTank().getFluid();
+        FluidStack cauldronFluid =
+                cauldron.getTank().getFluid();
 
         /*
          *
@@ -211,11 +323,31 @@ public class PotionLiquidBottleItem extends Item {
                 return InteractionResult.FAIL;
             }
 
-            FluidStack copied = cauldronFluid.copy();
+            FluidStack copied =
+                    cauldronFluid.copy();
 
-            copied.setAmount(Math.min(capacity,cauldronFluid.getAmount()));
+            copied.setAmount(
+                    Math.min(
+                            capacity,
+                            cauldronFluid.getAmount()
+                    )
+            );
+
             setFluid(stack, copied);
-            cauldron.getTank().drain(copied.getAmount(), IFluidHandler.FluidAction.EXECUTE);
+
+            PotionLiquid pl =
+                    PotionFluidHelper
+                            .getPotionLiquid(copied);
+
+            List<MobEffect> effects =
+                    PotionLiquidUtils.resolve(pl);
+
+            setResolvedEffects(stack, effects);
+
+            cauldron.getTank().drain(
+                    copied.getAmount(),
+                    IFluidHandler.FluidAction.EXECUTE
+            );
 
             float pitch;
 
@@ -233,7 +365,8 @@ public class PotionLiquidBottleItem extends Item {
                     SoundEvents.BOTTLE_FILL,
                     SoundSource.BLOCKS,
                     0.6F,
-                    pitch +  cauldron.getLevel().random.nextFloat() * 0.2F
+                    pitch + cauldron.getLevel()
+                            .random.nextFloat() * 0.2F
             );
 
             return InteractionResult.SUCCESS;
@@ -247,7 +380,9 @@ public class PotionLiquidBottleItem extends Item {
          *
          */
 
-        if (!FluidStack.areFluidStackTagsEqual(bottleFluid, cauldronFluid)) {
+        if (!FluidStack.areFluidStackTagsEqual(
+                bottleFluid,
+                cauldronFluid)) {
 
             return InteractionResult.FAIL;
         }
@@ -260,13 +395,18 @@ public class PotionLiquidBottleItem extends Item {
          *
          */
 
-        int free = capacity - bottleFluid.getAmount();
+        int free =
+                capacity - bottleFluid.getAmount();
 
         if (free <= 0) {
             return InteractionResult.FAIL;
         }
 
-        FluidStack drained = cauldron.getTank().drain(free, IFluidHandler.FluidAction.EXECUTE);
+        FluidStack drained =
+                cauldron.getTank().drain(
+                        free,
+                        IFluidHandler.FluidAction.EXECUTE
+                );
 
         bottleFluid.grow(drained.getAmount());
 
@@ -320,7 +460,7 @@ public class PotionLiquidBottleItem extends Item {
         tooltip.add(Component.empty());
 
         List<MobEffect> effects =
-                PotionLiquidUtils.resolve(pl);
+                getResolvedEffects(stack);
 
         if (!effects.isEmpty()) {
 

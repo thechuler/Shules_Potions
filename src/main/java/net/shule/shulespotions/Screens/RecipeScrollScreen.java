@@ -3,27 +3,26 @@ package net.shule.shulespotions.Screens;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.shule.shulespotions.Fluids.PotionFluidHelper;
+import net.shule.shulespotions.Items.custom.RecipeScroll;
 import net.shule.shulespotions.Potions.PotionLiquid;
 import net.shule.shulespotions.Potions.PotionLiquidUtils;
 
 import java.util.List;
 
-public class RecipeScrollScreen extends Screen {
 
+public class RecipeScrollScreen extends Screen {
+    private int animationTicks = 0;
     private final ItemStack scrollStack;
 
     private static final ResourceLocation SCROLL_BACKGROUND =
-            ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/scroll_screen.png");
+            ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/scroll_screen1.png");
 
     private static final ResourceLocation VITALITY_ICON =
             ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/vitality_icon.png");
@@ -37,12 +36,41 @@ public class RecipeScrollScreen extends Screen {
     private static final ResourceLocation STABILITY_ICON =
             ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/stability_icon.png");
 
-    private static final int GUI_WIDTH = 176;
-    private static final int GUI_HEIGHT = 166;
+    private static final int GUI_WIDTH = 336;
+    private static final int GUI_HEIGHT = 266;
+
+
+    private long animationStartTime;
+
+    private int startVitality;
+    private int startPurity;
+    private int startFlavor;
+    private int startStability;
+
+    private int targetVitality;
+    private int targetPurity;
+    private int targetFlavor;
+    private int targetStability;
+
+    private static final long ANIMATION_DURATION = 1600; // ms
+
+
+
 
     public RecipeScrollScreen(ItemStack stack) {
         super(stack.getHoverName());
         this.scrollStack = stack;
+
+        PotionLiquid pl = PotionLiquidUtils.getPotionLiquidFromStack(stack);
+
+        if (pl != null) {
+            startStatsAnimation(pl);
+        }
+    }
+
+    @Override
+    public void tick() {
+        animationTicks++;
     }
 
     @Override
@@ -57,13 +85,11 @@ public class RecipeScrollScreen extends Screen {
 
         super.render(graphics, mouseX, mouseY, partialTick);
 
-        renderTitle(graphics, x, y);
-
-        graphics.drawString(this.font, "Ingredientes", x + 35, y + 40, 0xFFD5AD);
+        renderTitle(graphics, x, y,1.5f);
 
         renderIngredients(graphics, mouseX, mouseY, x , y);
 
-        PotionLiquid pl = getPotionLiquidFromStack(scrollStack);
+        PotionLiquid pl = PotionLiquidUtils.getPotionLiquidFromStack(scrollStack);
 
         renderPotionStats(graphics, mouseX, mouseY, x, y, pl);
 
@@ -97,58 +123,142 @@ public class RecipeScrollScreen extends Screen {
     // TITLE
     // =========================
 
-    private void renderTitle(GuiGraphics graphics, int x, int y) {
-        graphics.drawCenteredString(
-                this.font,
-                scrollStack.getHoverName(),
+    private void renderTitle(GuiGraphics graphics, int x, int y,float scale) {
+
+        graphics.pose().pushPose();
+
+
+
+        graphics.pose().translate(
                 x + GUI_WIDTH / 2,
-                y + 25,
-                0xFFD5AD
+                y + 73,
+                0
         );
+
+        graphics.pose().scale(scale, scale, 1F);
+
+        Component title = scrollStack.getHoverName();
+
+        int width = this.font.width(title);
+
+        graphics.drawString(
+                this.font,
+                title,
+                -width / 2,
+                0,
+                0x70635b,
+                false
+        );
+
+        graphics.pose().popPose();
     }
 
-    // =========================
-    // INGREDIENTS
-    // =========================
+
+
+
 
     private void renderIngredients(GuiGraphics graphics, int mouseX, int mouseY, int x, int y) {
 
-        CompoundTag tag = scrollStack.getTag();
-        if (tag == null || !tag.contains("SPIngredients")) return;
+        List<CompoundTag> actions = RecipeScroll.getActions(scrollStack);
 
-        ListTag list = tag.getList("SPIngredients", Tag.TAG_STRING);
+        int itemX = x + 232;
+        int itemY = y + 110;
 
-        int itemX = x + 40; //<---- Posicion inicial de la lista
-        int itemY = y + 50;
+        int ingredientIndex = 0;
 
-        for (int i = 0; i < list.size(); i++) {
+        for (CompoundTag actionTag : actions) {
 
-            String itemId = list.getString(i);
+            String type = actionTag.getString("Type");
 
-            Item item = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(itemId));
-            if (item == null) continue;
+            if (!type.equals("add_ingredient")) {
+                continue;
+            }
+
+            CompoundTag data = actionTag.getCompound("Data");
+
+            String itemId = data.getString("Item");
+
+            Item item = ForgeRegistries.ITEMS.getValue(
+                    ResourceLocation.parse(itemId)
+            );
+
+            if (item == null) {
+                continue;
+            }
 
             ItemStack ingredient = new ItemStack(item);
 
-            renderIngredientItem(graphics, ingredient, itemX, itemY);
+            int delayPerIngredient = 5;
 
-            graphics.setColor(1F, 1F, 1F, 1F);
+            int startTick =
+                    ingredientIndex * delayPerIngredient;
 
-         //   renderIngredientTooltip(graphics, ingredient, mouseX, mouseY, itemX, itemY);
+            float progress =
+                    (animationTicks - startTick) / 8.0F;
 
-            itemX += 20; //<--- Espaciado
+            progress = Math.max(
+                    0F,
+                    Math.min(1F, progress)
+            );
+
+            float scale;
+
+            if (progress < 0.7F) {
+                scale = progress / 0.7F * 1.2F;
+            } else {
+                float t =
+                        (progress - 0.7F) / 0.3F;
+
+                scale =
+                        1.2F - (0.2F * t);
+            }
+
+            renderAnimatedIngredient(
+                    graphics,
+                    ingredient,
+                    itemX,
+                    itemY,
+                    scale
+            );
+
+            renderIngredientTooltip(
+                    graphics,
+                    ingredient,
+                    mouseX,
+                    mouseY,
+                    itemX,
+                    itemY
+            );
+
+            itemX += 20;
+            ingredientIndex++;
         }
     }
 
-    private void renderIngredientItem(GuiGraphics graphics, ItemStack stack, int x, int y) {
 
-        graphics.setColor(0F, 0F, 0F, 0.25F);
-        graphics.renderItem(stack, x + 1, y + 1); //<-----Se agrega un render fantasma desfasado para crear una sombra :o
+    private void renderAnimatedIngredient(GuiGraphics graphics, ItemStack stack, int x, int y, float scale) {
 
-        graphics.setColor(0.55F, 0.45F, 0.30F, 0.85F);
-        graphics.renderItem(stack, x, y);
+        graphics.pose().pushPose();
 
-        graphics.setColor(1F, 1F, 1F, 1F);
+        graphics.pose().translate(
+                x + 8,
+                y + 8,
+                0
+        );
+
+        graphics.pose().scale(
+                scale,
+                scale,
+                1F
+        );
+
+        graphics.renderItem(
+                stack,
+                -8,
+                -8
+        );
+
+        graphics.pose().popPose();
     }
 
 
@@ -167,27 +277,30 @@ public class RecipeScrollScreen extends Screen {
 
         if (pl == null) return;
 
-        int startX = x + 40;
-        int startY = y + 80;
-        int spacingY = 15;
+        int startX = x + 115;
+        int startY = y + 200;
+        int spacing = 30;
 
-        renderStatIcon(graphics, VITALITY_ICON, "Vitality",
-                pl.getStats().getVitality(), startX, startY, mouseX, mouseY);
+        int vitality = getAnimatedValue(startVitality, targetVitality);
+        int purity = getAnimatedValue(startPurity, targetPurity);
+        int flavor = getAnimatedValue(startFlavor, targetFlavor);
+        int stability = getAnimatedValue(startStability, targetStability);
+
+        renderStatIcon(graphics, VITALITY_ICON, "Vitality", vitality,
+                startX, startY, mouseX, mouseY);
 
         renderStatIcon(graphics, PURITY_ICON, "Purity",
-                pl.getStats().getPurity(), startX, startY + spacingY, mouseX, mouseY);
+                purity, startX + spacing , startY, mouseX, mouseY);
 
         renderStatIcon(graphics, FLAVOR_ICON, "Flavor",
-                pl.getStats().getFlavor(), startX, startY + spacingY * 2, mouseX, mouseY);
+                flavor, startX + spacing * 2, startY , mouseX, mouseY);
 
         renderStatIcon(graphics, STABILITY_ICON, "Stability",
-                pl.getStats().getStability(), startX, startY + spacingY * 3, mouseX, mouseY);
+                stability, startX + spacing * 3, startY , mouseX, mouseY);
     }
 
-    private void renderStatIcon(GuiGraphics graphics, ResourceLocation texture, String tooltip,
-                                int value,
-                                int x, int y,
-                                int mouseX, int mouseY) {
+    private void renderStatIcon(GuiGraphics graphics, ResourceLocation texture, String tooltip, int value,
+                                int x, int y, int mouseX, int mouseY) {
 
         graphics.pose().pushPose();
 
@@ -196,13 +309,9 @@ public class RecipeScrollScreen extends Screen {
         graphics.pose().translate(x, y, 0);
         graphics.pose().scale(scale, scale, 1F);
 
-        int size = 16;
+         int size = 16;
 
-        graphics.setColor(0F, 0F, 0F, 0.20F);
-        graphics.blit(texture, 0 + 1, 0 + 1, 0, 0, size, size, size, size);
-
-        graphics.setColor(0.65F, 0.55F, 0.40F, 0.90F);
-        graphics.blit(texture, 0, 0, 0, 0, size, size, size, size);
+         graphics.blit(texture, 0, 0, 0, 0, size, size, size, size);
 
         graphics.setColor(1F, 1F, 1F, 1F);
 
@@ -224,71 +333,168 @@ public class RecipeScrollScreen extends Screen {
         }
     }
 
+
+
+    private void startStatsAnimation(PotionLiquid pl) {
+
+        animationStartTime = System.currentTimeMillis();
+
+        startVitality = 0;
+        startPurity = 0;
+        startFlavor = 0;
+        startStability = 0;
+
+        targetVitality = pl.getStats().getVitality();
+        targetPurity = pl.getStats().getPurity();
+        targetFlavor = pl.getStats().getFlavor();
+        targetStability = pl.getStats().getStability();
+    }
+
+    private float getAnimationProgress() {
+
+        long elapsed = System.currentTimeMillis() - animationStartTime;
+
+        return Math.min(1F, elapsed / (float) ANIMATION_DURATION);
+    }
+
+    private int getAnimatedValue(int start, int target) {
+
+        float progress = getAnimationProgress();
+
+        progress = 1F - (float)Math.pow(1F - progress, 3);
+
+        return Math.round(
+                Mth.lerp(progress, start, target)
+        );
+    }
+
+
+
     // =========================
     // EFFECTS
     // =========================
 
-    private void renderPotionEffects(GuiGraphics graphics,
-                                     int mouseX, int mouseY,
-                                     int x, int y,
+
+    private void renderPotionEffects(GuiGraphics graphics, int mouseX, int mouseY, int x, int y,
                                      PotionLiquid pl) {
 
         if (pl == null) return;
 
-        List<MobEffect> effects = PotionLiquidUtils.resolve(pl);
+        List<MobEffect> effects =
+                PotionLiquidUtils.getPossibleEffects(pl);
+
         if (effects.isEmpty()) return;
 
-        int startX = x + 89;
-        int startY = y + 80;
-        int spacingX = 18;
+        int startX = x + 60;
+        int startY = y + 110;
 
+        int spacingX = 20;
+        int spacingY = 20;
+
+        int maxColumns = 3;
+        int delayPerEffect = 5;
         for (int i = 0; i < effects.size(); i++) {
 
             MobEffect effect = effects.get(i);
 
-            ResourceLocation id = ForgeRegistries.MOB_EFFECTS.getKey(effect);
+            ResourceLocation id =
+                    ForgeRegistries.MOB_EFFECTS.getKey(effect);
+
             if (id == null) continue;
 
             ResourceLocation texture =
                     ResourceLocation.fromNamespaceAndPath(
                             "minecraft",
-                            "textures/mob_effect/" + id.getPath() + ".png"
+                            "textures/mob_effect/" +
+                                    id.getPath() +
+                                    ".png"
                     );
 
-            int iconX = startX + (i * spacingX);
-            int iconY = startY;
+            int column = i % maxColumns;
+            int row = i / maxColumns;
 
-            graphics.setColor(0F, 0F, 0F, 0.20F);
-            graphics.blit(texture, iconX + 1, iconY + 1, 0, 0, 18, 18, 18, 18);
+            int iconX = startX + (column * spacingX);
+            int iconY = startY + (row * spacingY);
 
-            graphics.setColor(0.65F, 0.55F, 0.40F, 0.90F);
-            graphics.blit(texture, iconX, iconY, 0, 0, 18, 18, 18, 18);
+            int startTick = i * delayPerEffect;
 
-            graphics.setColor(1F, 1F, 1F, 1F);
+            float scale = getPopAnimationScale(startTick);
+
+            renderAnimatedEffect(
+                    graphics,
+                    texture,
+                    iconX,
+                    iconY,
+                    scale
+            );
 
             if (mouseX >= iconX && mouseX <= iconX + 16 &&
                     mouseY >= iconY && mouseY <= iconY + 16) {
 
-                graphics.renderTooltip(this.font,
-                        Component.translatable(effect.getDescriptionId()),
-                        mouseX, mouseY);
+                int chance = PotionLiquidUtils.getEffectChance(pl, effect);
+
+                graphics.renderTooltip(
+                        this.font,
+                        List.of(
+                                Component.translatable(effect.getDescriptionId()),
+                                Component.literal(chance + "%")
+                        ),
+                        java.util.Optional.empty(),
+                        mouseX,
+                        mouseY
+                );
             }
         }
     }
 
-    // =========================
-    // HELPERS
-    // =========================
+    private void renderAnimatedEffect(GuiGraphics graphics, ResourceLocation texture, int x, int y, float scale) {
 
-    private PotionLiquid getPotionLiquidFromStack(ItemStack stack) {
+        graphics.pose().pushPose();
 
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("SPPotionFluid")) return null;
+        graphics.pose().translate(
+                x + 9,
+                y + 9,
+                0
+        );
 
-        CompoundTag fluidTag = tag.getCompound("SPPotionFluid");
+        graphics.pose().scale(
+                scale,
+                scale,
+                1F
+        );
 
-        FluidStack fluid = FluidStack.loadFluidStackFromNBT(fluidTag);
+        graphics.blit(
+                texture,
+                -9,
+                -9,
+                0,
+                0,
+                18,
+                18,
+                18,
+                18
+        );
 
-        return PotionFluidHelper.getPotionLiquid(fluid);
+        graphics.pose().popPose();
     }
-}
+
+
+    private float getPopAnimationScale(int startTick) {
+
+        float progress = (animationTicks - startTick) / 8.0F;
+
+        progress = Math.max(0F, Math.min(1F, progress));
+
+        if (progress < 0.7F) {
+            return progress / 0.7F * 1.2F;
+        }
+
+        float t = (progress - 0.7F) / 0.3F;
+
+        return 1.2F - (0.2F * t);
+    }
+
+    }
+
+
+

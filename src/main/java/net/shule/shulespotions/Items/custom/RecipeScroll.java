@@ -4,10 +4,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -21,9 +19,9 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
 import net.shule.shulespotions.Screens.RecipeScrollScreen;
+import net.shule.shulespotions.util.CauldronActions.CauldronAction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -31,7 +29,7 @@ import java.util.List;
 
 public class RecipeScroll extends Item {
 
-    public static final String INGREDIENTS_TAG = "SPIngredients";
+    public static final String ACTIONS_TAG = "SPActions";
     public static final String POTION_FLUID_TAG = "SPPotionFluid";
 
     public RecipeScroll(Properties pProperties) {
@@ -51,23 +49,38 @@ public class RecipeScroll extends Item {
             return super.useOn(pContext);
         }
 
-        List<Item> ingredients = cauldron.getIngredients();
+        List<CauldronAction> actions = cauldron.getActions();
         FluidStack fluid = cauldron.getTank().getFluid();
 
-        if (ingredients.isEmpty() || fluid.isEmpty()) {
+        if (actions.isEmpty() || fluid.isEmpty()) {
             return InteractionResult.FAIL;
         }
 
-        ItemStack scroll = pContext.getItemInHand();
+        ItemStack heldStack = pContext.getItemInHand();
+        Player player = pContext.getPlayer();
 
-        setIngredients(scroll, ingredients);
-        setPotionFluid(scroll, fluid);
+        if (player == null) {
+            return InteractionResult.FAIL;
+        }
 
+
+        ItemStack recipeScroll = new ItemStack(this);
+
+        setActions(recipeScroll, actions);
+        setPotionFluid(recipeScroll, fluid);
+
+        heldStack.shrink(1);
+
+        if (!player.getInventory().add(recipeScroll)) {
+            player.drop(recipeScroll, false);
+        }
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel,
+                                                  Player pPlayer,
+                                                  InteractionHand pUsedHand) {
 
         ItemStack stack = pPlayer.getItemInHand(pUsedHand);
 
@@ -94,53 +107,46 @@ public class RecipeScroll extends Item {
 
     /*
      * =========================
-     * INGREDIENTS
+     * ACTIONS
      * =========================
      */
 
-    public static void setIngredients(ItemStack stack, List<Item> ingredients) {
+    public static void setActions(ItemStack stack,
+                                  List<CauldronAction> actions) {
 
         CompoundTag tag = stack.getOrCreateTag();
-        ListTag ingredientList = new ListTag();
+        ListTag actionList = new ListTag();
 
-        for (Item item : ingredients) {
+        for (CauldronAction action : actions) {
 
-            ResourceLocation id = ForgeRegistries.ITEMS.getKey(item);
+            CompoundTag actionTag = new CompoundTag();
 
-            if (id != null) {
-                ingredientList.add(StringTag.valueOf(id.toString()));
-            }
+            actionTag.putString("Type", action.getType());
+            actionTag.put("Data", action.save());
+
+            actionList.add(actionTag);
         }
 
-        tag.put(INGREDIENTS_TAG, ingredientList);
+        tag.put(ACTIONS_TAG, actionList);
     }
 
-    public static List<Item> getIngredients(ItemStack stack) {
+    public static List<CompoundTag> getActions(ItemStack stack) {
 
-        List<Item> ingredients = new ArrayList<>();
+        List<CompoundTag> actions = new ArrayList<>();
 
         CompoundTag tag = stack.getTag();
 
-        if (tag == null || !tag.contains(INGREDIENTS_TAG, Tag.TAG_LIST)) {
-            return ingredients;
+        if (tag == null || !tag.contains(ACTIONS_TAG, Tag.TAG_LIST)) {
+            return actions;
         }
 
-        ListTag ingredientList = tag.getList(INGREDIENTS_TAG, Tag.TAG_STRING);
+        ListTag list = tag.getList(ACTIONS_TAG, Tag.TAG_COMPOUND);
 
-        for (Tag element : ingredientList) {
-
-            String itemId = element.getAsString();
-
-            Item item = ForgeRegistries.ITEMS.getValue(
-                    ResourceLocation.parse(itemId)
-            );
-
-            if (item != null) {
-                ingredients.add(item);
-            }
+        for (int i = 0; i < list.size(); i++) {
+            actions.add(list.getCompound(i));
         }
 
-        return ingredients;
+        return actions;
     }
 
     /*
@@ -149,7 +155,8 @@ public class RecipeScroll extends Item {
      * =========================
      */
 
-    public static void setPotionFluid(ItemStack stack, FluidStack fluidStack) {
+    public static void setPotionFluid(ItemStack stack,
+                                      FluidStack fluidStack) {
 
         CompoundTag tag = stack.getOrCreateTag();
 
@@ -163,7 +170,9 @@ public class RecipeScroll extends Item {
 
         CompoundTag tag = stack.getTag();
 
-        if (tag == null || !tag.contains(POTION_FLUID_TAG, Tag.TAG_COMPOUND)) {
+        if (tag == null ||
+                !tag.contains(POTION_FLUID_TAG, Tag.TAG_COMPOUND)) {
+
             return FluidStack.EMPTY;
         }
 
@@ -183,16 +192,26 @@ public class RecipeScroll extends Item {
         CompoundTag tag = stack.getTag();
 
         return tag != null
-                && tag.contains(INGREDIENTS_TAG)
+                && tag.contains(ACTIONS_TAG)
                 && tag.contains(POTION_FLUID_TAG);
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack pStack,
+                                @Nullable Level pLevel,
+                                List<Component> pTooltipComponents,
+                                TooltipFlag pIsAdvanced) {
+
         pTooltipComponents.add(
                 Component.translatable("tooltip.shulespotions.recipe_scroll")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+
+        super.appendHoverText(
+                pStack,
+                pLevel,
+                pTooltipComponents,
+                pIsAdvanced
+        );
     }
 }

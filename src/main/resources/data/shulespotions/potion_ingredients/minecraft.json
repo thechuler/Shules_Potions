@@ -1,138 +1,238 @@
 {
   "minecraft:potato": {
     "flavor": 10,
-    "stability": 2
+    "stability": 2,
+    "effects": {
+      "minecraft:saturation": 25,
+      "minecraft:regeneration": 10
+    }
   },
 
   "minecraft:carrot": {
     "vitality": 8,
-    "flavor": 6
+    "flavor": 6,
+    "effects": {
+      "minecraft:night_vision": 35,
+      "minecraft:regeneration": 20
+    }
   },
 
   "minecraft:beetroot": {
     "vitality": 12,
-    "purity": -2
+    "purity": -2,
+    "effects": {
+      "minecraft:regeneration": 30,
+      "minecraft:strength": 10
+    }
   },
 
   "minecraft:apple": {
     "flavor": 14,
-    "vitality": 4
+    "vitality": 4,
+    "effects": {
+      "minecraft:regeneration": 25,
+      "minecraft:absorption": 15
+    }
   },
 
   "minecraft:melon_slice": {
     "vitality": 6,
-    "stability": 1
+    "stability": 1,
+    "effects": {
+      "minecraft:instant_health": 20,
+      "minecraft:regeneration": 15
+    }
   },
 
   "minecraft:sugar": {
     "flavor": 20,
-    "stability": -5
+    "stability": -5,
+    "effects": {
+      "minecraft:speed": 60,
+      "minecraft:haste": 15
+    }
   },
 
   "minecraft:honey_bottle": {
     "flavor": 18,
     "stability": 8,
-    "vitality": 5
+    "vitality": 5,
+    "effects": {
+      "minecraft:regeneration": 25,
+      "minecraft:resistance": 10
+    }
   },
 
   "minecraft:spider_eye": {
     "vitality": -10,
-    "purity": -15
+    "purity": -15,
+    "effects": {
+      "minecraft:poison": 80,
+      "minecraft:weakness": 20
+    }
   },
 
   "minecraft:fermented_spider_eye": {
     "vitality": -18,
     "purity": -25,
-    "stability": 6
+    "stability": 6,
+    "effects": {
+      "minecraft:poison": 60,
+      "minecraft:blindness": 40,
+      "minecraft:weakness": 35
+    }
   },
 
   "minecraft:blaze_powder": {
     "purity": 15,
     "stability": -3,
-    "flavor": 6
+    "flavor": 6,
+    "effects": {
+      "minecraft:strength": 50,
+      "minecraft:fire_resistance": 40
+    }
   },
 
   "minecraft:ghast_tear": {
     "purity": 20,
-    "vitality": 10
+    "vitality": 10,
+    "effects": {
+      "minecraft:regeneration": 70,
+      "minecraft:slow_falling": 15
+    }
   },
 
   "minecraft:redstone": {
-    "stability": 15
+    "stability": 15,
+    "effects": {
+      "minecraft:resistance": 10
+    }
   },
 
   "minecraft:glowstone_dust": {
     "purity": 12,
     "stability": -10,
-    "flavor": 8
+    "flavor": 8,
+    "effects": {
+      "minecraft:strength": 25,
+      "minecraft:glowing": 40
+    }
   },
 
   "minecraft:gunpowder": {
     "stability": -20,
     "purity": -5,
-    "flavor": 10
+    "flavor": 10,
+    "effects": {
+      "minecraft:strength": 20,
+      "minecraft:speed": 15
+    }
   },
 
   "minecraft:phantom_membrane": {
     "purity": 8,
     "vitality": 14,
-    "stability": 10
+    "stability": 10,
+    "effects": {
+      "minecraft:slow_falling": 80,
+      "minecraft:night_vision": 20
+    }
   },
 
   "minecraft:magma_cream": {
     "vitality": 10,
     "stability": -4,
-    "flavor": -6
+    "flavor": -6,
+    "effects": {
+      "minecraft:fire_resistance": 70,
+      "minecraft:strength": 15
+    }
   },
 
   "minecraft:slime_ball": {
     "stability": 12,
-    "flavor": -3
+    "flavor": -3,
+    "effects": {
+      "minecraft:jump_boost": 40,
+      "minecraft:slowness": 10
+    }
   },
 
   "minecraft:chorus_fruit": {
     "purity": 6,
     "vitality": 6,
     "stability": -8,
-    "flavor": 14
+    "flavor": 14,
+    "effects": {
+      "minecraft:teleportation": 80,
+      "minecraft:confusion": 25
+    }
   },
 
   "minecraft:golden_carrot": {
     "purity": 18,
     "vitality": 15,
-    "flavor": 10
+    "flavor": 10,
+    "effects": {
+      "minecraft:night_vision": 75,
+      "minecraft:regeneration": 20
+    }
   },
 
   "minecraft:nether_wart": {
     "purity": 10,
     "stability": 5,
-    "flavor": -2
+    "flavor": -2,
+    "effects": {
+      "minecraft:awkward": 100
+    }
   },
 
   "minecraft:rabbit_foot": {
     "purity": 14,
     "flavor": 18,
-    "vitality": 8
+    "vitality": 8,
+    "effects": {
+      "minecraft:jump_boost": 70,
+      "minecraft:speed": 25
+    }
   },
 
   "minecraft:turtle_helmet": {
     "stability": 20,
-    "purity": 12
+    "purity": 12,
+    "effects": {
+      "minecraft:water_breathing": 80,
+      "minecraft:resistance": 25
+    }
   },
 
   "minecraft:prismarine_crystals": {
     "stability": 18,
     "purity": 14,
-    "flavor": 4
+    "flavor": 4,
+    "effects": {
+      "minecraft:water_breathing": 60,
+      "minecraft:night_vision": 25
+    }
   },
 
   "minecraft:prismarine_shard": {
     "stability": 12,
-    "purity": 8
+    "purity": 8,
+    "effects": {
+      "minecraft:water_breathing": 35,
+      "minecraft:resistance": 15
+    }
   },
 
   "minecraft:echo_shard": {
     "purity": 22,
-    "stability": -18
+    "stability": -18,
+    "effects": {
+      "minecraft:darkness": 80,
+      "minecraft:night_vision": 30,
+      "minecraft:glowing": 20
+    }
   }
 }

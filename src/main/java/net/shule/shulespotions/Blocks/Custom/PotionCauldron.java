@@ -80,6 +80,30 @@ public class PotionCauldron extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 
+        if (!level.isClientSide() && player.isShiftKeyDown()) {
+
+            BlockEntity be = level.getBlockEntity(pos);
+
+            if (be instanceof PotionCauldronBE cauldron) {
+
+                var potion = cauldron.getPotionLiquid();
+                var stats = potion.getStats();
+
+                player.sendSystemMessage(
+                        net.minecraft.network.chat.Component.literal(
+                                "Purity: " + stats.getPurity() +
+                                        " | Vitality: " + stats.getVitality() +
+                                        " | Flavor: " + stats.getFlavor() +
+                                        " | Stability: " + stats.getStability()
+                        )
+                );
+
+                return InteractionResult.SUCCESS;
+            }
+        }
+
+
+
         ItemStack stack = player.getItemInHand(hand);
 
         if (stack.is(Items.WATER_BUCKET)) {
@@ -127,6 +151,12 @@ public class PotionCauldron extends BaseEntityBlock {
             return InteractionResult.sidedSuccess(level.isClientSide());
         }
 
+
+
+
+
+
+
         return InteractionResult.PASS;
     }
 
@@ -140,7 +170,7 @@ public class PotionCauldron extends BaseEntityBlock {
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof PotionCauldronBE cauldron) {
 
-            if(cauldron.getTank().isEmpty() || cauldron.getIngredients().size() >= MAX_INGREDIENT_COUNT) return;
+            if(cauldron.getTank().isEmpty() || cauldron.getActions().size() >= MAX_INGREDIENT_COUNT) return;
             ItemStack stack = itemEntity.getItem();
             cauldron.checkItem(stack);
             level.playSound(
@@ -178,7 +208,7 @@ public class PotionCauldron extends BaseEntityBlock {
 
 
             if(cauldron.getTank().isEmpty()||
-                    cauldron.getIngredients().size() >= MAX_INGREDIENT_COUNT) {
+                    cauldron.getActions().size() >= MAX_INGREDIENT_COUNT) {
                 return;
             }
 
@@ -214,32 +244,7 @@ public class PotionCauldron extends BaseEntityBlock {
 
 
 
-    /*No tengo idea de como implementar esto, necesita la velocidad de las particulas pero tambien el canal de color
-    /*
-    private void spawnPotionSplash(Level level, BlockPos pos, PotionCauldronBE cauldron, ItemStack stack) {
 
-        if (!(level instanceof ServerLevel serverLevel)) return;
-
-        // ejemplo: obtener color del potion liquid actual
-        int color = cauldron.getPotionLiquid().getColor(); // o calculado desde stats
-
-        float r = ((color >> 16) & 0xFF) / 255f;
-        float g = ((color >> 8) & 0xFF) / 255f;
-        float b = (color & 0xFF) / 255f;
-
-        serverLevel.sendParticles(
-                ModParticles.POTION_SPLASH.get(),
-                pos.getX() + 0.5,
-                pos.getY() + 1,
-                pos.getZ() + 0.5,
-                30,      // cantidad
-                0.25,   // spread X
-                0.2,    // spread Y
-                0.25,   // spread Z
-                0.05    // speed
-        );
-    }
-*/
     }
 
 

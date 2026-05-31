@@ -39,6 +39,8 @@ public class ModBlocks {
             () -> new SmallPotionBlock(BlockBehaviour.Properties.copy(Blocks.GLASS)));
 
 
+    public static final RegistryObject<Block> ALCHEMIST_WOOD = registerBlock("alchemist_wood",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.ACACIA_WOOD)));
 
 
 

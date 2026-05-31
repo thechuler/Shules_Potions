@@ -26,12 +26,7 @@ public class ItemStatRegistry {
             return new IngredientStat();
         }
 
-        return new IngredientStat(
-                base.getPurity(),
-                base.getVitality(),
-                base.getFlavor(),
-                base.getStability()
-        );
+        return new IngredientStat(base);
     }
     public static boolean hasStats(Item item) {
         return ITEM_STATS.containsKey(item);

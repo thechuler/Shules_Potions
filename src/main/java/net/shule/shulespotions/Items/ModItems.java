@@ -1,8 +1,6 @@
 package net.shule.shulespotions.Items;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffects;
+
 import net.minecraft.world.item.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -11,16 +9,9 @@ import net.minecraftforge.registries.RegistryObject;
 import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Items.custom.*;
 import net.shule.shulespotions.ShulesPotions;
+import net.shule.shulespotions.util.CauldronActions.StirToolType;
 
 
-/*Esta es una de las clases mas importantes. Aca es donde le vamos a "avisar" a minecraft
-que van a existir items nuevos.
-Aca podemos configurar 2 cosas importantes.
-
-1-La id del item (osea el "nombre" que lo diferencia del resto)
-
-2-Las propiedades del item (ya sea si es o no comestible, cuanto puede stackear, su calidad, etc)
- */
 
 
 public class ModItems {
@@ -33,14 +24,16 @@ public class ModItems {
                     ,new Item.Properties()));
 
     public static final RegistryObject<Item> SMALL_POTION_BOTTLE = ITEMS.register("small_potion_bottle", () -> new PotionLiquidBottleItem(new Item.Properties().stacksTo(1),5,250));
-    public static final RegistryObject<Item> LARGE_POTION_BOTTLE = ITEMS.register("large_potion_bottle", () -> new PotionLiquidBottleItem(new Item.Properties().stacksTo(1),10,250*2));
+
+   public static final RegistryObject<Item> LARGE_POTION_BOTTLE = ITEMS.register("large_potion_bottle", () -> new PotionLiquidBottleItem(new Item.Properties().stacksTo(1),10,250*2));
+
     public static final RegistryObject<Item> BIG_POTION_BOTTLE = ITEMS.register("big_potion_bottle", () -> new PotionLiquidBottleItem(new Item.Properties().stacksTo(1),15,250*3));
-
-
 
     public static final RegistryObject<Item> RECIPE_BOOK = ITEMS.register("recipe_book", () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> WOODEN_SPOON = ITEMS.register("wooden_spoon", () -> new SwordItem(Tiers.WOOD, 2, 2, new Item.Properties()));
+    public static final RegistryObject<Item> WOODEN_SPOON = ITEMS.register("wooden_spoon", () -> new SpoonItem(StirToolType.WOOD,new Item.Properties(),"wooden"));
+
+    public static final RegistryObject<Item> GOLDEN_SPOON = ITEMS.register("golden_spoon", () -> new SpoonItem(StirToolType.GOLD,new Item.Properties(),"golden"));
 
     public static final RegistryObject<Item> RECIPE_SCROLL = ITEMS.register("recipe_scroll", () -> new RecipeScroll(new Item.Properties()));
 

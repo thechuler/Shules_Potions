@@ -3,6 +3,7 @@
   "creativetab.main_tab": "Shule's Potions",
   "item.shulespotions.recipe_scroll": "Recipe Scroll",
   "item.shulespotions.wooden_spoon": "Wooden Spoon",
+  "item.shulespotions.golden_spoon": "Golden Spoon",
   "item.shulespotions.potion_barrel": "Potion Barrel",
 
   "item.shulespotions.rotten_fish": "Rotten Fish",
@@ -15,6 +16,9 @@
 
 
   "tooltip.shulespotions.recipe_scroll": "Right click on a filled cauldron to save the recipe!",
+
+  "tooltip.shulespotions.spoon.wooden":"Increase Duration by 5 Seconds",
+  "tooltip.shulespotions.spoon.golden":"Duplicates Vitality, Purity, Flavor and Stability",
 
   "tooltip.shulespotions.alchemist_monocle": "When on inventory: Shows the alchemical properties of an item",
   "tooltip.shulespotions.alchemist_monocle_tittle": "Alchemical Properties",
