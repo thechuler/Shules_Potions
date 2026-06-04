@@ -12,6 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.shule.shulespotions.Blocks.Custom.PotionCauldron;
+import net.shule.shulespotions.Blocks.Custom.PotionSplashBlock;
 import net.shule.shulespotions.Blocks.Custom.SmallPotionBlock;
 import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Items.ModItems;
@@ -39,9 +40,16 @@ public class ModBlocks {
             () -> new SmallPotionBlock(BlockBehaviour.Properties.copy(Blocks.GLASS)));
 
 
+    public static final RegistryObject<Block> POTIONSHELF = registerBlock("potionshelf",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.BOOKSHELF)));
+
+
+
     public static final RegistryObject<Block> ALCHEMIST_WOOD = registerBlock("alchemist_wood",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.ACACIA_WOOD)));
 
+    public static final RegistryObject<Block> POTION_SPLASH = registerBlock("potion_splash",
+            () -> new PotionSplashBlock(BlockBehaviour.Properties.copy(Blocks.SLIME_BLOCK)));
 
 
 

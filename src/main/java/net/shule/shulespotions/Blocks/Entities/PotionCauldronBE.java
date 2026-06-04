@@ -27,6 +27,7 @@ import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Fluids.PotionFluidHelper;
 import net.shule.shulespotions.Potions.PotionLiquid;
 import net.shule.shulespotions.Potions.PotionLiquidUtils;
+import net.shule.shulespotions.StabilityEvent.Events.PotionExplodeEvent;
 import net.shule.shulespotions.util.CauldronActions.AddIngredientAction;
 import net.shule.shulespotions.util.CauldronActions.CauldronAction;
 import net.shule.shulespotions.util.CauldronActions.CauldronActionRegistry;
@@ -173,7 +174,17 @@ public class PotionCauldronBE extends BlockEntity {
 
 
     public void onStabilityChanged(int old, int current){
+        CauldronContext ctx = new CauldronContext(this, null);
 
+        PotionExplodeEvent event = new PotionExplodeEvent();
+
+        if (event.canTrigger(ctx)) {
+            float chance = event.getChance(ctx);
+
+            if (level.random.nextFloat() < chance) {
+                event.trigger(ctx);
+            }
+        }
     }
 
 

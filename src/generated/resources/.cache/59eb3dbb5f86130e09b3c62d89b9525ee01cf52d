@@ -1,5 +1,6 @@
-// 1.20.1	2026-05-24T23:25:20.9245277	Loot Tables
+// 1.20.1	2026-06-02T19:54:49.142599	Loot Tables
 84d03ad59408e569edb3c7a021b064bbabf5a1d0 data/shulespotions/loot_tables/blocks/alchemist_wood.json
+f2bdf6314fe86a9b794c11139a74cd8deda8678f data/shulespotions/loot_tables/blocks/potionshelf.json
 719ad6eaf6a8dfd5c6bef386fc5ea21c1a604ba0 data/shulespotions/loot_tables/blocks/potion_cauldron.json
 e48352cb9596797c3fce80fb0d183af79fcee736 data/shulespotions/loot_tables/blocks/potion_fluid_block.json
 223971f2108556842c35c418f8dee6b64114b104 data/shulespotions/loot_tables/blocks/small_potion_block.json

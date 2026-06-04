@@ -31,6 +31,10 @@ public class BlockLootTable extends BlockLootSubProvider {
                 block -> createOreDrop(ModBlocks.SMALL_POTION_BLOCK.get(), ModBlocks.SMALL_POTION_BLOCK.get().asItem())
         );
 
+        dropSelf(ModBlocks.POTIONSHELF.get());
+
+
+
         this.add(ModBlocks.POTION_FLUID_BLOCK.get(), noDrop());
     }
 
