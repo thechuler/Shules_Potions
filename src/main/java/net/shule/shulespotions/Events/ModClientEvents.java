@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -203,12 +204,20 @@ public class ModClientEvents {
 
             EntityRenderer<?> renderer = event.getEntityRenderer(type);
 
-            if (renderer instanceof LivingEntityRenderer livingRenderer) {
+            if (renderer instanceof LivingEntityRenderer<?, ?> livingRenderer) {
                 livingRenderer.addLayer(
                         new CoveredOnPotionLiquidLayer(livingRenderer)
                 );
             }
         });
+
+        for (String skin : event.getSkins()) {
+            PlayerRenderer playerRenderer = event.getSkin(skin);
+
+            playerRenderer.addLayer(
+                    new CoveredOnPotionLiquidLayer<>(playerRenderer)
+            );
+        }
     }
 
 }

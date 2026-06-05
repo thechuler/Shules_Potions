@@ -3,16 +3,20 @@ package net.shule.shulespotions.StabilityEvent.Events;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.shule.shulespotions.Blocks.Entities.PotionSplashBE;
 import net.shule.shulespotions.Blocks.ModBlocks;
+import net.shule.shulespotions.MobEffects.ModMobEffects;
 import net.shule.shulespotions.StabilityEvent.StabilityEvent;
 import net.shule.shulespotions.util.CauldronActions.CauldronContext;
 
@@ -45,7 +49,17 @@ public class PotionExplodeEvent implements StabilityEvent {
         );
 
         spawnPotionSplashes(level, pos, 40,ctx.getCauldron().getPotionLiquid().getColor());
+        int color = ctx.getCauldron()
+                .getPotionLiquid()
+                .getColor();
 
+        AABB area = new AABB(pos).inflate(4);
+
+        for (LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, area)) {
+            entity.addEffect(new MobEffectInstance(ModMobEffects.POTION_SPLASHED.get(),
+                            20 * 15));
+            entity.getPersistentData().putInt("PotionSplashColor", color);
+        }
 
     }
 

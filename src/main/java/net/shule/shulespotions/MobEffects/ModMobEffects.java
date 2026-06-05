@@ -9,6 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.shule.shulespotions.MobEffects.Custom.LeechEffect;
+import net.shule.shulespotions.MobEffects.Custom.PotionSplashedEffect;
 import net.shule.shulespotions.ShulesPotions;
 
 public class ModMobEffects {
@@ -17,6 +18,9 @@ public class ModMobEffects {
 
     public static RegistryObject<MobEffect> LEECH = MOB_EFFECTS.register("leech",
             ()-> new LeechEffect(MobEffectCategory.BENEFICIAL,0x668822));
+
+    public static RegistryObject<MobEffect> POTION_SPLASHED = MOB_EFFECTS.register("potion_splashed",
+            ()-> new PotionSplashedEffect(MobEffectCategory.HARMFUL,0xFFFFFF));
 
 
     public static void register(IEventBus bus) {

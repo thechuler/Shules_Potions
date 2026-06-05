@@ -154,12 +154,7 @@ public class PotionCauldronBE extends BlockEntity {
 
         FluidStack fluid = this.tank.getFluid();
 
-        int color = PotionLiquidUtils.generatePotionColor(
-                potion.getStats().getPurity(),
-                potion.getStats().getVitality(),
-                potion.getStats().getFlavor(),
-                potion.getStats().getStability()
-        );
+        int color = PotionLiquidUtils.generatePotionColor(potion);
 
         potion.setColor(color);
 

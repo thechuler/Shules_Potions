@@ -46,77 +46,31 @@ public class PotionLiquidUtils {
 
 
 
-    public static int generatePotionColor(int purity, int vitality, int flavor, int stability) {
+    public static int generatePotionColor(PotionLiquid potion) {
 
-        // -----------------------------------
-        // HASH DETERMINISTA
-        // -----------------------------------
+        IngredientStat stats = potion.getStats();
 
-        long seed = 1L;
+        long hash = 0;
 
-        seed = seed * 31L + purity;
-        seed = seed * 31L + vitality;
-        seed = seed * 31L + flavor;
-        seed = seed * 31L + stability;
+        hash = hash * 31 + potion.getDuration();
+        hash = hash * 31 + potion.getPower();
 
-        Random random = new Random(seed);
+        hash = hash * 31 + stats.getPurity();
+        hash = hash * 31 + stats.getVitality();
+        hash = hash * 31 + stats.getFlavor();
+        hash = hash * 31 + stats.getStability();
 
-        // -----------------------------------
-        // HUE
-        // -----------------------------------
+        int r = (int)((hash >> 0) & 0xFF);
+        int g = (int)((hash >> 8) & 0xFF);
+        int b = (int)((hash >> 16) & 0xFF);
 
-        // Full random procedural
-        float hue = random.nextFloat();
+        // Evitar colores demasiado oscuros
+        r = (r + 128) / 2;
+        g = (g + 128) / 2;
+        b = (b + 128) / 2;
 
-        // -----------------------------------
-        // SATURATION
-        // -----------------------------------
-
-        // Siempre colores vivos
-        float saturation = 0.65f + random.nextFloat() * 0.35f;
-
-        // -----------------------------------
-        // BRIGHTNESS
-        // -----------------------------------
-
-        float brightness = 0.7f + random.nextFloat() * 0.3f;
-
-        // -----------------------------------
-        // INFLUENCIA DE STATS
-        // -----------------------------------
-
-        // Purity positiva ilumina
-        brightness += Math.max(0, purity) / 300f;
-
-        // Purity negativa ensucia
-        brightness -= Math.abs(Math.min(0, purity)) / 400f;
-
-        // Stability negativa hace colores más violentos
-        saturation += Math.abs(Math.min(0, stability)) / 300f;
-
-        // Stability positiva suaviza un poco
-        saturation -= Math.max(0, stability) / 500f;
-
-        // Flavor mueve levemente el hue
-        hue += flavor / 500f;
-
-        // Vitality aumenta energía visual
-        brightness += Math.abs(vitality) / 500f;
-
-        // -----------------------------------
-
-        hue = (hue % 1f + 1f) % 1f;
-
-        saturation = clamp(saturation, 0.45f, 1f);
-        brightness = clamp(brightness, 0.35f, 1f);
-
-        return java.awt.Color.HSBtoRGB(
-                hue,
-                saturation,
-                brightness
-        );
+        return (r << 16) | (g << 8) | b;
     }
-
 
 
     private static float clamp(float value, float min, float max) {

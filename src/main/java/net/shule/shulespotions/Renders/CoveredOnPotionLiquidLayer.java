@@ -8,9 +8,12 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.shule.shulespotions.MobEffects.ModMobEffects;
+import net.shule.shulespotions.util.ColorUtils;
 
 public class CoveredOnPotionLiquidLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
     private static final ResourceLocation TEXTURE =
@@ -23,12 +26,17 @@ public class CoveredOnPotionLiquidLayer<T extends LivingEntity, M extends Entity
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int light,
-                       LivingEntity entity, float limbSwing, float limbSwingAmount,
-                       float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int light, T entity, float limbSwing, float limbSwingAmount,
+            float partialTick,
+            float ageInTicks,
+            float netHeadYaw,
+            float headPitch) {
 
-        System.out.println(TEXTURE);
-        if (entity.tickCount < 60) return;
+
+
+        float[] color = ColorUtils.intToRGB(entity.getPersistentData().getInt("PotionSplashColor"));
+
+
         VertexConsumer vc = buffer.getBuffer(RenderType.entityCutout(TEXTURE));
 
         this.getParentModel().renderToBuffer(
@@ -36,7 +44,7 @@ public class CoveredOnPotionLiquidLayer<T extends LivingEntity, M extends Entity
                 vc,
                 light,
                 OverlayTexture.NO_OVERLAY,
-                1f, 1f, 1f, 0.6f
+                color[0], color[1], color[2], 0.6f
         );
     }
 }
