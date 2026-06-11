@@ -1,0 +1,34 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"render_type": "cutout",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "shulespotions:block/spoon_rack",
+		"particle": "shulespotions:block/spoon_rack"
+	},
+	"elements": [
+		{
+			"from": [0, 12, 13],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, -18, 14]},
+			"faces": {
+				"north": {"uv": [0, 0, 8, 2], "texture": "#0"},
+				"east": {"uv": [0, 7, 1.5, 9], "texture": "#0"},
+				"south": {"uv": [0, 2, 8, 4], "texture": "#0"},
+				"west": {"uv": [1.5, 7, 3, 9], "texture": "#0"},
+				"up": {"uv": [8, 5.5, 0, 4], "texture": "#0"},
+				"down": {"uv": [8, 5.5, 0, 7], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "group",
+			"origin": [8, 8, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [0]
+		}
+	]
+}

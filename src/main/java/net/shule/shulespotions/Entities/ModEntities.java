@@ -1,17 +1,59 @@
 package net.shule.shulespotions.Entities;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+import net.shule.shulespotions.Entities.Projectile.PotionSplashProjectile;
 import net.shule.shulespotions.ShulesPotions;
+
+import java.util.function.Supplier;
 
 
 //Aca podemos crear entidades (no lo vamos a hacer todavia porque es algo mas avanzado)
-
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEntities {
 
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ShulesPotions.MODID);
 
 
+    public static final RegistryObject<EntityType<PotionSplashProjectile>> POTION_SPLASH_PROJECTILE =
+            ENTITIES.register("potion_splash_projectile",
+                    () -> EntityType.Builder.<PotionSplashProjectile>of(
+                            PotionSplashProjectile::new, MobCategory.MISC)
+                            .sized(0.5F, 0.5F)
+                            .build("potion_splash_projectile"));
+
+
+    @SubscribeEvent
+    public static void init(FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+         //   FrogManEntity.init();
+           // NitroMoscaEntity.init();
+
+        });
+    }
+
+
+    @SubscribeEvent
+    public static void registerAttributes(EntityAttributeCreationEvent event) {
+    //    event.put(FROGMAN.get(), FrogManEntity.createAttributes().build());
+    //    event.put(NITRO_FLY.get(), NitroMoscaEntity.createAttributes().build());
+    }
+
+    @SubscribeEvent
+    public  static void  RegistrarLugardeSpawn(SpawnPlacementRegisterEvent event){
+
+    //    event.register(InicializarEntidades.FROGMAN.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.WORLD_SURFACE,FrogManEntity::PuedeSpawnear,RegisterSpawnPlacementsEvent.Operation.OR);
+      //  event.register(InicializarEntidades.NITRO_FLY.get(), SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, NitroMoscaEntity::PuedeSpawnear,RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+
+    }
 
 }

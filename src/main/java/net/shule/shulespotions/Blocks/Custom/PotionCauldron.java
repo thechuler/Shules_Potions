@@ -165,29 +165,33 @@ public class PotionCauldron extends BaseEntityBlock {
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (level.isClientSide) return;
 
-        if (!(entity instanceof ItemEntity itemEntity)) return;
+            if (!(entity instanceof ItemEntity itemEntity)) return;
 
-        BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof PotionCauldronBE cauldron) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof PotionCauldronBE cauldron) {
 
-            if(cauldron.getTank().isEmpty() || cauldron.getActions().size() >= MAX_INGREDIENT_COUNT) return;
-            ItemStack stack = itemEntity.getItem();
-            cauldron.checkItem(stack);
-            level.playSound(
-                    null,
-                    pos,
-                    SoundEvents.AMBIENT_UNDERWATER_ENTER,
-                    SoundSource.BLOCKS,
-                    0.6F,
-                    2F + level.random.nextFloat() * 0.2F
-            );
+                if (cauldron.getTank().isEmpty() || cauldron.getActions().size() >= MAX_INGREDIENT_COUNT) return;
+                ItemStack stack = itemEntity.getItem();
+                cauldron.checkItem(stack);
+                level.playSound(
+                        null,
+                        pos,
+                        SoundEvents.AMBIENT_UNDERWATER_ENTER,
+                        SoundSource.BLOCKS,
+                        0.6F,
+                        2F + level.random.nextFloat() * 0.2F
+                );
 
-            if(stack.getCount() > 1){
-                stack.shrink(1);
-            }else {
-                itemEntity.discard();
+                if (stack.getCount() > 1) {
+                    stack.shrink(1);
+                } else {
+                    itemEntity.discard();
+                }
             }
-        }
+
+
+
+
     }
 
 
@@ -217,27 +221,8 @@ public class PotionCauldron extends BaseEntityBlock {
             }
 
             if (lvl.isClientSide) {
+                cauldron.clientTick();
 
-                int color = cauldron.getRenderColor();
-                float[] rgb = intToRGB(color);
-
-                float chance = 0.4f;
-
-                if (lvl.random.nextFloat() < chance) {
-
-                    double offsetX = (lvl.random.nextDouble() - 0.5) * 0.5;
-                    double offsetZ = (lvl.random.nextDouble() - 0.5) * 0.5;
-
-                    lvl.addParticle(
-                            ModParticles.BUBBLE.get(),
-                            pos.getX() + 0.5 + offsetX,
-                            pos.getY() + 1.0,
-                            pos.getZ() + 0.5 + offsetZ,
-                            rgb[0],
-                            rgb[1],
-                            rgb[2]
-                    );
-                }
             }
         };
     }

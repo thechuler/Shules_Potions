@@ -1,5 +1,6 @@
 package net.shule.shulespotions.Blocks.Entities;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -8,6 +9,8 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -25,20 +28,24 @@ import net.shule.shulespotions.Blocks.Custom.PotionCauldron;
 import net.shule.shulespotions.Blocks.ModBlockEntities;
 import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Fluids.PotionFluidHelper;
+import net.shule.shulespotions.Particles.ModParticles;
 import net.shule.shulespotions.Potions.PotionLiquid;
 import net.shule.shulespotions.Potions.PotionLiquidUtils;
+import net.shule.shulespotions.Sounds.ModSounds;
 import net.shule.shulespotions.StabilityEvent.Events.PotionExplodeEvent;
+import net.shule.shulespotions.StabilityEvent.StabilityEvent;
 import net.shule.shulespotions.util.CauldronActions.AddIngredientAction;
 import net.shule.shulespotions.util.CauldronActions.CauldronAction;
 import net.shule.shulespotions.util.CauldronActions.CauldronActionRegistry;
 import net.shule.shulespotions.util.CauldronActions.CauldronContext;
+import net.shule.shulespotions.util.ColorUtils;
 import org.jetbrains.annotations.NotNull;
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import static net.shule.shulespotions.util.ColorUtils.lerpColor;
-import static net.shule.shulespotions.util.ColorUtils.randomColor;
+
+import static net.shule.shulespotions.util.ColorUtils.*;
 
 public class PotionCauldronBE extends BlockEntity {
 
@@ -49,8 +56,10 @@ public class PotionCauldronBE extends BlockEntity {
     private int startColor;
     private int targetColor;
     private float lerpProgress = 1.0f;
+    private int explosionTriggerId = 0;
+    private int lastExplosionTriggerId = 0;
+    private int explosionColor = 0;
     private final FluidTank tank = new FluidTank(1000) {
-
         @Override
         protected void onContentsChanged() {
             if (isEmpty() && !actions.isEmpty()) {
@@ -94,7 +103,7 @@ public class PotionCauldronBE extends BlockEntity {
 
     public void checkItem(ItemStack item) {
 
-        if (level == null || level.isClientSide) return;
+     //   if (level == null || level.isClientSide) return;
 
         if (actions.size() >= getMaxIngredients()) return;
 
@@ -171,13 +180,14 @@ public class PotionCauldronBE extends BlockEntity {
     public void onStabilityChanged(int old, int current){
         CauldronContext ctx = new CauldronContext(this, null);
 
-        PotionExplodeEvent event = new PotionExplodeEvent();
+        StabilityEvent event = new PotionExplodeEvent();
 
         if (event.canTrigger(ctx)) {
             float chance = event.getChance(ctx);
 
             if (level.random.nextFloat() < chance) {
                 event.trigger(ctx);
+
             }
         }
     }
@@ -221,7 +231,8 @@ public class PotionCauldronBE extends BlockEntity {
 
         tag.put("SPTank", tank.writeToNBT(new CompoundTag()));
         tag.putInt("SPcolor", renderColor);
-
+        tag.putInt("ExplosionTriggerId", explosionTriggerId);
+        tag.putInt("ExplosionColor", explosionColor);
         ListTag actionList = new ListTag();
 
         for (CauldronAction action : actions) {
@@ -250,8 +261,11 @@ public class PotionCauldronBE extends BlockEntity {
         super.load(tag);
 
         tank.readFromNBT(tag.getCompound("SPTank"));
+        explosionTriggerId = tag.getInt("ExplosionTriggerId");
+        explosionColor = tag.getInt("ExplosionColor");
 
         renderColor = tag.getInt("SPcolor");
+
 
         actions.clear();
 
@@ -315,6 +329,97 @@ public class PotionCauldronBE extends BlockEntity {
     }
 
 
+   ;
+    public void clientTick() {
+
+        if (!level.isClientSide)
+            return;
+
+
+
+        if (explosionTriggerId != lastExplosionTriggerId) {
+
+            lastExplosionTriggerId = explosionTriggerId;
+
+            spawnPotionExplosionParticles(explosionColor);
+        }
+
+
+        int color = getRenderColor();
+        float[] rgb = intToRGB(color);
+
+        float chance = 0.4f;
+
+        if (this.level.random.nextFloat() < chance) {
+
+            double offsetX = (this.level.random.nextDouble() - 0.5) * 0.5;
+            double offsetZ = (this.level.random.nextDouble() - 0.5) * 0.5;
+
+            this.level.addParticle(
+                    ModParticles.BUBBLE.get(),
+                    this.getBlockPos().getX() + 0.5 + offsetX,
+                    this.getBlockPos().getY() + 1.0,
+                    this.getBlockPos().getZ() + 0.5 + offsetZ,
+                    rgb[0],
+                    rgb[1],
+                    rgb[2]
+            );
+        }
+
+
+    }
+
+
+    public void triggerExplosionParticles(int color) {
+
+        if (level == null || level.isClientSide)
+            return;
+
+        explosionTriggerId++;
+        explosionColor = color;
+
+        setChanged();
+        sync();
+    }
+
+
+    private void spawnPotionExplosionParticles(int color) {
+
+        if (level == null || !level.isClientSide)
+            return;
+
+        float[] rgb = ColorUtils.intToRGB(color);
+
+        RandomSource random = level.getRandom();
+
+        double centerX = worldPosition.getX() + 0.5;
+        double centerY = worldPosition.getY() + 1.0;
+        double centerZ = worldPosition.getZ() + 0.5;
+
+        int particleCount = 200;
+
+        for (int i = 0; i < particleCount; i++) {
+
+            double angle = random.nextDouble() * Math.PI * 2.0;
+
+            double radius = random.nextDouble() * 2.5;
+
+            double offsetX = Math.cos(angle) * radius;
+            double offsetZ = Math.sin(angle) * radius;
+
+            double offsetY = random.nextDouble() * 1.8;
+
+            level.addParticle(
+                    ModParticles.POTION_EXPLOTION.get(),
+                    centerX + offsetX,
+                    centerY + offsetY,
+                    centerZ + offsetZ,
+                    rgb[0],
+                    rgb[1],
+                    rgb[2]
+            );
+        }
+    }
 
     public void startColorTransition(int newColor) {
         this.startColor = this.renderColor;
@@ -339,4 +444,5 @@ public class PotionCauldronBE extends BlockEntity {
     public FluidTank getTank() {
         return tank;
     }
+
 }

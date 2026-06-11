@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "shulespotions:block/spoon_rack",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "shulespotions:block/spoon_rack"
+    },
+    "facing=south": {
+      "model": "shulespotions:block/spoon_rack",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "shulespotions:block/spoon_rack",
+      "y": 270
+    }
+  }
+}

@@ -4,6 +4,7 @@ import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 import net.shule.shulespotions.Blocks.ModBlocks;
 import net.shule.shulespotions.Items.ModItems;
@@ -32,6 +33,8 @@ public class BlockLootTable extends BlockLootSubProvider {
         );
 
         dropSelf(ModBlocks.POTIONSHELF.get());
+        dropSelf(ModBlocks.SPOON_RACK.get());
+        this.add(ModBlocks.POTION_SPLASH.get(),noDrop());
 
 
 

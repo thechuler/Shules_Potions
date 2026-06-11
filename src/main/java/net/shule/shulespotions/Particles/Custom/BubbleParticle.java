@@ -38,10 +38,6 @@ public class BubbleParticle extends TextureSheetParticle {
     public void tick() {
         super.tick();
 
-        // Animar sprite
-       // this.setSpriteFromAge(sprites);
-
-        // subir lentamente
         this.yd += 0.002;
 
         // fade out

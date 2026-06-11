@@ -8,9 +8,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.shule.shulespotions.MobEffects.ModMobEffects;
 import net.shule.shulespotions.util.ColorUtils;
@@ -33,8 +31,15 @@ public class CoveredOnPotionLiquidLayer<T extends LivingEntity, M extends Entity
             float headPitch) {
 
 
+        if (!entity.hasEffect(ModMobEffects.POTION_SPLASHED.get()))
+            return;
 
-        float[] color = ColorUtils.intToRGB(entity.getPersistentData().getInt("PotionSplashColor"));
+        int color = entity.getPersistentData()
+                .getInt("PotionSplashColor");
+
+        float r = ((color >> 16) & 255) / 255f;
+        float g = ((color >> 8) & 255) / 255f;
+        float b = (color & 255) / 255f;
 
 
         VertexConsumer vc = buffer.getBuffer(RenderType.entityCutout(TEXTURE));
@@ -44,7 +49,10 @@ public class CoveredOnPotionLiquidLayer<T extends LivingEntity, M extends Entity
                 vc,
                 light,
                 OverlayTexture.NO_OVERLAY,
-                color[0], color[1], color[2], 0.6f
+                r,
+                g,
+                b,
+                0.6f
         );
     }
 }

@@ -43,7 +43,7 @@ public class SpoonItem extends Item {
             return InteractionResult.PASS;
         }
 
-        if(cauldron.getActions().size() >= cauldron.getMaxIngredients()){
+        if(cauldron.getActions().size() >= cauldron.getMaxIngredients() || cauldron.getActions().isEmpty()){
             return  InteractionResult.PASS;
         }
 

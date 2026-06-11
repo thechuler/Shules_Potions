@@ -1,0 +1,8 @@
+{
+  "cauldron_boiling": {
+    "subtitles": "sounds.shulespotions.cauldron_boiling",
+    "sounds":[
+      "shulespotions:cauldron_boiling"
+    ]
+  }
+}

@@ -47,4 +47,12 @@ public class ColorUtils {
     }
 
 
+    public static int rgbToInt(int r, int g, int b) {
+        int red = (int) (r * 255.0F);
+        int green = (int) (g * 255.0F);
+        int blue = (int) (b * 255.0F);
+
+        return (red << 16) | (green << 8) | blue;
+    }
+
 }

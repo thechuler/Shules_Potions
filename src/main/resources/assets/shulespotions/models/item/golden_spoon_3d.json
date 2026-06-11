@@ -102,7 +102,7 @@
 			"rotation": [66, 40, 0]
 		},
 		"fixed": {
-			"rotation": [0, 0, 50]
+			"rotation": [0, 0, 0]
 		}
 	},
 	"groups": [

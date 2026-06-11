@@ -34,8 +34,20 @@ public class StirAction extends CauldronAction {
                 stats.setVitality(stats.getVitality() * 2);
                 stats.setFlavor(stats.getFlavor() * 2);
                 stats.setStability(stats.getStability() * 2);
-
             }
+
+            case IRON -> {
+                potion.setPower(potion.getPower() + 15);
+            }
+
+            case STONE -> {
+                potion.setDuration(potion.getDuration() + 200);
+            }
+
+            case DIAMOND -> {
+                potion.setPower(potion.getPower() + 50);
+            }
+
         }
         ctx.getCauldron().setPotionLiquid(potion);
 

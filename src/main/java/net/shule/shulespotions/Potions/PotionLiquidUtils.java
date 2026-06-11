@@ -8,7 +8,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.shule.shulespotions.Fluids.PotionFluidHelper;
+import net.shule.shulespotions.util.ColorUtils;
 import org.joml.Random;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,30 +51,28 @@ public class PotionLiquidUtils {
 
     public static int generatePotionColor(PotionLiquid potion) {
 
-        IngredientStat stats = potion.getStats();
+        int purity = potion.getStats().getPurity();
+        int vitality = potion.getStats().getVitality() + 100;
+        int flavor = potion.getStats().getFlavor() + 100;
+        int stability = potion.getStats().getStability() + 100;
+        int power = potion.getPower();
 
-        long hash = 0;
+        float hue =
+                (purity * 2f +
+                        vitality * 3f +
+                        flavor * 5f +
+                        stability * 7f +
+                        power * 11f) % 360f;
 
-        hash = hash * 31 + potion.getDuration();
-        hash = hash * 31 + potion.getPower();
+        float saturation = 0.6f + (vitality / 200f) * 0.4f;
+        float brightness = 0.6f + (stability / 200f) * 0.4f;
 
-        hash = hash * 31 + stats.getPurity();
-        hash = hash * 31 + stats.getVitality();
-        hash = hash * 31 + stats.getFlavor();
-        hash = hash * 31 + stats.getStability();
-
-        int r = (int)((hash >> 0) & 0xFF);
-        int g = (int)((hash >> 8) & 0xFF);
-        int b = (int)((hash >> 16) & 0xFF);
-
-        // Evitar colores demasiado oscuros
-        r = (r + 128) / 2;
-        g = (g + 128) / 2;
-        b = (b + 128) / 2;
-
-        return (r << 16) | (g << 8) | b;
+        return Color.HSBtoRGB(
+                hue / 360f,
+                Math.min(saturation, 1f),
+                Math.min(brightness, 1f)
+        );
     }
-
 
     private static float clamp(float value, float min, float max) {
         return Math.max(min, Math.min(max, value));

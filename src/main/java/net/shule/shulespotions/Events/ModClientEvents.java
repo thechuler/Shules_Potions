@@ -8,38 +8,35 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.shule.shulespotions.Blocks.Entities.PotionSplashBE;
+import net.shule.shulespotions.Blocks.Entities.SpoonRackBE;
 import net.shule.shulespotions.Blocks.ModBlockEntities;
 import net.shule.shulespotions.Blocks.ModBlocks;
 import net.shule.shulespotions.Blocks.Renders.PotionCauldronRenderer;
+import net.shule.shulespotions.Blocks.Renders.SpoonRackRenderer;
+import net.shule.shulespotions.Entities.ModEntities;
+import net.shule.shulespotions.Entities.Models.PotionSplashProjectileModel;
+import net.shule.shulespotions.Entities.Renders.PotionSplashProjectileRenderer;
 import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Fluids.PotionFluidHelper;
 import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.Items.custom.PotionLiquidBottleItem;
 import net.shule.shulespotions.Items.custom.RecipeScroll;
 import net.shule.shulespotions.Particles.Custom.BubbleProvider;
-import net.shule.shulespotions.Particles.Custom.PotionSplashProvider;
+import net.shule.shulespotions.Particles.Custom.PotionExplotionProvider;
 import net.shule.shulespotions.Particles.ModParticles;
-import net.shule.shulespotions.Potions.IngredientStat;
-import net.shule.shulespotions.Potions.ItemStatRegistry;
 import net.shule.shulespotions.Renders.CoveredOnPotionLiquidLayer;
 import net.shule.shulespotions.ShulesPotions;
 
@@ -52,17 +49,35 @@ public class ModClientEvents {
                 ModBlockEntities.POTION_CAULDRON_BE.get(),
                 PotionCauldronRenderer::new
         );
+        event.registerBlockEntityRenderer(
+                ModBlockEntities.SPOON_RACK_BE.get(),
+                SpoonRackRenderer::new
+        );
+        event.registerEntityRenderer(
+                ModEntities.POTION_SPLASH_PROJECTILE.get(),
+                PotionSplashProjectileRenderer::new
+        );
     }
 
+    @SubscribeEvent
+    public static void registerLayerDefinitions(
+            EntityRenderersEvent.RegisterLayerDefinitions event) {
+
+        event.registerLayerDefinition(
+                PotionSplashProjectileModel.LAYER_LOCATION,
+                PotionSplashProjectileModel::createBodyLayer
+        );
+    }
 
     @SubscribeEvent
     public static void  registerParticles(RegisterParticleProvidersEvent event){
 
         event.registerSpriteSet(ModParticles.BUBBLE.get(), BubbleProvider::new);
-        event.registerSpriteSet(ModParticles.POTION_SPLASH.get(), PotionSplashProvider::new);
-
+        event.registerSpriteSet(ModParticles.POTION_EXPLOTION.get(), PotionExplotionProvider::new);
 
     }
+
+
 
 
 

@@ -14,6 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.shule.shulespotions.Blocks.Custom.PotionCauldron;
 import net.shule.shulespotions.Blocks.Custom.PotionSplashBlock;
 import net.shule.shulespotions.Blocks.Custom.SmallPotionBlock;
+import net.shule.shulespotions.Blocks.Custom.SpoonRack;
 import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.ShulesPotions;
@@ -50,6 +51,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> POTION_SPLASH = registerBlock("potion_splash",
             () -> new PotionSplashBlock(BlockBehaviour.Properties.copy(Blocks.SLIME_BLOCK)));
+
+    public static final RegistryObject<Block> SPOON_RACK = registerBlock("spoon_rack",
+            () -> new SpoonRack(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL)));
 
 
 

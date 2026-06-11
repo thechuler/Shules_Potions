@@ -31,15 +31,26 @@ public class ModItems {
 
     public static final RegistryObject<Item> RECIPE_BOOK = ITEMS.register("recipe_book", () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> WOODEN_SPOON = ITEMS.register("wooden_spoon", () -> new SpoonItem(StirToolType.WOOD,new Item.Properties(),"wooden"));
+    public static final RegistryObject<Item> WOODEN_SPOON = ITEMS.register("wooden_spoon", () -> new SpoonItem(StirToolType.WOOD,new Item.Properties().stacksTo(1),"wooden"));
 
-    public static final RegistryObject<Item> GOLDEN_SPOON = ITEMS.register("golden_spoon", () -> new SpoonItem(StirToolType.GOLD,new Item.Properties(),"golden"));
+    public static final RegistryObject<Item> GOLDEN_SPOON = ITEMS.register("golden_spoon", () -> new SpoonItem(StirToolType.GOLD,new Item.Properties().stacksTo(1),"golden"));
+
+    public static final RegistryObject<Item> DIAMOND_SPOON = ITEMS.register("diamond_spoon", () -> new SpoonItem(StirToolType.DIAMOND,new Item.Properties().stacksTo(1),"diamond"));
+
+    public static final RegistryObject<Item> STONE_SPOON = ITEMS.register("stone_spoon", () -> new SpoonItem(StirToolType.IRON,new Item.Properties().stacksTo(1),"iron"));
+
+    public static final RegistryObject<Item> IRON_SPOON = ITEMS.register("iron_spoon", () -> new SpoonItem(StirToolType.STONE,new Item.Properties().stacksTo(1),"stone"));
+
 
     public static final RegistryObject<Item> RECIPE_SCROLL = ITEMS.register("recipe_scroll", () -> new RecipeScroll(new Item.Properties()));
 
-    public static final RegistryObject<Item> ALCHEMIST_MONOCLE = ITEMS.register("alchemist_monocle", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> ALCHEMIST_MONOCLE = ITEMS.register("alchemist_monocle", () -> new Item(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> MANDRAKE_SEED = ITEMS.register("mandrake_seed", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<Item> ROTTEN_APPLE = ITEMS.register("rotten_apple", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<Item> GHAST_HEART = ITEMS.register("ghast_heart", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> POTION_HOMUNCULUS = ITEMS.register("potion_homunculus", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
 

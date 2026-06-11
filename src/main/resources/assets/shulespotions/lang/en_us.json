@@ -1,11 +1,18 @@
 {
   "block.shulespotions.potion_cauldron": "Potion Cauldron",
+  "block.shulespotions.potionshelf": "PotionShelf",
+  "block.shulespotions.spoon_rack": "Spoon Rack",
+
   "creativetab.main_tab": "Shule's Potions",
   "item.shulespotions.recipe_scroll": "Recipe Scroll",
   "item.shulespotions.wooden_spoon": "Wooden Spoon",
   "item.shulespotions.golden_spoon": "Golden Spoon",
+  "item.shulespotions.iron_spoon": "Iron Spoon",
+  "item.shulespotions.diamond_spoon": "Diamond Spoon",
+  "item.shulespotions.stone_spoon": "Stone Spoon",
   "item.shulespotions.potion_barrel": "Potion Barrel",
 
+  "item.shulespotions.rotten_apple": "Rotten Apple",
   "item.shulespotions.rotten_fish": "Rotten Fish",
   "item.shulespotions.emerald_dust": "Emerald Dust",
   "item.shulespotions.iron_dust": "Iron Dust",
@@ -13,21 +20,24 @@
   "item.shulespotions.alchemist_monocle": "Alchemist's Monocle",
   "item.shulespotions.mandrake_seed": "Mandrake Seed",
   "item.shulespotions.potion_homunculus": "Potion Homunculus",
+  "item.shulespotions.ghast_heart": "Ghast Heart",
+
+
+  "effect.shulespotions.potion_splashed": "Potion Splashed",
 
 
   "tooltip.shulespotions.recipe_scroll": "Right click on a filled cauldron to save the recipe!",
-
   "tooltip.shulespotions.spoon.wooden":"Increase Duration by 5 Seconds",
   "tooltip.shulespotions.spoon.golden":"Duplicates Vitality, Purity, Flavor and Stability",
-
   "tooltip.shulespotions.alchemist_monocle": "When on inventory: Shows the alchemical properties of an item",
   "tooltip.shulespotions.alchemist_monocle_tittle": "Alchemical Properties",
   "tooltip.shulespotions.alchemist_monocle_purity": "Purity: %s",
   "tooltip.shulespotions.alchemist_monocle_vitality": "Vitality: %s",
   "tooltip.shulespotions.alchemist_monocle_stability": "Stability: %s",
   "tooltip.shulespotions.alchemist_monocle_flavor": "Flavor: %s",
+  "tooltip.shulespotions.comingsoon":"Work in progress :D",
 
 
-  "tooltip.shulespotions.comingsoon":"Work in progress :D"
+  "sounds.shulespotions.cauldron_boiling": "Cauldron boiling"
 
 }

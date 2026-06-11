@@ -27,13 +27,16 @@ import net.shule.shulespotions.Blocks.ModBlockEntities;
 import net.shule.shulespotions.Blocks.ModBlocks;
 
 
+import net.shule.shulespotions.Entities.ModEntities;
 import net.shule.shulespotions.Fluids.ModFluidTypes;
 import net.shule.shulespotions.Fluids.ModFluids;
 
 import net.shule.shulespotions.Items.ModCreativeTab;
 import net.shule.shulespotions.Items.ModItems;
+import net.shule.shulespotions.Messages.ModMessages;
 import net.shule.shulespotions.MobEffects.ModMobEffects;
 import net.shule.shulespotions.Particles.ModParticles;
+import net.shule.shulespotions.Sounds.ModSounds;
 import net.shule.shulespotions.util.CauldronActions.AddIngredientAction;
 import net.shule.shulespotions.util.CauldronActions.CauldronActionRegistry;
 import net.shule.shulespotions.util.CauldronActions.StirAction;
@@ -53,13 +56,17 @@ public class ShulesPotions {
         ModBlocks.register(modEventBus);
         ModCreativeTab.register(modEventBus);
         ModBlockEntities.register(modEventBus);
+        ModEntities.ENTITIES.register(modEventBus);
         ModParticles.register(modEventBus);
+        ModSounds.SOUND_EVENTS.register(modEventBus);
         ModFluids.register(modEventBus);
         ModFluidTypes.register(modEventBus);
         ModMobEffects.register(modEventBus);
+        ModMessages.register();
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
+
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

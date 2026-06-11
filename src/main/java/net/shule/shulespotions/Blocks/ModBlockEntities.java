@@ -8,6 +8,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
 import net.shule.shulespotions.Blocks.Entities.PotionSplashBE;
 import net.shule.shulespotions.Blocks.Entities.SmallPotionBlockBE;
+import net.shule.shulespotions.Blocks.Entities.SpoonRackBE;
 import net.shule.shulespotions.ShulesPotions;
 
 public class ModBlockEntities {
@@ -42,6 +43,18 @@ public class ModBlockEntities {
                             ModBlocks.POTION_SPLASH.get()
                     ).build(null)
             );
+
+    public static final RegistryObject<BlockEntityType<SpoonRackBE>>
+            SPOON_RACK_BE =
+            BLOCK_ENTITIES.register(
+                    "spoon_rack_be",
+                    () -> BlockEntityType.Builder.of(
+                            SpoonRackBE::new,
+                            ModBlocks.SPOON_RACK.get()
+                    ).build(null)
+            );
+
+
 
 
     public static void register(IEventBus eventBus) {
