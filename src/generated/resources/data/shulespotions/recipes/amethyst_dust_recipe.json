@@ -1,0 +1,22 @@
+{
+  "type": "shulespotions:mortar",
+  "bowls": 3,
+  "color": "#b38ef3",
+  "experience": 0.5,
+  "grinds": 2,
+  "ingredients": [
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "shulespotions:amethyst_dust"
+  }
+}

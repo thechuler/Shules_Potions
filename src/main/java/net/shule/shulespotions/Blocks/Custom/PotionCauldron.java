@@ -51,7 +51,7 @@ public class PotionCauldron extends BaseEntityBlock {
 
     private static final VoxelShape INSIDE = box(2.0D, 3.0D, 2.0D, 14.0D, 15.0D, 14.0D);
 
-    protected static final VoxelShape SHAPE = Shapes.or(box(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D), box(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D), box(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), INSIDE);
+   protected static final VoxelShape SHAPE = Shapes.or(box(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D), box(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D), box(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), INSIDE);
 
     public PotionCauldron(Properties pProperties, int maxIngredientCount, int maxLiquidLevel) {
         super(pProperties);
@@ -79,29 +79,6 @@ public class PotionCauldron extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-
-        if (!level.isClientSide() && player.isShiftKeyDown()) {
-
-            BlockEntity be = level.getBlockEntity(pos);
-
-            if (be instanceof PotionCauldronBE cauldron) {
-
-                var potion = cauldron.getPotionLiquid();
-                var stats = potion.getStats();
-
-                player.sendSystemMessage(
-                        net.minecraft.network.chat.Component.literal(
-                                "Purity: " + stats.getPurity() +
-                                        " | Vitality: " + stats.getVitality() +
-                                        " | Flavor: " + stats.getFlavor() +
-                                        " | Stability: " + stats.getStability()
-                        )
-                );
-
-                return InteractionResult.SUCCESS;
-            }
-        }
-
 
 
         ItemStack stack = player.getItemInHand(hand);
@@ -210,15 +187,6 @@ public class PotionCauldron extends BaseEntityBlock {
 
             PotionCauldronBE.tick(lvl, cauldron);
 
-
-            if(cauldron.getTank().isEmpty()||
-                    cauldron.getActions().size() >= MAX_INGREDIENT_COUNT) {
-                return;
-            }
-
-            if (cauldron.getTank().getFluid().getFluid() == Fluids.WATER) {
-                return;
-            }
 
             if (lvl.isClientSide) {
                 cauldron.clientTick();

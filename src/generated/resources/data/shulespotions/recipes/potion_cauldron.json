@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "P": {
+      "item": "shulespotions:small_potion_bottle"
+    }
+  },
+  "pattern": [
+    "I I",
+    "IPI",
+    "III"
+  ],
+  "result": {
+    "item": "shulespotions:potion_cauldron"
+  },
+  "show_notification": true
+}

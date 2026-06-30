@@ -5,5 +5,8 @@ public enum StirToolType {
     IRON,
     GOLD,
     DIAMOND,
-    STONE
+    STONE,
+    BASTION,
+    SPONGE,
+    ENDER
 }

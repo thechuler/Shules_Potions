@@ -16,6 +16,12 @@ public class ColorUtils {
     }
 
 
+        public static int fromHex(String hex) {
+            return Integer.parseUnsignedInt(hex.replace("#", ""), 16);
+        }
+
+
+
     public static int lerpColor(int colorA, int colorB, float t) {
         t = Math.max(0, Math.min(1, t));
 
@@ -55,4 +61,21 @@ public class ColorUtils {
         return (red << 16) | (green << 8) | blue;
     }
 
+
+    public static int mixColors(int c1, int c2) {
+
+        int r1 = (c1 >> 16) & 0xFF;
+        int g1 = (c1 >> 8) & 0xFF;
+        int b1 = c1 & 0xFF;
+
+        int r2 = (c2 >> 16) & 0xFF;
+        int g2 = (c2 >> 8) & 0xFF;
+        int b2 = c2 & 0xFF;
+
+        int r = (r1 + r2) / 2;
+        int g = (g1 + g2) / 2;
+        int b = (b1 + b2) / 2;
+
+        return (r << 16) | (g << 8) | b;
+    }
 }

@@ -1,0 +1,15 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "shulespotions:block/potionshelf_0"
+      },
+      {
+        "model": "shulespotions:block/potionshelf_1"
+      },
+      {
+        "model": "shulespotions:block/potionshelf_2"
+      }
+    ]
+  }
+}

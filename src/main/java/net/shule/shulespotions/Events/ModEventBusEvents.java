@@ -109,37 +109,61 @@ public class ModEventBusEvents {
                         .withStyle(ChatFormatting.GOLD)
         );
 
-        event.getToolTip().add(
-                Component.translatable(
-                        "tooltip.shulespotions.alchemist_monocle_purity",
-                        stats.getPurity()
-                )
-                        .withStyle(ChatFormatting.WHITE)
-        );
 
-        event.getToolTip().add(
-                Component.translatable(
-                        "tooltip.shulespotions.alchemist_monocle_vitality",
-                        stats.getVitality()
-                )
-                        .withStyle(ChatFormatting.RED)
-        );
+        if(stats.getPurity() != 0) {
+            event.getToolTip().add(
+                    Component.translatable(
+                                    "tooltip.shulespotions.alchemist_monocle_purity",
+                                    stats.getPurity()
+                            )
+                            .withStyle(ChatFormatting.WHITE)
+            );
+        }
 
-        event.getToolTip().add(
-                Component.translatable(
-                        "tooltip.shulespotions.alchemist_monocle_flavor",
-                        stats.getFlavor()
-                )
-                        .withStyle(ChatFormatting.DARK_RED)
-        );
+        if(stats.getVitality() != 0) {
+            event.getToolTip().add(
+                    Component.translatable(
+                                    "tooltip.shulespotions.alchemist_monocle_vitality",
+                                    stats.getVitality()
+                            )
+                            .withStyle(ChatFormatting.RED)
+            );
+        }
 
-        event.getToolTip().add(
-                Component.translatable(
-                        "tooltip.shulespotions.alchemist_monocle_stability",
-                        stats.getStability()
-                )
-                        .withStyle(ChatFormatting.AQUA)
-        );
+        if(stats.getFlavor() != 0) {
+            event.getToolTip().add(
+                    Component.translatable(
+                                    "tooltip.shulespotions.alchemist_monocle_flavor",
+                                    stats.getFlavor()
+                            )
+                            .withStyle(ChatFormatting.DARK_RED)
+            );
+        }
+
+
+        if(stats.getStability() != 0) {
+            event.getToolTip().add(
+                    Component.translatable(
+                                    "tooltip.shulespotions.alchemist_monocle_stability",
+                                    stats.getStability()
+                            )
+                            .withStyle(ChatFormatting.AQUA)
+            );
+        }
+
+        if (stats.getDuration() != 0) {
+            int totalSeconds = stats.getDuration() / 20;
+            int minutes = totalSeconds / 60;
+            int seconds = totalSeconds % 60;
+            event.getToolTip().add(
+                    Component.translatable(
+                            "tooltip.shulespotions.alchemist_monocle_duration",
+                            String.format("%d:%02d", minutes, seconds)
+                    ).withStyle(ChatFormatting.GREEN)
+            );
+        }
+
+
         if (!stats.getEffectWeights().isEmpty()) {
 
             event.getToolTip().add(Component.empty());

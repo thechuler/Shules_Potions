@@ -1,9 +1,13 @@
-// 1.20.1	2026-05-17T01:35:25.3644406	Recipes
+// 1.20.1	2026-06-30T18:31:43.982737	Recipes
 d0b6f88aad8afc76927726a6c597fbff5a45c7b2 data/shulespotions/advancements/recipes/brewing/big_potion_bottle.json
 be9e9e67c6a98d77b27b865b7b24e47b5771e327 data/shulespotions/advancements/recipes/brewing/large_potion_bottle.json
 2728c987154da18700a94514c2e24db194276461 data/shulespotions/advancements/recipes/brewing/potion_cauldron.json
 12588c9ba6e1d6cde2d0736e20fbe063d36eedb8 data/shulespotions/advancements/recipes/brewing/small_potion_bottle.json
+53ec6437cdb386c2a9900ca121a43462a8d80c67 data/shulespotions/recipes/amethyst_dust_recipe.json
 8d9d75a599cea6ec13013e40f1d966b5ef7437ea data/shulespotions/recipes/big_potion_bottle.json
+832924b859b9c7cac5153c6bd66f97430b55679c data/shulespotions/recipes/diamond_dust_recipe.json
+6de847da38831a0de4238d26a4540fcffd98b731 data/shulespotions/recipes/iron_dust_recipe.json
 8479de7857815c38af3c02e05fc1a0cca6b3772e data/shulespotions/recipes/large_potion_bottle.json
+f05061206381627dc9b13e2626e84e9b206e8114 data/shulespotions/recipes/netherite_dust_recipe.json
 07a8d72d03822e198fe8b3fd795c91b3b7751c0f data/shulespotions/recipes/potion_cauldron.json
 e9422fa579e1f73c6bf874fe802fe8e9ed7b8ce0 data/shulespotions/recipes/small_potion_bottle.json

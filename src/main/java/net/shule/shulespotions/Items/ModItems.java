@@ -37,9 +37,18 @@ public class ModItems {
 
     public static final RegistryObject<Item> DIAMOND_SPOON = ITEMS.register("diamond_spoon", () -> new SpoonItem(StirToolType.DIAMOND,new Item.Properties().stacksTo(1),"diamond"));
 
-    public static final RegistryObject<Item> STONE_SPOON = ITEMS.register("stone_spoon", () -> new SpoonItem(StirToolType.IRON,new Item.Properties().stacksTo(1),"iron"));
+    public static final RegistryObject<Item> STONE_SPOON = ITEMS.register("stone_spoon", () -> new SpoonItem(StirToolType.STONE,new Item.Properties().stacksTo(1),"stone"));
 
-    public static final RegistryObject<Item> IRON_SPOON = ITEMS.register("iron_spoon", () -> new SpoonItem(StirToolType.STONE,new Item.Properties().stacksTo(1),"stone"));
+    public static final RegistryObject<Item> IRON_SPOON = ITEMS.register("iron_spoon", () -> new SpoonItem(StirToolType.IRON,new Item.Properties().stacksTo(1),"iron"));
+
+    public static final RegistryObject<Item> BASTION_SPOON = ITEMS.register("bastion_spoon", () -> new SpoonItem(StirToolType.BASTION,new Item.Properties().stacksTo(1),"bastion"));
+
+    public static final RegistryObject<Item> SPONGE_SPOON = ITEMS.register("sponge_spoon", () -> new SpoonItem(StirToolType.SPONGE,new Item.Properties().stacksTo(1),"sponge"));
+
+    public static final RegistryObject<Item> ENDER_SPOON = ITEMS.register("ender_spoon", () -> new SpoonItem(StirToolType.ENDER,new Item.Properties().stacksTo(1),"ender"));
+
+
+    public static final RegistryObject<Item> PESTLE = ITEMS.register("pestle", () -> new Pestle(new Item.Properties()));
 
 
     public static final RegistryObject<Item> RECIPE_SCROLL = ITEMS.register("recipe_scroll", () -> new RecipeScroll(new Item.Properties()));
@@ -59,6 +68,19 @@ public class ModItems {
     public static final RegistryObject<Item> EMERALD_DUST = ITEMS.register("emerald_dust", () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> IRON_DUST = ITEMS.register("iron_dust", () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> AMETHYST_DUST = ITEMS.register("amethyst_dust", () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> GOLD_DUST = ITEMS.register("gold_dust", () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> COPPER_DUST = ITEMS.register("copper_dust", () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> DIAMOND_DUST = ITEMS.register("diamond_dust", () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> CRUSHED_EYE = ITEMS.register("crushed_eye", () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> NETHERITE_DUST = ITEMS.register("netherite_dust", () -> new Item(new Item.Properties()));
+
 
     public static final RegistryObject<Item> ONYX = ITEMS.register("onyx", () -> new Item(new Item.Properties()));
 

@@ -36,6 +36,8 @@ import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.Messages.ModMessages;
 import net.shule.shulespotions.MobEffects.ModMobEffects;
 import net.shule.shulespotions.Particles.ModParticles;
+import net.shule.shulespotions.Recipes.ModRecipeSerializers;
+import net.shule.shulespotions.Recipes.ModRecipeTypes;
 import net.shule.shulespotions.Sounds.ModSounds;
 import net.shule.shulespotions.util.CauldronActions.AddIngredientAction;
 import net.shule.shulespotions.util.CauldronActions.CauldronActionRegistry;
@@ -66,6 +68,8 @@ public class ShulesPotions {
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
+        ModRecipeTypes.register(modEventBus);
+        ModRecipeSerializers.register(modEventBus);
 
     }
 

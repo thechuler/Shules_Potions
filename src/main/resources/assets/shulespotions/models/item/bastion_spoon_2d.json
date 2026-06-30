@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "shulespotions:item/bastion_spoon_2d"
+  }
+}

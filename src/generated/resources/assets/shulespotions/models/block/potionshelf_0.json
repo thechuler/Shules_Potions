@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "shulespotions:block/potionshelf_top",
+    "side": "shulespotions:block/potionshelf"
+  }
+}

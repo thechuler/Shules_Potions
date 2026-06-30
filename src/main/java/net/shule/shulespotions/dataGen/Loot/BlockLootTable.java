@@ -21,17 +21,13 @@ public class BlockLootTable extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        this.add(ModBlocks. POTION_CAULDRON.get(),
-                block -> createOreDrop(ModBlocks.POTION_CAULDRON.get(), ModBlocks.POTION_CAULDRON.get().asItem())
-        );
-        this.add(ModBlocks. ALCHEMIST_WOOD.get(),
-                block -> createOreDrop(ModBlocks.ALCHEMIST_WOOD.get(), ModBlocks.ALCHEMIST_WOOD.get().asItem())
-        );
-
         this.add(ModBlocks. SMALL_POTION_BLOCK.get(),
                 block -> createOreDrop(ModBlocks.SMALL_POTION_BLOCK.get(), ModBlocks.SMALL_POTION_BLOCK.get().asItem())
         );
 
+        dropSelf(ModBlocks.MORTAR.get());
+        dropSelf(ModBlocks.COPPER_CAULDRON.get());
+        dropSelf(ModBlocks.POTION_CAULDRON.get());
         dropSelf(ModBlocks.POTIONSHELF.get());
         dropSelf(ModBlocks.SPOON_RACK.get());
         this.add(ModBlocks.POTION_SPLASH.get(),noDrop());

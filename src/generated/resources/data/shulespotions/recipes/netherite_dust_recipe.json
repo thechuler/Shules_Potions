@@ -1,0 +1,22 @@
+{
+  "type": "shulespotions:mortar",
+  "bowls": 8,
+  "color": "#3b393b",
+  "experience": 0.5,
+  "grinds": 6,
+  "ingredients": [
+    {
+      "item": "minecraft:netherite_ingot"
+    },
+    {
+      "item": "minecraft:netherite_ingot"
+    },
+    {
+      "item": "minecraft:netherite_ingot"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "shulespotions:netherite_dust"
+  }
+}

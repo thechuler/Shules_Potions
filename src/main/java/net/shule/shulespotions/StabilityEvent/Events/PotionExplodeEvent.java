@@ -18,6 +18,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.network.PacketDistributor;
 import net.shule.shulespotions.Blocks.Entities.PotionSplashBE;
 import net.shule.shulespotions.Blocks.ModBlocks;
@@ -37,8 +38,8 @@ import java.util.Random;
 
 public class PotionExplodeEvent implements StabilityEvent {
     @Override
-    public boolean canTrigger(CauldronContext ctx) {
-        return ctx.getCauldron().getPotionLiquid().getStats().getStability() <= -15;
+    public boolean canTrigger(int stability) {
+        return stability <= 25;
     }
 
     @Override
@@ -53,13 +54,15 @@ public class PotionExplodeEvent implements StabilityEvent {
 
         int color = ctx.getCauldron()
                 .getPotionLiquid()
-                .getColor();
+                .getStats().getColor();
 
 
         ctx.getCauldron().triggerExplosionParticles(color);
         spawnPotionSplashes(level, pos, 40, color);
         spawnPotionProjectiles(level, color, ctx.getCauldron(), 30);
         applyEffectInArea(level,pos,color);
+        ctx.getCauldron().getTank().drain(ctx.getCauldron().getTank().getFluidAmount(),
+                IFluidHandler.FluidAction.EXECUTE);
 
     }
 

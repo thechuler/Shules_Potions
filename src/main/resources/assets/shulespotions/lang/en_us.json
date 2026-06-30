@@ -1,7 +1,9 @@
 {
   "block.shulespotions.potion_cauldron": "Potion Cauldron",
+  "block.shulespotions.copper_cauldron": "Copper Cauldron",
   "block.shulespotions.potionshelf": "PotionShelf",
   "block.shulespotions.spoon_rack": "Spoon Rack",
+  "block.shulespotions.mortar": "Mortar",
 
   "creativetab.main_tab": "Shule's Potions",
   "item.shulespotions.recipe_scroll": "Recipe Scroll",
@@ -10,12 +12,24 @@
   "item.shulespotions.iron_spoon": "Iron Spoon",
   "item.shulespotions.diamond_spoon": "Diamond Spoon",
   "item.shulespotions.stone_spoon": "Stone Spoon",
+  "item.shulespotions.bastion_spoon": "Bastion Spoon",
+  "item.shulespotions.sponge_spoon": "Sponge Spoon",
+  "item.shulespotions.ender_spoon": "Ender Spoon",
+
+
   "item.shulespotions.potion_barrel": "Potion Barrel",
+  "item.shulespotions.pestle": "Pestle",
 
   "item.shulespotions.rotten_apple": "Rotten Apple",
   "item.shulespotions.rotten_fish": "Rotten Fish",
   "item.shulespotions.emerald_dust": "Emerald Dust",
   "item.shulespotions.iron_dust": "Iron Dust",
+  "item.shulespotions.copper_dust": "Copper Dust",
+  "item.shulespotions.amethyst_dust": "Amethyst Dust",
+  "item.shulespotions.diamond_dust": "Diamond Dust",
+  "item.shulespotions.netherite_dust": "Netherite Dust",
+  "item.shulespotions.gold_dust": "Gold Dust",
+  "item.shulespotions.crushed_eye": "Crushed Eye",
   "item.shulespotions.onyx": "Onyx",
   "item.shulespotions.alchemist_monocle": "Alchemist's Monocle",
   "item.shulespotions.mandrake_seed": "Mandrake Seed",
@@ -27,14 +41,31 @@
 
 
   "tooltip.shulespotions.recipe_scroll": "Right click on a filled cauldron to save the recipe!",
-  "tooltip.shulespotions.spoon.wooden":"Increase Duration by 5 Seconds",
-  "tooltip.shulespotions.spoon.golden":"Duplicates Vitality, Purity, Flavor and Stability",
+  "tooltip.shulespotions.spoon.wooden":"Increase Duration",
+  "tooltip.shulespotions.spoon.wooden.info":"+5s Duration",
+  "tooltip.shulespotions.spoon.stone":"Increase Purity",
+  "tooltip.shulespotions.spoon.stone.info":"+15 Purity",
+  "tooltip.shulespotions.spoon.iron":"Increase Stability by decreasing Flavor",
+  "tooltip.shulespotions.spoon.iron.info":"+20 Stability, -20 Flavor",
+  "tooltip.shulespotions.spoon.diamond":"Increase vitality but resets stability",
+  "tooltip.shulespotions.spoon.diamond.info":"+40 Vitality, Stability = 0",
+  "tooltip.shulespotions.spoon.bastion":"Consume the weakest effect to increase the Strongest one",
+  "tooltip.shulespotions.spoon.bastion.info":"-1 Effect, +(Weakest%) to the Strongest",
+  "tooltip.shulespotions.spoon.golden":"Duplicates Purity and Duration by Losing Stability",
+  "tooltip.shulespotions.spoon.golden.info":"Purity x2, Duration x2,-30 Stability",
+  "tooltip.shulespotions.spoon.sponge":"Deletes a random effect to increase Stability",
+  "tooltip.shulespotions.spoon.sponge.info":"-1 Effect",
+  "tooltip.shulespotions.spoon.ender":"Permutates the effects",
+  "tooltip.shulespotions.spoon.ender.info":"Shuffle Effect %",
+  "tooltip.shulespotions.hold_shift": "Hold shift for more info.",
   "tooltip.shulespotions.alchemist_monocle": "When on inventory: Shows the alchemical properties of an item",
+
   "tooltip.shulespotions.alchemist_monocle_tittle": "Alchemical Properties",
   "tooltip.shulespotions.alchemist_monocle_purity": "Purity: %s",
   "tooltip.shulespotions.alchemist_monocle_vitality": "Vitality: %s",
   "tooltip.shulespotions.alchemist_monocle_stability": "Stability: %s",
   "tooltip.shulespotions.alchemist_monocle_flavor": "Flavor: %s",
+  "tooltip.shulespotions.alchemist_monocle_duration": "Duration: %s",
   "tooltip.shulespotions.comingsoon":"Work in progress :D",
 
 

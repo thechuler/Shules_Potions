@@ -18,7 +18,7 @@ public class ProviderBlockState extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        blockWithItem(ModBlocks.ALCHEMIST_WOOD);
+       // blockWithItem(ModBlocks.ALCHEMIST_WOOD);
       //  blockWithItem(ModBlocks.POTIONSHELF);
         createRandomShelf(ModBlocks.POTIONSHELF.get());
 

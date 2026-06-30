@@ -103,8 +103,6 @@ public class PotionCauldronBE extends BlockEntity {
 
     public void checkItem(ItemStack item) {
 
-     //   if (level == null || level.isClientSide) return;
-
         if (actions.size() >= getMaxIngredients()) return;
 
         if (tank.isEmpty()) return;
@@ -120,7 +118,7 @@ public class PotionCauldronBE extends BlockEntity {
 
             PotionFluidHelper.withPotionLiquid(
                     potionFluid,
-                    new PotionLiquid()
+                    createInitialPotionLiquid()
             );
 
             tank.setFluid(potionFluid);
@@ -130,6 +128,14 @@ public class PotionCauldronBE extends BlockEntity {
     }
 
 
+    protected PotionLiquid createInitialPotionLiquid() {
+        PotionLiquid potion = new PotionLiquid();
+
+        potion.getStats().setStability(100);
+        potion.getStats().setDuration(100);
+
+        return potion;
+    }
 
     public void applyAction(CauldronAction action, @Nullable Player player) {
 
@@ -165,7 +171,7 @@ public class PotionCauldronBE extends BlockEntity {
 
         int color = PotionLiquidUtils.generatePotionColor(potion);
 
-        potion.setColor(color);
+        potion.getStats().setColor(color);
 
         PotionFluidHelper.withPotionLiquid(fluid, potion);
 
@@ -182,10 +188,10 @@ public class PotionCauldronBE extends BlockEntity {
 
         StabilityEvent event = new PotionExplodeEvent();
 
-        if (event.canTrigger(ctx)) {
+        if (event.canTrigger(current)) {
             float chance = event.getChance(ctx);
 
-            if (level.random.nextFloat() < chance) {
+            if (level.random.nextFloat() > chance) {
                 event.trigger(ctx);
 
             }
@@ -335,8 +341,6 @@ public class PotionCauldronBE extends BlockEntity {
         if (!level.isClientSide)
             return;
 
-
-
         if (explosionTriggerId != lastExplosionTriggerId) {
 
             lastExplosionTriggerId = explosionTriggerId;
@@ -344,6 +348,13 @@ public class PotionCauldronBE extends BlockEntity {
             spawnPotionExplosionParticles(explosionColor);
         }
 
+        if(this.getTank().isEmpty()|| this.getActions().size() >= getMaxIngredients()) {
+            return;
+        }
+
+        if (this.getTank().getFluid().getFluid() == Fluids.WATER) {
+            return;
+        }
 
         int color = getRenderColor();
         float[] rgb = intToRGB(color);
@@ -381,7 +392,6 @@ public class PotionCauldronBE extends BlockEntity {
         setChanged();
         sync();
     }
-
 
     private void spawnPotionExplosionParticles(int color) {
 

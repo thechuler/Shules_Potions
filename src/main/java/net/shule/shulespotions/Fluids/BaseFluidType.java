@@ -83,7 +83,7 @@ public class BaseFluidType extends FluidType {
             @Override
             public int getTintColor(FluidStack stack) {
                 PotionLiquid pl = PotionFluidHelper.getPotionLiquid(stack);
-                return 0xFF000000 | pl.getColor();
+                return 0xFF000000 | pl.getStats().getColor();
             }
 
             @Override

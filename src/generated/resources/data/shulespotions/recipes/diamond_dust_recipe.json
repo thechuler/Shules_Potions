@@ -1,0 +1,22 @@
+{
+  "type": "shulespotions:mortar",
+  "bowls": 6,
+  "color": "#4aedd9",
+  "experience": 0.5,
+  "grinds": 3,
+  "ingredients": [
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "shulespotions:diamond_dust"
+  }
+}

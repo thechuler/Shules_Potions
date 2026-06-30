@@ -11,10 +11,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import net.shule.shulespotions.Blocks.Custom.PotionCauldron;
-import net.shule.shulespotions.Blocks.Custom.PotionSplashBlock;
-import net.shule.shulespotions.Blocks.Custom.SmallPotionBlock;
-import net.shule.shulespotions.Blocks.Custom.SpoonRack;
+import net.shule.shulespotions.Blocks.Custom.*;
 import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.ShulesPotions;
@@ -37,6 +34,15 @@ public class ModBlocks {
     public static final RegistryObject<Block> POTION_CAULDRON = registerBlock("potion_cauldron",
             () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON),3,1000));
 
+    public static final RegistryObject<Block> COPPER_CAULDRON = registerBlock("copper_cauldron",
+            () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON),4,1000));
+
+    /*
+    public static final RegistryObject<Block> BIG_CAULDRON = registerBlock("big_cauldron",
+            () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON),10,1000));
+
+
+*/
     public static final RegistryObject<Block> SMALL_POTION_BLOCK = registerBlock("small_potion_block",
             () -> new SmallPotionBlock(BlockBehaviour.Properties.copy(Blocks.GLASS)));
 
@@ -44,11 +50,13 @@ public class ModBlocks {
     public static final RegistryObject<Block> POTIONSHELF = registerBlock("potionshelf",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.BOOKSHELF)));
 
+    public static final RegistryObject<Block> MORTAR = registerBlock("mortar",
+            () -> new Mortar(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
-
+/*
     public static final RegistryObject<Block> ALCHEMIST_WOOD = registerBlock("alchemist_wood",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.ACACIA_WOOD)));
-
+*/
     public static final RegistryObject<Block> POTION_SPLASH = registerBlock("potion_splash",
             () -> new PotionSplashBlock(BlockBehaviour.Properties.copy(Blocks.SLIME_BLOCK)));
 

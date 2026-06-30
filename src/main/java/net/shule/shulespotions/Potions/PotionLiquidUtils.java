@@ -55,7 +55,7 @@ public class PotionLiquidUtils {
         int vitality = potion.getStats().getVitality() + 100;
         int flavor = potion.getStats().getFlavor() + 100;
         int stability = potion.getStats().getStability() + 100;
-        int power = potion.getPower();
+        int power = purity + vitality;
 
         float hue =
                 (purity * 2f +

@@ -197,7 +197,7 @@ public class PotionLiquidBottleItem extends Item {
 
                     if (player != null) {
                         int amplifier = Math.min(4, pl.getStats().getPurity() / 20);
-                        player.addEffect(new MobEffectInstance(effect,pl.getDuration(),amplifier));
+                        player.addEffect(new MobEffectInstance(effect,pl.getStats().getDuration(),amplifier));
                     }
                 }
                 int flavor = pl.getStats().getFlavor();
@@ -253,23 +253,16 @@ public class PotionLiquidBottleItem extends Item {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(
-            @NotNull Level level,
-            @NotNull Player player,
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player,
             @NotNull InteractionHand hand) {
 
-        ItemStack stack =
-                player.getItemInHand(hand);
+        ItemStack stack = player.getItemInHand(hand);
 
         FluidStack fluid = getFluid(stack);
 
         if (!fluid.isEmpty()) {
 
-            return ItemUtils.startUsingInstantly(
-                    level,
-                    player,
-                    hand
-            );
+            return ItemUtils.startUsingInstantly(level, player, hand);
         }
 
         return InteractionResultHolder.pass(stack);
@@ -284,18 +277,13 @@ public class PotionLiquidBottleItem extends Item {
      */
 
     @Override
-    public @NotNull InteractionResult useOn(
-            UseOnContext context) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
 
         if (context.getLevel().isClientSide) {
             return InteractionResult.PASS;
         }
 
-        BlockEntity be =
-                context.getLevel()
-                        .getBlockEntity(
-                                context.getClickedPos()
-                        );
+        BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
 
         if (!(be instanceof PotionCauldronBE cauldron)) {
             return super.useOn(context);
@@ -303,11 +291,9 @@ public class PotionLiquidBottleItem extends Item {
 
         ItemStack stack = context.getItemInHand();
 
-        FluidStack bottleFluid =
-                getFluid(stack);
+        FluidStack bottleFluid = getFluid(stack);
 
-        FluidStack cauldronFluid =
-                cauldron.getTank().getFluid();
+        FluidStack cauldronFluid = cauldron.getTank().getFluid();
 
         /*
          *
@@ -323,31 +309,19 @@ public class PotionLiquidBottleItem extends Item {
                 return InteractionResult.FAIL;
             }
 
-            FluidStack copied =
-                    cauldronFluid.copy();
+            FluidStack copied = cauldronFluid.copy();
 
-            copied.setAmount(
-                    Math.min(
-                            capacity,
-                            cauldronFluid.getAmount()
-                    )
-            );
+            copied.setAmount(Math.min(capacity, cauldronFluid.getAmount()));
 
             setFluid(stack, copied);
 
-            PotionLiquid pl =
-                    PotionFluidHelper
-                            .getPotionLiquid(copied);
+            PotionLiquid pl = PotionFluidHelper.getPotionLiquid(copied);
 
-            List<MobEffect> effects =
-                    PotionLiquidUtils.resolve(pl);
+            List<MobEffect> effects = PotionLiquidUtils.resolve(pl);
 
             setResolvedEffects(stack, effects);
 
-            cauldron.getTank().drain(
-                    copied.getAmount(),
-                    IFluidHandler.FluidAction.EXECUTE
-            );
+            cauldron.getTank().drain(copied.getAmount(), IFluidHandler.FluidAction.EXECUTE);
 
             float pitch;
 
@@ -444,16 +418,11 @@ public class PotionLiquidBottleItem extends Item {
         PotionLiquid pl =
                 PotionFluidHelper.getPotionLiquid(fluid);
 
-        tooltip.add(
-                Component.literal(
-                        "Power: " + pl.getPower()
-                ).withStyle(ChatFormatting.RED)
-        );
 
         tooltip.add(
                 Component.literal(
                         "Duration: " +
-                                pl.getDuration() / 20
+                                pl.getStats().getDuration() / 20
                 ).withStyle(ChatFormatting.GREEN)
         );
 

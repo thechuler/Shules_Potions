@@ -1,6 +1,7 @@
 package net.shule.shulespotions.Items.custom;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -63,13 +64,23 @@ public class SpoonItem extends Item {
         return InteractionResult.SUCCESS;
     }
 
-    @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(
-                Component.translatable("tooltip.shulespotions.spoon."+this.tooltipId)
-                        .withStyle(ChatFormatting.DARK_GRAY)
-        );
 
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents,
+                                TooltipFlag isAdvanced) {
+
+        tooltipComponents.add(Component.translatable("tooltip.shulespotions.spoon." + this.tooltipId)
+                        .withStyle(ChatFormatting.GRAY));
+
+        if (Screen.hasShiftDown()) {
+            tooltipComponents.add(Component.translatable("tooltip.shulespotions.spoon."
+                            + this.tooltipId + ".info").withStyle(ChatFormatting.DARK_GRAY));
+        } else {
+            tooltipComponents.add(Component.empty());
+            tooltipComponents.add(Component.translatable("tooltip.shulespotions.hold_shift").withStyle(ChatFormatting.YELLOW));
+        }
+
+        super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
     }
 }

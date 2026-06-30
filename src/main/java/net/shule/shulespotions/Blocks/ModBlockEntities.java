@@ -5,10 +5,8 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
-import net.shule.shulespotions.Blocks.Entities.PotionSplashBE;
-import net.shule.shulespotions.Blocks.Entities.SmallPotionBlockBE;
-import net.shule.shulespotions.Blocks.Entities.SpoonRackBE;
+import net.shule.shulespotions.Blocks.Custom.Mortar;
+import net.shule.shulespotions.Blocks.Entities.*;
 import net.shule.shulespotions.ShulesPotions;
 
 public class ModBlockEntities {
@@ -20,7 +18,9 @@ public class ModBlockEntities {
     public static final RegistryObject<BlockEntityType<PotionCauldronBE>> POTION_CAULDRON_BE =
             BLOCK_ENTITIES.register("potion_cauldron_be", () ->
                     BlockEntityType.Builder.of(PotionCauldronBE::new,
-                            ModBlocks.POTION_CAULDRON.get()).build(null));
+                            ModBlocks.POTION_CAULDRON.get(),
+                                    ModBlocks.COPPER_CAULDRON.get()).
+                            build(null));
 
 
 
@@ -33,6 +33,17 @@ public class ModBlockEntities {
                             ModBlocks.SMALL_POTION_BLOCK.get()
                     ).build(null)
             );
+
+    public static final RegistryObject<BlockEntityType<MortarBE>>
+            MORTAR_BE =
+            BLOCK_ENTITIES.register(
+                    "mortar_be",
+                    () -> BlockEntityType.Builder.of(
+                            MortarBE::new,
+                            ModBlocks.MORTAR.get()
+                    ).build(null)
+            );
+
 
     public static final RegistryObject<BlockEntityType<PotionSplashBE>>
             POTION_SPLASH_BE =

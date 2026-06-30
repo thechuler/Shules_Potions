@@ -24,6 +24,7 @@ import net.shule.shulespotions.Blocks.Entities.PotionSplashBE;
 import net.shule.shulespotions.Blocks.Entities.SpoonRackBE;
 import net.shule.shulespotions.Blocks.ModBlockEntities;
 import net.shule.shulespotions.Blocks.ModBlocks;
+import net.shule.shulespotions.Blocks.Renders.MortarRender;
 import net.shule.shulespotions.Blocks.Renders.PotionCauldronRenderer;
 import net.shule.shulespotions.Blocks.Renders.SpoonRackRenderer;
 import net.shule.shulespotions.Entities.ModEntities;
@@ -52,6 +53,11 @@ public class ModClientEvents {
         event.registerBlockEntityRenderer(
                 ModBlockEntities.SPOON_RACK_BE.get(),
                 SpoonRackRenderer::new
+        );
+
+        event.registerBlockEntityRenderer(
+                ModBlockEntities.MORTAR_BE.get(),
+                MortarRender::new
         );
         event.registerEntityRenderer(
                 ModEntities.POTION_SPLASH_PROJECTILE.get(),
@@ -95,7 +101,7 @@ public class ModClientEvents {
 
                                 if (!fluid.isEmpty()) {
                                     return PotionFluidHelper
-                                            .getPotionLiquid(fluid)
+                                            .getPotionLiquid(fluid).getStats()
                                             .getColor();
                                 }
                             }
@@ -114,7 +120,7 @@ public class ModClientEvents {
 
                             if (!fluid.isEmpty()) {
                                 return PotionFluidHelper
-                                        .getPotionLiquid(fluid)
+                                        .getPotionLiquid(fluid).getStats()
                                         .getColor();
                             }
                         }

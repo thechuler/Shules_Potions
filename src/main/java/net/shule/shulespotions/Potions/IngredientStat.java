@@ -9,11 +9,19 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static net.shule.shulespotions.util.ColorUtils.mixColors;
+
 public class IngredientStat {
 
     public static final Codec<IngredientStat> CODEC =
             RecordCodecBuilder.create(instance ->
                     instance.group(
+
+                            Codec.INT.optionalFieldOf("duration", 0)
+                                    .forGetter(IngredientStat::getDuration),
+
+                            Codec.INT.optionalFieldOf("color", 0)
+                                    .forGetter(IngredientStat::getColor),
 
                             Codec.INT.optionalFieldOf("purity", 0)
                                     .forGetter(IngredientStat::getPurity),
@@ -40,22 +48,30 @@ public class IngredientStat {
     private int vitality;
     private int flavor;
     private int stability;
+    private int color;
+    private int duration;
     private Map<ResourceLocation, Integer> effectWeights = new HashMap<>();
 
-    public IngredientStat() {this.effectWeights = new HashMap<>();}
+    public IngredientStat() {
+        this.effectWeights = new HashMap<>();
+        this.color = 0x3F76E4;
+    }
 
     public IngredientStat(IngredientStat other) {
         this.purity = other.purity;
         this.vitality = other.vitality;
         this.flavor = other.flavor;
         this.stability = other.stability;
-
+        this.color = other.color;
+        this.duration = other.duration;
         this.effectWeights = new HashMap<>(other.effectWeights);
     }
 
 
-    public IngredientStat(int purity, int vitality, int flavor, int stability,
+    IngredientStat(int duration, int color, int purity, int vitality, int flavor, int stability,
             Map<ResourceLocation, Integer> effectWeights) {
+        this.duration =duration;
+        this.color = color;
         this.purity = purity;
         this.vitality = vitality;
         this.flavor = flavor;
@@ -71,7 +87,10 @@ public class IngredientStat {
 
         this.flavor = Math.max(-100, Math.min(100, this.flavor + other.flavor));
 
-        this.stability = Math.max(-100, Math.min(100, this.stability + other.stability));
+        this.stability = Math.max(0, Math.min(100, this.stability + other.stability));
+
+        this.duration += other.duration;
+        this.color = mixColors(this.color, other.color);
 
         other.effectWeights.forEach((effect, value) -> {
 
@@ -95,7 +114,8 @@ public class IngredientStat {
         tag.putInt("vitality", vitality);
         tag.putInt("flavor", flavor);
         tag.putInt("stability", stability);
-
+        tag.putInt("color", color);
+        tag.putInt("duration", duration);
         CompoundTag effectsTag = new CompoundTag();
 
         effectWeights.forEach((effectId, weight) -> {
@@ -123,6 +143,8 @@ public class IngredientStat {
         }
 
         return new IngredientStat(
+                tag.getInt("duration"),
+                tag.getInt("color"),
                 tag.getInt("purity"),
                 tag.getInt("vitality"),
                 tag.getInt("flavor"),
@@ -163,14 +185,47 @@ public class IngredientStat {
         return vitality;
     }
 
+    public void setColor(int Color) {
+        this.color = Color;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setDuration(int Duration) {
+        this.duration = Duration;
+    }
+
+    public int getDuration() {
+        return this.duration;
+    }
+
     public Map<ResourceLocation, Integer> getEffectWeights() {
         return Collections.unmodifiableMap(effectWeights);
     }
 
     public void addEffectWeight(ResourceLocation effect, int amount) {
-        effectWeights.merge(effect, amount, Integer::sum);
+
+        int newValue = effectWeights.getOrDefault(effect, 0) + amount;
+
+        if (newValue <= 0) {
+            effectWeights.remove(effect);
+        } else {
+            effectWeights.put(effect, Math.min(100, newValue));
+        }
     }
+
     public int getEffectWeight(ResourceLocation effect) {
         return effectWeights.getOrDefault(effect, 0);
+    }
+
+    public void setEffectWeight(ResourceLocation effect, int weight) {
+
+        if (weight <= 0) {
+            effectWeights.remove(effect);
+        } else {
+            effectWeights.put(effect, Math.min(weight, 100));
+        }
     }
 }

@@ -1,0 +1,22 @@
+{
+  "type": "shulespotions:mortar",
+  "bowls": 6,
+  "color": "#d8af93",
+  "experience": 0.5,
+  "grinds": 3,
+  "ingredients": [
+    {
+      "item": "minecraft:raw_iron"
+    },
+    {
+      "item": "minecraft:raw_iron"
+    },
+    {
+      "item": "minecraft:raw_iron"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "shulespotions:iron_dust"
+  }
+}

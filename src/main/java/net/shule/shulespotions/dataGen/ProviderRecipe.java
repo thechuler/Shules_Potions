@@ -9,11 +9,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.shule.shulespotions.Blocks.ModBlocks;
 import net.shule.shulespotions.Items.ModItems;
+import net.shule.shulespotions.Recipes.MortarRecipeBuilder;
+import net.shule.shulespotions.ShulesPotions;
 
 import java.util.function.Consumer;
 
 
-//Aca es donde agregamos las recetas de nuestro mod
+
 
 public class ProviderRecipe extends RecipeProvider {
     public ProviderRecipe(PackOutput pOutput) {
@@ -61,8 +63,29 @@ public class ProviderRecipe extends RecipeProvider {
                 .save(consumer);
 
 
+        MortarRecipeBuilder.mortar(ModItems.DIAMOND_DUST.get(),6,3,0.5f,"#4aedd9")
+                .addIngredient(Items.DIAMOND)
+                .addIngredient(Items.DIAMOND)
+                .addIngredient(Items.DIAMOND)
+                .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"diamond_dust_recipe"));
 
+        MortarRecipeBuilder.mortar(ModItems.IRON_DUST.get(),6,3,0.5f,"#d8af93")
+                .addIngredient(Items.RAW_IRON)
+                .addIngredient(Items.RAW_IRON)
+                .addIngredient(Items.RAW_IRON)
+                .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"iron_dust_recipe"));
 
+        MortarRecipeBuilder.mortar(ModItems.AMETHYST_DUST.get(),3,2,0.5f,"#b38ef3")
+                .addIngredient(Items.AMETHYST_SHARD)
+                .addIngredient(Items.AMETHYST_SHARD)
+                .addIngredient(Items.AMETHYST_SHARD)
+                .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"amethyst_dust_recipe"));
+
+        MortarRecipeBuilder.mortar(ModItems.NETHERITE_DUST.get(),8,6,0.5f,"#3b393b")
+                .addIngredient(Items.NETHERITE_INGOT)
+                .addIngredient(Items.NETHERITE_INGOT)
+                .addIngredient(Items.NETHERITE_INGOT)
+                .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"netherite_dust_recipe"));
 
 
 

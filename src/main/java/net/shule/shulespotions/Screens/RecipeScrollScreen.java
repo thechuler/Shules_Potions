@@ -161,8 +161,11 @@ public class RecipeScrollScreen extends Screen {
 
         List<CompoundTag> actions = RecipeScroll.getActions(scrollStack);
 
-        int itemX = x + 232;
-        int itemY = y + 110;
+        int startX = x + 232;
+        int startY = y + 110;
+
+        int columns = 3;
+        int spacing = 20;
 
         int ingredientIndex = 0;
 
@@ -213,6 +216,12 @@ public class RecipeScrollScreen extends Screen {
                         1.2F - (0.2F * t);
             }
 
+            int column = ingredientIndex % columns;
+            int row = ingredientIndex / columns;
+
+            int itemX = startX + (column * spacing);
+            int itemY = startY + (row * spacing);
+
             renderAnimatedIngredient(
                     graphics,
                     ingredient,
@@ -230,7 +239,6 @@ public class RecipeScrollScreen extends Screen {
                     itemY
             );
 
-            itemX += 20;
             ingredientIndex++;
         }
     }

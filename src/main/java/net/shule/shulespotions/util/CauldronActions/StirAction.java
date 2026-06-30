@@ -3,7 +3,14 @@ package net.shule.shulespotions.util.CauldronActions;
 
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.shule.shulespotions.Potions.PotionLiquid;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 
 public class StirAction extends CauldronAction {
@@ -24,29 +31,96 @@ public class StirAction extends CauldronAction {
         switch (toolType) {
 
             case WOOD -> {
-                potion.setDuration(potion.getDuration() + 100);
+                potion.getStats().setDuration(potion.getStats().getDuration() + 100);
 
-            }
-
-            case GOLD -> {
-
-                stats.setPurity(stats.getPurity() * 2);
-                stats.setVitality(stats.getVitality() * 2);
-                stats.setFlavor(stats.getFlavor() * 2);
-                stats.setStability(stats.getStability() * 2);
-            }
-
-            case IRON -> {
-                potion.setPower(potion.getPower() + 15);
             }
 
             case STONE -> {
-                potion.setDuration(potion.getDuration() + 200);
+             stats.setPurity(stats.getPurity() + 15);
+            }
+
+            case IRON -> {
+                stats.setStability(stats.getStability() + 20);
+                stats.setFlavor(stats.getFlavor() - 20);
+            }
+
+
+            case GOLD -> {
+                stats.setPurity(stats.getPurity() * 2);
+                potion.getStats().setDuration(potion.getStats().getDuration() * 2);
+                stats.setStability(stats.getStability()-30);
             }
 
             case DIAMOND -> {
-                potion.setPower(potion.getPower() + 50);
+                stats.setVitality(stats.getVitality() + 40);
+                stats.setStability(0);
             }
+
+
+
+            case BASTION -> {
+
+                Map.Entry<ResourceLocation, Integer> strongest =
+                        stats.getEffectWeights()
+                                .entrySet()
+                                .stream()
+                                .max(Map.Entry.comparingByValue())
+                                .orElse(null);
+
+                Map.Entry<ResourceLocation, Integer> weakest =
+                        stats.getEffectWeights()
+                                .entrySet()
+                                .stream()
+                                .min(Map.Entry.comparingByValue())
+                                .orElse(null);
+
+                if (strongest != null && weakest != null
+                        && !strongest.getKey().equals(weakest.getKey())) {
+
+                    ResourceLocation strongestEffect = strongest.getKey();
+                    ResourceLocation weakestEffect = weakest.getKey();
+
+                    int weakestWeight = weakest.getValue();
+
+                    stats.addEffectWeight(weakestEffect, -weakestWeight);
+
+                    stats.addEffectWeight(strongestEffect, weakestWeight);
+                }
+            }
+
+            case SPONGE -> {
+                Map<ResourceLocation, Integer> effects = stats.getEffectWeights();
+                List<ResourceLocation> keys = new ArrayList<>(effects.keySet());
+                ResourceLocation selected = keys.get(RandomSource.create().nextInt(keys.size()));
+                int weight = stats.getEffectWeight(selected);
+                stats.addEffectWeight(selected, -weight);
+                stats.setStability(stats.getStability() + 40);
+            }
+
+            case ENDER -> {
+
+                Map<ResourceLocation, Integer> effects =
+                        stats.getEffectWeights();
+
+                if (effects.size() > 1) {
+
+                    List<ResourceLocation> keys =
+                            new ArrayList<>(effects.keySet());
+
+                    List<Integer> weights =
+                            new ArrayList<>(effects.values());
+
+                    Collections.shuffle(weights);
+
+                    for (int i = 0; i < keys.size(); i++) {
+                        stats.setEffectWeight(
+                                keys.get(i),
+                                weights.get(i)
+                        );
+                    }
+                }
+            }
+
 
         }
         ctx.getCauldron().setPotionLiquid(potion);
