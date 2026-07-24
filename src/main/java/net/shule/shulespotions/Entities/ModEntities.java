@@ -11,6 +11,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.shule.shulespotions.Entities.Projectile.PotionSplashProjectile;
+import net.shule.shulespotions.Entities.Projectile.ThrowablePotionBottleProjectile;
+import net.shule.shulespotions.Entities.entity.ShadowClonEntity;
 import net.shule.shulespotions.ShulesPotions;
 
 import java.util.function.Supplier;
@@ -30,6 +32,22 @@ public class ModEntities {
                             .sized(0.5F, 0.5F)
                             .build("potion_splash_projectile"));
 
+    public static final RegistryObject<EntityType<ThrowablePotionBottleProjectile>> THROWABLE_POTION_BOTTLE_PROJECTILE =
+            ENTITIES.register("throwable_potion_bottle_projectile",
+                    () -> EntityType.Builder.<ThrowablePotionBottleProjectile>of(
+                                    ThrowablePotionBottleProjectile::new, MobCategory.MISC)
+                            .sized(0.5F, 0.5F)
+                            .build("throwable_potion_bottle_projectile"));
+
+    public static final RegistryObject<EntityType<ShadowClonEntity>> SHADOW_CLONE =
+            ENTITIES.register("shadow_clone",
+                    () -> EntityType.Builder
+                            .of(ShadowClonEntity::new, MobCategory.MISC)
+                            .sized(0.6F, 1.95F)
+                            .clientTrackingRange(8)
+                            .build("shadow_clone"));
+
+
 
     @SubscribeEvent
     public static void init(FMLCommonSetupEvent event) {
@@ -43,7 +61,7 @@ public class ModEntities {
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
-    //    event.put(FROGMAN.get(), FrogManEntity.createAttributes().build());
+       event.put(SHADOW_CLONE.get(), ShadowClonEntity.createAttributes().build());
     //    event.put(NITRO_FLY.get(), NitroMoscaEntity.createAttributes().build());
     }
 

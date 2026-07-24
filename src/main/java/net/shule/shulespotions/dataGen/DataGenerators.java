@@ -39,5 +39,7 @@ public class DataGenerators {
         generator.addProvider(event.includeServer(), new ProviderWorldGen(packoutput, lookupProvider));
         generator.addProvider(event.includeServer(), new ProviderRecipe(packoutput));
         generator.addProvider(event.includeServer(), ProviderLootTable.create(packoutput,lookupProvider));
+        generator.addProvider(event.includeServer(), new ProviderLootModifier(packoutput));
+
     }
 }

@@ -2,11 +2,12 @@ package net.shule.shulespotions.dataGen;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.ShulesPotions;
@@ -21,7 +22,7 @@ public class ProviderItemModel extends ItemModelProvider {
     @Override
     protected void registerModels() {
 
-        simpleItem(ModItems.RECIPE_BOOK);
+        simpleItem(ModItems.EFFECT_CODEX);
         simpleItem(ModItems.ROTTEN_FISH);
         simpleItem(ModItems.ONYX);
         simpleItem(ModItems.IRON_DUST);
@@ -37,6 +38,8 @@ public class ProviderItemModel extends ItemModelProvider {
         simpleItem(ModItems.ROTTEN_APPLE);
         simpleItem(ModItems.ALCHEMIST_MONOCLE);
         simpleItem(ModItems.MANDRAKE_SEED);
+        simpleItem(ModItems.BASTION_FRAGMENT);
+
 
     }
 
@@ -58,6 +61,8 @@ public class ProviderItemModel extends ItemModelProvider {
                 .texture("layer1", modLoc("item/recipe_sheet_overlay"));
     }
 */
+
+
 
 
     private ItemModelBuilder handheldItem(RegistryObject<Item> item) {

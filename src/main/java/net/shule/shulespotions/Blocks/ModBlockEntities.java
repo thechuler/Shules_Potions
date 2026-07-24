@@ -24,15 +24,7 @@ public class ModBlockEntities {
 
 
 
-    public static final RegistryObject<BlockEntityType<SmallPotionBlockBE>>
-            SMALL_POTION_BE =
-            BLOCK_ENTITIES.register(
-                    "small_potion_be",
-                    () -> BlockEntityType.Builder.of(
-                            SmallPotionBlockBE::new,
-                            ModBlocks.SMALL_POTION_BLOCK.get()
-                    ).build(null)
-            );
+
 
     public static final RegistryObject<BlockEntityType<MortarBE>>
             MORTAR_BE =

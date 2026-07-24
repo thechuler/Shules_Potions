@@ -2,6 +2,8 @@ package net.shule.shulespotions.util;
 
 import org.joml.Random;
 
+import java.awt.*;
+
 public class ColorUtils {
 
 
@@ -16,10 +18,17 @@ public class ColorUtils {
     }
 
 
-        public static int fromHex(String hex) {
-            return Integer.parseUnsignedInt(hex.replace("#", ""), 16);
-        }
+    public static int fromHex(String hex) {
+        hex = hex.trim()
+                .replace("#", "")
+                .replace("0x", "")
+                .replace("0X", "");
 
+        return Integer.parseUnsignedInt(hex, 16);
+    }
+    public static String toHex(int color) {
+        return String.format("#%06X", color & 0xFFFFFF);
+    }
 
 
     public static int lerpColor(int colorA, int colorB, float t) {
@@ -72,10 +81,30 @@ public class ColorUtils {
         int g2 = (c2 >> 8) & 0xFF;
         int b2 = c2 & 0xFF;
 
-        int r = (r1 + r2) / 2;
-        int g = (g1 + g2) / 2;
-        int b = (b1 + b2) / 2;
+        float[] hsv1 = Color.RGBtoHSB(r1, g1, b1, null);
+        float[] hsv2 = Color.RGBtoHSB(r2, g2, b2, null);
 
-        return (r << 16) | (g << 8) | b;
+
+        float h1 = hsv1[0];
+        float h2 = hsv2[0];
+
+        float dh = h2 - h1;
+
+        if (Math.abs(dh) > 0.5f) {
+            if (dh > 0) {
+                h1 += 1.0f;
+            } else {
+                h2 += 1.0f;
+            }
+        }
+
+        float h = (h1 + h2) / 2.0f;
+        h %= 1.0f;
+
+       
+        float s = (hsv1[1] + hsv2[1]) / 2.0f;
+        float v = (hsv1[2] + hsv2[2]) / 2.0f;
+
+        return Color.HSBtoRGB(h, s, v) & 0xFFFFFF;
     }
 }

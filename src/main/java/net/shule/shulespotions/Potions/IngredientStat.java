@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.shule.shulespotions.util.ColorUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,9 +19,13 @@ public class IngredientStat {
                     instance.group(
 
                             Codec.INT.optionalFieldOf("duration", 0)
-                                    .forGetter(IngredientStat::getDuration),
+                                    .forGetter(IngredientStat::getDurationSeconds),
 
-                            Codec.INT.optionalFieldOf("color", 0)
+                            Codec.STRING.optionalFieldOf("color", "#3F76E4")
+                                    .xmap(
+                                            ColorUtils::fromHex,
+                                            ColorUtils::toHex
+                                    )
                                     .forGetter(IngredientStat::getColor),
 
                             Codec.INT.optionalFieldOf("purity", 0)
@@ -54,7 +59,7 @@ public class IngredientStat {
 
     public IngredientStat() {
         this.effectWeights = new HashMap<>();
-        this.color = 0x3F76E4;
+        this.color = -1;
     }
 
     public IngredientStat(IngredientStat other) {
@@ -90,8 +95,11 @@ public class IngredientStat {
         this.stability = Math.max(0, Math.min(100, this.stability + other.stability));
 
         this.duration += other.duration;
-        this.color = mixColors(this.color, other.color);
-
+        if (this.color == -1) {
+            this.color = other.color;
+        } else {
+            this.color = mixColors(this.color, other.color);
+        }
         other.effectWeights.forEach((effect, value) -> {
 
             int newValue = this.effectWeights.getOrDefault(effect, 0) + value;
@@ -193,13 +201,32 @@ public class IngredientStat {
         return color;
     }
 
-    public void setDuration(int Duration) {
+    public void setDurationSeconds(int Duration) {
         this.duration = Duration;
     }
+    public void setDurationTicks(int Duration) {
+        this.duration = duration / 20;
+    }
 
-    public int getDuration() {
+    public int getDurationTicks() {
+        return this.duration * 20;
+
+    }
+
+    public int getDurationSeconds() {
         return this.duration;
     }
+
+    public String getDurationFormatted() {
+        int hours = duration / 3600;
+        int minutes = (duration % 3600) / 60;
+        int seconds = duration % 60;
+
+        return hours > 0
+                ? String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                : String.format("%02d:%02d", minutes, seconds);
+    }
+
 
     public Map<ResourceLocation, Integer> getEffectWeights() {
         return Collections.unmodifiableMap(effectWeights);

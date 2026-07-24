@@ -33,6 +33,7 @@ import net.shule.shulespotions.Fluids.ModFluids;
 
 import net.shule.shulespotions.Items.ModCreativeTab;
 import net.shule.shulespotions.Items.ModItems;
+import net.shule.shulespotions.Loot.ModLootModifiers;
 import net.shule.shulespotions.Messages.ModMessages;
 import net.shule.shulespotions.MobEffects.ModMobEffects;
 import net.shule.shulespotions.Particles.ModParticles;
@@ -66,6 +67,7 @@ public class ShulesPotions {
         ModMobEffects.register(modEventBus);
         ModMessages.register();
         modEventBus.addListener(this::commonSetup);
+        ModLootModifiers.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
         ModRecipeTypes.register(modEventBus);

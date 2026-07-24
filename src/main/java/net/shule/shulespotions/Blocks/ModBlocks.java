@@ -32,10 +32,10 @@ public class ModBlocks {
 
 
     public static final RegistryObject<Block> POTION_CAULDRON = registerBlock("potion_cauldron",
-            () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON),3,1000));
+            () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON),5,1000));
 
     public static final RegistryObject<Block> COPPER_CAULDRON = registerBlock("copper_cauldron",
-            () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON),4,1000));
+            () -> new PotionCauldron(BlockBehaviour.Properties.copy(Blocks.CAULDRON),7,1000));
 
     /*
     public static final RegistryObject<Block> BIG_CAULDRON = registerBlock("big_cauldron",
@@ -43,8 +43,6 @@ public class ModBlocks {
 
 
 */
-    public static final RegistryObject<Block> SMALL_POTION_BLOCK = registerBlock("small_potion_block",
-            () -> new SmallPotionBlock(BlockBehaviour.Properties.copy(Blocks.GLASS)));
 
 
     public static final RegistryObject<Block> POTIONSHELF = registerBlock("potionshelf",

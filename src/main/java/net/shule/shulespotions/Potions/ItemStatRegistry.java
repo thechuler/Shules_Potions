@@ -31,4 +31,8 @@ public class ItemStatRegistry {
     public static boolean hasStats(Item item) {
         return ITEM_STATS.containsKey(item);
     }
+
+    public static Map<Item, IngredientStat> getEntries() {
+        return Map.copyOf(ITEM_STATS);
+    }
 }

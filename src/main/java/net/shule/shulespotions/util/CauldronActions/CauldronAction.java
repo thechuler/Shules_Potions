@@ -7,4 +7,5 @@ public abstract class CauldronAction {
     public abstract void apply(CauldronContext ctx);
     public abstract CompoundTag save();
     public abstract String getType();
+
 }

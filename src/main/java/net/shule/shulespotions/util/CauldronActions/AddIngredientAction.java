@@ -56,4 +56,6 @@ public class AddIngredientAction extends CauldronAction {
     public String getType() {
         return "add_ingredient";
     }
+
+
 }

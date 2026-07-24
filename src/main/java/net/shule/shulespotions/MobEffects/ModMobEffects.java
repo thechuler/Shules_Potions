@@ -8,8 +8,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.shule.shulespotions.MobEffects.Custom.LeechEffect;
-import net.shule.shulespotions.MobEffects.Custom.PotionSplashedEffect;
+import net.shule.shulespotions.MobEffects.Custom.*;
 import net.shule.shulespotions.ShulesPotions;
 
 public class ModMobEffects {
@@ -17,10 +16,39 @@ public class ModMobEffects {
 
 
     public static RegistryObject<MobEffect> LEECH = MOB_EFFECTS.register("leech",
-            ()-> new LeechEffect(MobEffectCategory.BENEFICIAL,0x668822));
+            ()-> new LeechEffect(MobEffectCategory.BENEFICIAL,0x620548));
+
+
+    public static RegistryObject<MobEffect> COMEBACK = MOB_EFFECTS.register("comeback",
+            ()-> new ComeBackEffect(MobEffectCategory.BENEFICIAL,0x668822));
 
     public static RegistryObject<MobEffect> POTION_SPLASHED = MOB_EFFECTS.register("potion_splashed",
             ()-> new PotionSplashedEffect(MobEffectCategory.HARMFUL,0xFFFFFF));
+
+    public static RegistryObject<MobEffect> FLY = MOB_EFFECTS.register("fly",
+            ()-> new PotionSplashedEffect(MobEffectCategory.BENEFICIAL,0xb034cc));
+
+    public static RegistryObject<MobEffect> STONE_CRUSHER = MOB_EFFECTS.register("stone_crusher",
+            ()-> new PotionSplashedEffect(MobEffectCategory.BENEFICIAL,0x595652));
+
+    public static RegistryObject<MobEffect> INSTABILITY = MOB_EFFECTS.register("instability",
+            ()-> new InstabilityEffect(MobEffectCategory.HARMFUL,0x471b84));
+
+
+    public static RegistryObject<MobEffect> ENDER_DISRUPTION = MOB_EFFECTS.register("ender_disruption",
+            ()-> new EnderDisruptionEffect(MobEffectCategory.BENEFICIAL,0x9b0997));
+
+    public static RegistryObject<MobEffect> OOZING = MOB_EFFECTS.register("oozing",
+            ()-> new OozingEffect(MobEffectCategory.HARMFUL,0x23823e));
+
+    public static RegistryObject<MobEffect> INFESTED = MOB_EFFECTS.register("infested",
+            ()-> new InfestedEffect(MobEffectCategory.HARMFUL,0x23823e));
+
+    public static RegistryObject<MobEffect> NETHER_CORRUPTION = MOB_EFFECTS.register("nether_corruption",
+            ()-> new NetherCorruptionEffect(MobEffectCategory.NEUTRAL,0x23823e));
+
+    public static RegistryObject<MobEffect> SHADOW_MANIPULATION = MOB_EFFECTS.register("shadow_manipulation",
+            ()-> new ShadowManipulationEffect(MobEffectCategory.BENEFICIAL,0x23823e));
 
 
     public static void register(IEventBus bus) {

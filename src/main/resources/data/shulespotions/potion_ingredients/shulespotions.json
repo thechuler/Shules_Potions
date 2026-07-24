@@ -4,7 +4,7 @@
     "vitality": 26,
     "stability": -12,
     "flavor": -8,
-    "color": 8355711,
+    "color": "#7ED6A5",
     "effects": {
       "minecraft:regeneration": 65,
       "minecraft:strength": 25,
@@ -18,7 +18,7 @@
     "stability": -25,
     "flavor": 10,
     "duration": 200,
-    "color": 14407739,
+    "color": "#DC8AFF",
     "effects": {
       "minecraft:regeneration": 80,
       "minecraft:absorption": 40,
@@ -32,11 +32,12 @@
     "vitality": -14,
     "stability": -8,
     "flavor": -18,
-    "color": 3418625,
+    "color": "#4A6B52",
     "effects": {
       "minecraft:poison": 75,
       "minecraft:hunger": 50,
-      "minecraft:nausea": 30
+      "minecraft:nausea": 30,
+      "irons_spellbooks:planar_sight": 100
     }
   },
 
@@ -44,7 +45,7 @@
     "purity": 16,
     "stability": 22,
     "flavor": 6,
-    "color": 3277440,
+    "color": "#00D97E",
     "effects": {
       "minecraft:hero_of_the_village": 50,
       "minecraft:luck": 40,
@@ -56,11 +57,12 @@
     "stability": 18,
     "vitality": 10,
     "flavor": -4,
-    "color": 8421504,
+    "color": "#B7B7C8",
     "effects": {
       "minecraft:resistance": 60,
       "minecraft:strength": 25,
-      "minecraft:slowness": 10
+      "minecraft:slowness": 10,
+      "shulespotions:comeback": 100
     }
   },
 
@@ -69,17 +71,31 @@
     "stability": 28,
     "vitality": 6,
     "flavor": -12,
-    "color":  1710618,
+    "color": "#24103D",
     "effects": {
       "minecraft:darkness": 55,
       "minecraft:resistance": 35,
-      "minecraft:night_vision": 15
+      "minecraft:night_vision": 15,
+      "shulespotions:leech": 100
+    }
+  },
+
+  "shulespotions:crushed_eye": {
+    "purity": -10,
+    "stability": 28,
+    "vitality": 6,
+    "flavor": -12,
+    "color": "#8F3A63",
+    "effects": {
+      "shulespotions:infested": 55,
+      "minecraft:poison": 55,
+      "minecraft:regeneration": 55
     }
   },
 
   "shulespotions:ghast_heart": {
     "purity": -10,
     "stability": -100,
-    "color": 2236962
+    "color": "#FF6B5E"
   }
 }

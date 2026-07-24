@@ -1,6 +1,9 @@
 package net.shule.shulespotions.Blocks.Custom;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -75,11 +78,20 @@ public class Mortar extends BaseEntityBlock {
             if (result.isEmpty()) {
                 return InteractionResult.PASS;
             }
+            level.playSound(
+                    null,
+                    pos,
+                    SoundEvents.GRAVEL_PLACE,
+                    SoundSource.BLOCKS,
+                    1.0f,
+                    1.5f
+            );
 
             held.shrink(1);
 
             if (!player.getInventory().add(result)) {
                 player.drop(result, false);
+
             }
 
             return InteractionResult.CONSUME;
@@ -97,5 +109,41 @@ public class Mortar extends BaseEntityBlock {
         return mortar.addIngredient(held)
                 ? InteractionResult.CONSUME
                 : InteractionResult.PASS;
+    }
+
+
+
+
+    private void playGrindEffects(Level level, BlockPos pos, MortarBE mortar) {
+
+        boolean lastHit = mortar.isOneBeforeFinish();
+
+
+        level.playSound(
+                null,
+                pos,
+                lastHit ? SoundEvents.AMETHYST_BLOCK_RESONATE : SoundEvents.GRINDSTONE_USE,
+                SoundSource.BLOCKS,
+                0.8f,
+                lastHit ? 0.6f : 1.2f
+        );
+
+
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+
+            double x = pos.getX() + 0.5;
+            double y = pos.getY() + 0.6;
+            double z = pos.getZ() + 0.5;
+
+            int count = lastHit ? 25 : 10;
+
+            serverLevel.sendParticles(
+                    lastHit ? ParticleTypes.ENCHANT : ParticleTypes.CRIT,
+                    x, y, z,
+                    count,
+                    0.25, 0.15, 0.25,
+                    0.02
+            );
+        }
     }
 }

@@ -132,7 +132,7 @@ public class PotionCauldronBE extends BlockEntity {
         PotionLiquid potion = new PotionLiquid();
 
         potion.getStats().setStability(100);
-        potion.getStats().setDuration(100);
+        potion.getStats().setDurationTicks(100);
 
         return potion;
     }
@@ -169,13 +169,10 @@ public class PotionCauldronBE extends BlockEntity {
 
         FluidStack fluid = this.tank.getFluid();
 
-        int color = PotionLiquidUtils.generatePotionColor(potion);
-
-        potion.getStats().setColor(color);
 
         PotionFluidHelper.withPotionLiquid(fluid, potion);
 
-        startColorTransition(color);
+        startColorTransition(potion.getStats().getColor());
 
 
         sync();

@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class PotionLiquidBottleItem extends Item {
@@ -52,6 +53,7 @@ public class PotionLiquidBottleItem extends Item {
 
         this.useDuration = useDuration;
         this.capacity = capacity;
+
     }
 
     /*
@@ -185,54 +187,8 @@ public class PotionLiquidBottleItem extends Item {
         }
 
         if (!level.isClientSide) {
-
-            FluidStack fluid = getFluid(stack);
-            PotionLiquid pl = PotionFluidHelper.getPotionLiquid(fluid);
-
-            if (!fluid.isEmpty()) {
-
-                List<MobEffect> effects = getResolvedEffects(stack);
-
-                for (MobEffect effect : effects) {
-
-                    if (player != null) {
-                        int amplifier = Math.min(4, pl.getStats().getPurity() / 20);
-                        player.addEffect(new MobEffectInstance(effect,pl.getStats().getDuration(),amplifier));
-                    }
-                }
-                int flavor = pl.getStats().getFlavor();
-                int vitality = pl.getStats().getVitality();
-
-
-                float healthChange = (vitality / 100.0f) * player.getMaxHealth();
-
-                float newHealth = player.getHealth() + healthChange;
-
-                newHealth = Math.max(0, Math.min(newHealth, player.getMaxHealth()));
-
-                player.setHealth(newHealth);
-
-                int hungerChange = Math.round((flavor / 100.0f) * 20);
-
-                FoodData foodData = player.getFoodData();
-
-                int newFood = foodData.getFoodLevel() + hungerChange;
-
-                newFood = Math.max(0, Math.min(newFood, 20));
-
-                foodData.setFoodLevel(newFood);
-
-                fluid.shrink(250);
-
-                if (fluid.getAmount() <= 0) {
-
-                    removeFluid(stack);
-
-                } else {
-
-                    setFluid(stack, fluid);
-                }
-            }
+            applyPotion(stack, player);
+            consumeFluid(stack, 250);
         }
 
         return super.finishUsingItem(
@@ -241,6 +197,101 @@ public class PotionLiquidBottleItem extends Item {
                 livingEntity
         );
     }
+
+    protected void consumeFluid(ItemStack stack, int amount) {
+
+        FluidStack fluid = getFluid(stack);
+
+        fluid.shrink(amount);
+
+        if (fluid.getAmount() <= 0) {
+            removeFluid(stack);
+        } else {
+            setFluid(stack, fluid);
+        }
+    }
+
+    public void applyPotion(ItemStack stack, LivingEntity entity) {
+        FluidStack fluid = getFluid(stack);
+        PotionLiquid pl = PotionFluidHelper.getPotionLiquid(fluid);
+
+        if (fluid.isEmpty()) {
+            return;
+        }
+
+        List<MobEffect> effects = getResolvedEffects(stack);
+
+        int amplifier = Math.min(4, pl.getStats().getPurity() / 20);
+
+        if(amplifier <= 0){
+            return;
+        }
+
+
+
+
+        if (pl.getStats().getDurationSeconds() <= 0) {
+            return;
+        }
+
+
+
+        for (MobEffect effect : effects) {
+
+            if (effect.isInstantenous()) {
+
+                effect.applyInstantenousEffect(
+                        entity,
+                        entity,
+                        entity,
+                        amplifier,
+                        1.0
+                );
+
+            } else {
+
+                entity.addEffect(
+                        new MobEffectInstance(
+                                effect,
+                                pl.getStats().getDurationTicks(),
+                                amplifier
+                        )
+                );
+            }
+        }
+
+
+        int vitality = pl.getStats().getVitality();
+
+        float healthChange = (vitality / 100.0f) * entity.getMaxHealth();
+        float newHealth = entity.getHealth() + healthChange;
+
+        newHealth = Math.max(0, Math.min(newHealth, entity.getMaxHealth()));
+
+        entity.setHealth(newHealth);
+
+
+        if (entity instanceof Player player) {
+
+            int flavor = pl.getStats().getFlavor();
+
+            int hungerChange = Math.round((flavor / 100.0f) * 20);
+
+            FoodData foodData = player.getFoodData();
+
+            int newFood = Math.max(
+                    0,
+                    Math.min(foodData.getFoodLevel() + hungerChange, 20)
+            );
+
+            foodData.setFoodLevel(newFood);
+        }
+
+
+
+    }
+
+
 
     @Override
     public @NotNull UseAnim getUseAnimation(@NotNull ItemStack stack) {
@@ -279,15 +330,16 @@ public class PotionLiquidBottleItem extends Item {
     @Override
     public @NotNull InteractionResult useOn(UseOnContext context) {
 
-        if (context.getLevel().isClientSide) {
-            return InteractionResult.PASS;
-        }
-
         BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
 
         if (!(be instanceof PotionCauldronBE cauldron)) {
             return super.useOn(context);
         }
+
+        if (context.getLevel().isClientSide) {
+            return InteractionResult.sidedSuccess(true);
+        }
+        
 
         ItemStack stack = context.getItemInHand();
 
@@ -389,13 +441,7 @@ public class PotionLiquidBottleItem extends Item {
         return InteractionResult.SUCCESS;
     }
 
-    /*
-     *
-     * =========================================
-     * TOOLTIP
-     * =========================================
-     *
-     */
+
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack,
@@ -407,34 +453,44 @@ public class PotionLiquidBottleItem extends Item {
 
         if (fluid.isEmpty()) return;
 
+
+
         tooltip.add(
-                Component.literal(
-                        "Fluid: " +
-                                fluid.getAmount() +
-                                "mb"
+                Component.translatable(
+                        "tooltip.shulespotions.alchemist_monocle_uses",
+                        fluid.getAmount() / 250
                 ).withStyle(ChatFormatting.WHITE)
         );
+
 
         PotionLiquid pl =
                 PotionFluidHelper.getPotionLiquid(fluid);
 
 
+
         tooltip.add(
-                Component.literal(
-                        "Duration: " +
-                                pl.getStats().getDuration() / 20
+                Component.translatable(
+                        "tooltip.shulespotions.alchemist_monocle_duration",
+                        pl.getStats().getDurationFormatted()
                 ).withStyle(ChatFormatting.GREEN)
         );
 
+
         tooltip.add(Component.empty());
+
 
         List<MobEffect> effects =
                 getResolvedEffects(stack);
 
+
+
         if (!effects.isEmpty()) {
 
             MutableComponent line =
-                    Component.literal("Effects: ");
+                    Component.translatable(
+                            "tooltip.shulespotions.effects"
+                    );
+
 
             boolean first = true;
 
@@ -444,11 +500,10 @@ public class PotionLiquidBottleItem extends Item {
 
                     line.append(
                             Component.literal(" | ")
-                                    .withStyle(
-                                            ChatFormatting.DARK_GRAY
-                                    )
+                                    .withStyle(ChatFormatting.DARK_GRAY)
                     );
                 }
+
 
                 line.append(
                         Component.literal(
@@ -461,11 +516,14 @@ public class PotionLiquidBottleItem extends Item {
                         )
                 );
 
+
                 first = false;
             }
 
+
             tooltip.add(line);
         }
+
 
         super.appendHoverText(
                 stack,
@@ -475,8 +533,6 @@ public class PotionLiquidBottleItem extends Item {
         );
     }
 
-    @Override
-    public @NotNull String getDescriptionId() {
-        return "potion";
-    }
+
+
 }

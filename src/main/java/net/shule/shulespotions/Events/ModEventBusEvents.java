@@ -55,15 +55,7 @@ public class ModEventBusEvents {
 
     private static void ComingSoonTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
-        boolean flg =
-                stack.is(ModItems.MANDRAKE_SEED.get()) ||
-                stack.is(ModItems.POTION_HOMUNCULUS.get()) ||
-                stack.is(ModItems.RECIPE_BOOK.get()) ||
-                stack.is(ModItems.ONYX.get()) ||
-                stack.is(ModItems.EMERALD_DUST.get()) ||
-                stack.is(ModItems.IRON_DUST.get()) ||
-                stack.is(ModItems.POTION_BARREL.get()) ||
-                stack.is(ModItems.ROTTEN_FISH.get());;
+        boolean flg = false;
 
         if (flg) {
             event.getToolTip().add(
@@ -151,14 +143,12 @@ public class ModEventBusEvents {
             );
         }
 
-        if (stats.getDuration() != 0) {
-            int totalSeconds = stats.getDuration() / 20;
-            int minutes = totalSeconds / 60;
-            int seconds = totalSeconds % 60;
+        if (stats.getDurationSeconds() != 0) {
+
             event.getToolTip().add(
                     Component.translatable(
                             "tooltip.shulespotions.alchemist_monocle_duration",
-                            String.format("%d:%02d", minutes, seconds)
+                            stats.getDurationFormatted()
                     ).withStyle(ChatFormatting.GREEN)
             );
         }

@@ -1,238 +1,638 @@
 {
-  "minecraft:potato": {
-    "flavor": 10,
-    "stability": 2,
-    "effects": {
-      "minecraft:saturation": 25,
-      "minecraft:regeneration": 10
-    }
-  },
-
-  "minecraft:carrot": {
-    "vitality": 8,
-    "flavor": 6,
-    "effects": {
-      "minecraft:night_vision": 35,
-      "minecraft:regeneration": 20
-    }
-  },
-
-  "minecraft:beetroot": {
-    "vitality": 12,
-    "purity": -2,
-    "effects": {
-      "minecraft:regeneration": 30,
-      "minecraft:strength": 10
-    }
-  },
-
   "minecraft:apple": {
-    "flavor": 14,
-    "vitality": 4,
+    "flavor": 5,
+    "vitality": 5,
+    "color": "#fa3535"
+  },
+
+  "minecraft:golden_apple": {
+    "flavor": 8,
+    "vitality": 8,
+    "stability":30,
+    "duration": -5,
+    "color": "#f6fa35",
     "effects": {
-      "minecraft:regeneration": 25,
-      "minecraft:absorption": 15
+      "minecraft:regeneration": 75,
+      "minecraft:absorption": 35
+    }
+  },
+  "minecraft:enchanted_golden_apple": {
+    "flavor": 12,
+    "vitality": 12,
+    "stability":30,
+    "color": "#f6fa35",
+    "effects": {
+      "minecraft:regeneration": 70,
+      "minecraft:absorption": 45,
+      "minecraft:resistance": 45,
+      "minecraft:fire_resistance": 45
     }
   },
 
   "minecraft:melon_slice": {
-    "vitality": 6,
-    "stability": 1,
-    "effects": {
-      "minecraft:instant_health": 20,
-      "minecraft:regeneration": 15
-    }
-  },
-
-  "minecraft:sugar": {
-    "flavor": 20,
-    "stability": -5,
-    "effects": {
-      "minecraft:speed": 60,
-      "minecraft:haste": 15
-    }
-  },
-
-  "minecraft:honey_bottle": {
-    "flavor": 18,
-    "stability": 8,
-    "vitality": 5,
-    "effects": {
-      "minecraft:regeneration": 25,
-      "minecraft:resistance": 10
-    }
-  },
-
-  "minecraft:spider_eye": {
-    "vitality": -10,
-    "purity": -15,
-    "effects": {
-      "minecraft:poison": 80,
-      "minecraft:weakness": 20
-    }
-  },
-
-  "minecraft:fermented_spider_eye": {
-    "vitality": -18,
-    "purity": -25,
-    "stability": 6,
-    "effects": {
-      "minecraft:poison": 60,
-      "minecraft:blindness": 40,
-      "minecraft:weakness": 35
-    }
-  },
-
-  "minecraft:blaze_powder": {
-    "purity": 15,
-    "stability": -3,
     "flavor": 6,
-    "effects": {
-      "minecraft:strength": 50,
-      "minecraft:fire_resistance": 40
-    }
+    "stability": 5,
+    "color": "#da1313"
   },
 
-  "minecraft:ghast_tear": {
-    "purity": 20,
-    "vitality": 10,
-    "effects": {
-      "minecraft:regeneration": 70,
-      "minecraft:slow_falling": 15
-    }
+  "minecraft:sweet_berries": {
+    "flavor": 3,
+    "duration":2,
+    "color": "#930000"
   },
 
-  "minecraft:redstone": {
-    "stability": 15,
+  "minecraft:glow_berries": {
+    "flavor": 3,
+    "duration": 2,
+    "color": "#fff400",
     "effects": {
-      "minecraft:resistance": 10
-    }
-  },
-
-  "minecraft:glowstone_dust": {
-    "purity": 12,
-    "stability": -10,
-    "flavor": 8,
-    "effects": {
-      "minecraft:strength": 25,
-      "minecraft:glowing": 40
-    }
-  },
-
-  "minecraft:gunpowder": {
-    "stability": -20,
-    "purity": -5,
-    "flavor": 10,
-    "effects": {
-      "minecraft:strength": 20,
-      "minecraft:speed": 15
-    }
-  },
-
-  "minecraft:phantom_membrane": {
-    "purity": 8,
-    "vitality": 14,
-    "stability": 10,
-    "effects": {
-      "minecraft:slow_falling": 80,
-      "minecraft:night_vision": 20
-    }
-  },
-
-  "minecraft:magma_cream": {
-    "vitality": 10,
-    "stability": -4,
-    "flavor": -6,
-    "effects": {
-      "minecraft:fire_resistance": 70,
-      "minecraft:strength": 15
-    }
-  },
-
-  "minecraft:slime_ball": {
-    "stability": 12,
-    "flavor": -3,
-    "effects": {
-      "minecraft:jump_boost": 40,
-      "minecraft:slowness": 10
+      "minecraft:glowing": 30
     }
   },
 
   "minecraft:chorus_fruit": {
-    "purity": 6,
-    "vitality": 6,
-    "stability": -8,
-    "flavor": 14,
+    "flavor": -5,
+    "stability": -10,
+    "duration": 10,
+    "color": "#7400da",
     "effects": {
-      "minecraft:teleportation": 80,
-      "minecraft:confusion": 25
+      "minecraft:levitation": 30,
+      "shulespotions:ender_disruption": 30
     }
+  },
+
+  "minecraft:carrot": {
+    "flavor": 3,
+    "vitality": 10,
+    "stability": 5,
+    "duration": 20,
+    "color": "#da6100"
   },
 
   "minecraft:golden_carrot": {
-    "purity": 18,
-    "vitality": 15,
-    "flavor": 10,
+    "flavor": 5,
+    "stability": 10,
+    "duration": 30,
+    "color": "#e6bf00",
     "effects": {
-      "minecraft:night_vision": 75,
-      "minecraft:regeneration": 20
+      "minecraft:night_vision": 30
     }
   },
 
-  "minecraft:nether_wart": {
-    "purity": 10,
-    "stability": 5,
-    "flavor": -2,
+  "minecraft:potato": {
+    "flavor": 5,
+    "color": "#937237"
+  },
+  "minecraft:baked_potato": {
+    "flavor": 20,
+    "color": "#937237"
+  },
+
+  "minecraft:poisonous_potato": {
+    "flavor": -30,
+    "vitality": -10,
+    "color": "#23671c",
     "effects": {
-      "minecraft:awkward": 100
+      "minecraft:poison": 60,
+      "minecraft:nausea": 20
     }
   },
 
-  "minecraft:rabbit_foot": {
-    "purity": 14,
-    "flavor": 18,
-    "vitality": 8,
+  "minecraft:beetroot": {
+    "flavor": 1,
+    "duration":50,
+    "purity": -5,
+    "color": "#937237"
+  },
+
+  "minecraft:dried_kelp": {
+    "flavor": -5,
+    "purity": -5,
+    "stability":15,
+    "color": "#23221f"
+  },
+
+  "minecraft:beef": {
+    "flavor": -5,
+    "color": "#a55246"
+  },
+  "minecraft:cooked_beef": {
+    "flavor": 25,
+    "color": "#732f1f"
+  },
+  "minecraft:porkchop": {
+    "flavor": -5,
+    "color": "#a55246"
+  },
+  "minecraft:cooked_porkchop": {
+    "flavor": 25,
+    "color": "#732f1f"
+  },
+  "minecraft:chicken": {
+    "flavor": -5,
+    "color": "#a55246"
+  },
+  "minecraft:cooked_chicken": {
+    "flavor": 25,
+    "color": "#732f1f"
+  },
+
+  "minecraft:mutton": {
+    "flavor": -5,
+    "color": "#a55246"
+  },
+  "minecraft:cooked_mutton": {
+    "flavor": 25,
+    "color": "#732f1f"
+  },
+
+  "minecraft:rabbit": {
+    "flavor": -5,
+    "color": "#a55246"
+  },
+  "minecraft:cooked_rabbit": {
+    "flavor": 25,
+    "color": "#732f1f"
+  },
+  "minecraft:cod": {
+    "flavor": -5,
+    "color": "#a55246"
+  },
+  "minecraft:cooked_cod": {
+    "flavor": 25,
+    "color": "#732f1f"
+  },
+  "minecraft:salmon": {
+    "flavor": -5,
+    "color": "#a55246"
+  },
+  "minecraft:cooked_salmon": {
+    "flavor": 25,
+    "color": "#732f1f"
+  },
+  "minecraft:tropical_fish": {
+    "flavor": 12,
+    "color": "#732f1f"
+  },
+
+  "minecraft:pufferfish": {
+    "flavor": 12,
+    "stability":-15,
+    "color": "#23671c",
     "effects": {
-      "minecraft:jump_boost": 70,
-      "minecraft:speed": 25
+      "minecraft:poison": 20,
+      "minecraft:nausea": 60
+    }
+  },
+  "minecraft:bread": {
+    "flavor": 25,
+    "color": "#8a5f32"
+  },
+
+  "minecraft:cookie": {
+    "flavor": 15,
+    "color": "#9b560d",
+    "effects": {
+      "minecraft:speed": 5
+    }
+  },
+  "minecraft:cake": {
+    "flavor": 15,
+    "color": "#f5cfc6",
+    "effects": {
+      "minecraft:saturation": 5,
+      "minecraft:speed": 4,
+      "minecraft:regeneration": 3,
+      "minecraft:health_boost": 2,
+      "minecraft:strength": 1
     }
   },
 
-  "minecraft:turtle_helmet": {
-    "stability": 20,
-    "purity": 12,
+  "minecraft:pumpkin_pie": {
+    "flavor": 15,
+    "color": "#e3a16a",
     "effects": {
-      "minecraft:water_breathing": 80,
-      "minecraft:resistance": 25
+      "minecraft:haste": 5
     }
   },
 
-  "minecraft:prismarine_crystals": {
-    "stability": 18,
-    "purity": 14,
-    "flavor": 4,
+  "minecraft:rotten_flesh": {
+    "flavor": -45,
+    "color": "#8c3416",
     "effects": {
-      "minecraft:water_breathing": 60,
-      "minecraft:night_vision": 25
+      "minecraft:hunger": 50,
+      "minecraft:poison":5
+    }
+  },
+  "minecraft:spider_eye": {
+    "flavor": -45,
+    "color": "#431809",
+    "effects": {
+      "minecraft:blindness": 45,
+      "minecraft:hunger":12
     }
   },
 
-  "minecraft:prismarine_shard": {
-    "stability": 12,
-    "purity": 8,
+
+
+  "minecraft:coal": {
+    "purity": -5,
+    "effects": {
+      "shulespotions:stone_crusher": 1
+    },
+    "color": "#6E6E6E"
+  },
+  "minecraft:charcoal": {
+    "purity": -5,
+    "effects": {
+      "shulespotions:stone_crusher": 1
+    },
+    "color": "#6E6E6E"
+  },
+  "minecraft:raw_iron": {
+    "purity": -10,
+    "effects": {
+      "shulespotions:stone_crusher": 5
+    },
+    "color": "#e1b490"
+  },
+  "minecraft:raw_copper": {
+    "duration": -10,
+    "effects": {
+      "shulespotions:stone_crusher": 5
+    },
+    "color": "#ee8d3f"
+  },
+  "minecraft:raw_gold": {
+    "duration": -15,
+    "stability": -15,
+    "effects": {
+      "shulespotions:stone_crusher": 15
+    },
+    "color": "#e1cc1f"
+  },
+  "minecraft:emerald": {
+    "purity":15,
+    "effects": {
+      "minecraft:hero_of_the_village": 15
+    },
+    "color": "#3cdc10"
+  },
+
+  "minecraft:lapis_lazuli": {
+    "purity":10,
+    "duration":10,
+    "stability":-10,
+    "color": "#0736d2"
+  },
+  "minecraft:diamond": {
+    "purity":30,
+    "duration":10,
+    "stability":-20,
+    "effects": {
+      "shulespotions:stone_crusher": 25,
+      "minecraft:haste":15
+    },
+    "color": "#07d2ab"
+  },
+  "minecraft:quartz": {
+    "purity":50,
+    "duration":-20,
+    "stability":10,
+    "color": "#f4fffd"
+  },
+  "minecraft:amethyst_shard": {
+    "purity":40,
+    "duration":10,
+    "stability":-30,
+    "color": "#b158df"
+  },
+  "minecraft:netherite_scrap": {
+    "purity":-10,
+    "duration":50,
+    "stability":50,
+    "effects": {
+      "shulespotions:stone_crusher": 45,
+      "minecraft:haste":35,
+      "shulespotions:nether_corruption":15
+    },
+    "color": "#2a1c1c"
+  },
+  "minecraft:flint": {
+    "purity":-10,
+    "duration":15,
+    "color": "#2a1c1c"
+  },
+  "minecraft:bone": {
+    "purity":10,
+    "duration":10,
+    "stability":-20,
+    "effects": {
+      "minecraft:weakness":15
+    },
+    "color": "#e9dfdf"
+  },
+  "minecraft:bone_meal": {
+    "purity":5,
+    "duration":5,
+    "stability":-10,
+    "effects": {
+      "minecraft:weakness":7
+    },
+    "color": "#e9dfdf"
+  },
+  "minecraft:string": {
+    "stability":5,
+    "color": "#e9dfdf"
+  },
+  "minecraft:feather": {
+    "stability":-5,
+    "effects": {
+      "minecraft:jump_boost":15
+    },
+    "color": "#e9dfdf"
+  },
+  "minecraft:snowball": {
+    "stability":5,
+    "effects": {
+      "minecraft:slowness":5
+    },
+    "color": "#e9dfdf"
+  },
+  "minecraft:egg": {
+    "flavor":15,
+    "color": "#e1c88d"
+  },
+  "minecraft:leather": {
+    "stability":25,
+    "color": "#e1c88d"
+  },
+  "minecraft:rabbit_hide": {
+    "stability":25,
+    "effects": {
+      "minecraft:jump_boost":25
+    },
+    "color": "#e1c88d"
+  },
+
+  "minecraft:honeycomb": {
+    "stability":25,
+    "purity": 35,
+    "duration": 60,
+    "color": "#f8bc52"
+  },
+  "minecraft:ink_sac": {
+    "purity": -5,
+    "effects": {
+      "minecraft:darkness":25
+    },
+    "color": "#1c1430"
+  },
+  "minecraft:glow_ink_sac": {
+    "purity": -5,
+    "effects": {
+      "minecraft:glowing": 15,
+      "minecraft:darkness":5
+    },
+    "color": "#3fa068"
+  },
+  "minecraft:scute": {
+    "stability": 45,
     "effects": {
       "minecraft:water_breathing": 35,
-      "minecraft:resistance": 15
+      "minecraft:resistance":5
+    },
+    "color": "#0ca025"
+  },
+  "minecraft:slime_ball": {
+    "stability": -15,
+    "duration":45,
+    "effects": {
+      "minecraft:slowness": 35,
+      "minecraft:jump_boost":35
+    },
+    "color": "#0ca025"
+  },
+  "minecraft:clay": {
+    "stability": 10,
+    "duration":10,
+    "color": "#7e879e"
+  },
+  "minecraft:prismarine_shard": {
+    "stability": -15,
+    "duration":-15,
+    "purity": 30,
+    "effects": {
+      "minecraft:dolphins_grace": 45,
+      "minecraft:water_breathing":25
+    },
+    "color": "#65cbc4"
+  },
+  "minecraft:prismarine_crystals": {
+    "stability": -15,
+    "duration":30,
+    "purity": -15,
+    "effects": {
+      "minecraft:dolphins_grace": 25,
+      "minecraft:water_breathing":45
+    },
+    "color": "#65cbc4"
+  },
+  "minecraft:nautilus_shell": {
+    "stability": 45,
+    "duration":60,
+    "effects": {
+      "minecraft:dolphins_grace": 35,
+      "minecraft:water_breathing":35
+    },
+    "color": "#cbb4a6"
+  },
+  "minecraft:heart_of_the_sea": {
+    "stability": 55,
+    "duration":80,
+    "purity": 10,
+    "effects": {
+      "minecraft:conduit_power": 70,
+      "minecraft:dolphins_grace": 35,
+      "minecraft:water_breathing":35
+    },
+    "color": "#1e55d7"
+  },
+  "minecraft:fire_charge": {
+    "stability": -20,
+    "duration":30,
+    "purity": 15,
+    "vitality": -15,
+    "effects": {
+      "minecraft:fire_resistance": 35
+    },
+    "color": "#2d2921"
+  },
+  "minecraft:blaze_rod": {
+    "duration":50,
+    "purity": 35,
+    "vitality": -45,
+    "effects": {
+      "minecraft:fire_resistance": 35
+    },
+    "color": "#f0902b"
+  },
+  "minecraft:nether_star": {
+    "duration":120,
+    "purity": 55,
+    "stability":50,
+    "vitality": -65,
+    "color": "#e3e3e3"
+  },
+  "minecraft:ender_pearl": {
+    "stability":-10,
+    "effects": {
+      "shulespotions:ender_disruption": 45
+    },
+    "color": "#135f50"
+  },
+  "minecraft:ender_eye": {
+    "stability":-15,
+    "flavor": -15,
+    "duration": 35,
+    "purity": 40,
+    "effects": {
+      "shulespotions:ender_disruption": 65
+    },
+    "color": "#135f50"
+  },
+  "minecraft:shulker_shell": {
+    "stability":40,
+    "vitality": 10,
+    "duration": -20,
+    "purtity": 30,
+    "effects": {
+      "minecraft:levitation": 75
+    },
+    "color": "#be37c1"
+  },
+  "minecraft:popped_chorus_fruit": {
+    "stability":-20,
+    "flavor": 25,
+    "vitality":25,
+    "duration": 15,
+    "purity": 10,
+    "effects": {
+      "shulespotions:ender_disruption": 35
+    },
+    "color": "#be37c1"
+  },
+  "minecraft:echo_shard": {
+    "stability":-5,
+    "vitality":-25,
+    "duration": 25,
+    "purtity": 38,
+    "effects": {
+      "minecraft:darkness": 35
+    },
+    "color": "#0b203c"
+  },
+  "minecraft:redstone": {
+    "duration":30,
+    "color": "#df0000"
+  },
+  "minecraft:glowstone_dust": {
+    "purity":30,
+    "color": "#fae008",
+    "effects": {
+      "minecraft:glowing": 40
     }
   },
+  "minecraft:gunpowder": {
+    "stability":-15,
+    "duration": 15,
+    "purity": 15,
+    "color": "#fae008"
+  },
+  "minecraft:dragon_breath": {
+    "stability":55,
+    "purity": 65,
+    "vitality":70,
+    "color": "#e37edf"
+  },
 
-  "minecraft:echo_shard": {
-    "purity": 22,
-    "stability": -18,
+  "minecraft:fermented_spider_eye": {
+    "flavor": -45,
+    "vitality":-30,
+    "color": "#431809",
     "effects": {
-      "minecraft:darkness": 80,
-      "minecraft:night_vision": 30,
-      "minecraft:glowing": 20
+      "minecraft:blindness": 65,
+      "minecraft:hunger":48
     }
+  },
+  "minecraft:blaze_powder": {
+    "duration":25,
+    "purity": 18,
+    "vitality": -23,
+    "effects": {
+      "minecraft:fire_resistance": 18
+    },
+    "color": "#f0902b"
+  },
+
+  "minecraft:suggar": {
+    "flavor": 5,
+    "color": "#eeebed",
+    "effects": {
+      "minecraft:speed": 15
+    }
+  },
+  "minecraft:rabbit_foot": {
+    "stability":25,
+    "purity":25,
+    "effects": {
+      "minecraft:jump_boost":80,
+      "minecraft:luck":25
+    },
+    "color": "#e1c88d"
+  },
+
+  "minecraft:glistering_melon_slice": {
+    "flavor": 20,
+    "stability":20,
+    "purity": 10,
+    "vitality": 30,
+    "effects": {
+      "minecraft:regeneration":40
+    },
+    "color": "#e9c516"
+  },
+
+  "minecraft:cobblestone": {
+    "stability": 12,
+    "purity": -2,
+    "color": "#6E6E6E"
+  },
+  "minecraft:magma_ball": {
+    "stability": -15,
+    "vitality": -20,
+    "duration":35,
+    "effects": {
+      "minecraft:slowness": 35,
+      "minecraft:fire_resistance": 35,
+      "minecraft:jump_boost":35
+    },
+    "color": "#f0902b"
+  },
+
+  "minecraft:ghast_tear": {
+    "purity": 20,
+    "effects": {
+      "minecraft:strength": 50
+    },
+    "color": "#bac0f3"
+  },
+  "minecraft:phantom_membrane": {
+    "purity": 15,
+    "stability":-5,
+    "effects": {
+      "minecraft:levitation": 60
+    },
+    "color": "#bac0f3"
   }
 }

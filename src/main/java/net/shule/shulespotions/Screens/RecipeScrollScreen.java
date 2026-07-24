@@ -36,6 +36,10 @@ public class RecipeScrollScreen extends Screen {
     private static final ResourceLocation STABILITY_ICON =
             ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/stability_icon.png");
 
+    private static final ResourceLocation DURATION_ICON =
+            ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/duration_icon.png");
+
+
     private static final int GUI_WIDTH = 336;
     private static final int GUI_HEIGHT = 266;
 
@@ -46,16 +50,15 @@ public class RecipeScrollScreen extends Screen {
     private int startPurity;
     private int startFlavor;
     private int startStability;
+    private int startDuration;
 
     private int targetVitality;
     private int targetPurity;
     private int targetFlavor;
     private int targetStability;
+    private int targetDuration;
 
     private static final long ANIMATION_DURATION = 1600; // ms
-
-
-
 
     public RecipeScrollScreen(ItemStack stack) {
         super(stack.getHoverName());
@@ -162,7 +165,7 @@ public class RecipeScrollScreen extends Screen {
         List<CompoundTag> actions = RecipeScroll.getActions(scrollStack);
 
         int startX = x + 232;
-        int startY = y + 110;
+        int startY = y + 100;
 
         int columns = 3;
         int spacing = 20;
@@ -293,6 +296,8 @@ public class RecipeScrollScreen extends Screen {
         int purity = getAnimatedValue(startPurity, targetPurity);
         int flavor = getAnimatedValue(startFlavor, targetFlavor);
         int stability = getAnimatedValue(startStability, targetStability);
+        int duration = getAnimatedValue(startDuration, targetDuration);
+
 
         renderStatIcon(graphics, VITALITY_ICON, "Vitality", vitality,
                 startX, startY, mouseX, mouseY);
@@ -305,6 +310,9 @@ public class RecipeScrollScreen extends Screen {
 
         renderStatIcon(graphics, STABILITY_ICON, "Stability",
                 stability, startX + spacing * 3, startY , mouseX, mouseY);
+
+        renderStatIcon(graphics, DURATION_ICON, "Duration",
+                duration, startX + spacing * 4, startY , mouseX, mouseY);
     }
 
     private void renderStatIcon(GuiGraphics graphics, ResourceLocation texture, String tooltip, int value,
@@ -351,11 +359,13 @@ public class RecipeScrollScreen extends Screen {
         startPurity = 0;
         startFlavor = 0;
         startStability = 0;
+        startDuration = 0;
 
         targetVitality = pl.getStats().getVitality();
         targetPurity = pl.getStats().getPurity();
         targetFlavor = pl.getStats().getFlavor();
         targetStability = pl.getStats().getStability();
+        targetDuration = pl.getStats().getDurationSeconds();
     }
 
     private float getAnimationProgress() {
@@ -412,12 +422,9 @@ public class RecipeScrollScreen extends Screen {
 
             ResourceLocation texture =
                     ResourceLocation.fromNamespaceAndPath(
-                            "minecraft",
-                            "textures/mob_effect/" +
-                                    id.getPath() +
-                                    ".png"
+                            id.getNamespace(),
+                            "textures/mob_effect/" + id.getPath() + ".png"
                     );
-
             int column = i % maxColumns;
             int row = i / maxColumns;
 

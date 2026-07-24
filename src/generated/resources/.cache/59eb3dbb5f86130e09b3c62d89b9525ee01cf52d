@@ -1,9 +1,8 @@
-// 1.20.1	2026-06-26T02:26:09.5637523	Loot Tables
+// 1.20.1	2026-07-04T09:13:52.8740758	Loot Tables
 1d01cff91c1156c37c0e12229c1e7effc4ea2fb5 data/shulespotions/loot_tables/blocks/copper_cauldron.json
 1db59e268f63b90fa84f9c2c34aa5fdc3f4ece90 data/shulespotions/loot_tables/blocks/mortar.json
 f2bdf6314fe86a9b794c11139a74cd8deda8678f data/shulespotions/loot_tables/blocks/potionshelf.json
 e2588666009669528f5b705e0068b375c124e12b data/shulespotions/loot_tables/blocks/potion_cauldron.json
 e48352cb9596797c3fce80fb0d183af79fcee736 data/shulespotions/loot_tables/blocks/potion_fluid_block.json
 68dd0e069f4c5ca14f3f3ead5a50f49f2aca9ba5 data/shulespotions/loot_tables/blocks/potion_splash.json
-223971f2108556842c35c418f8dee6b64114b104 data/shulespotions/loot_tables/blocks/small_potion_block.json
 aa07bab381b16144843856cd60c11c79c0fdb0f2 data/shulespotions/loot_tables/blocks/spoon_rack.json

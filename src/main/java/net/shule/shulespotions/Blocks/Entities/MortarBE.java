@@ -67,6 +67,7 @@ public class MortarBE extends BlockEntity {
         for (int i = 0; i < ingredients.size(); i++) {
             if (ingredients.get(i).isEmpty()) {
                 ingredients.set(i, stack.copyWithCount(1));
+                stack.shrink(1);
 
                 // reset parcial de progresión si cambias receta
                 grindProgress = 0;
@@ -290,5 +291,13 @@ public class MortarBE extends BlockEntity {
 
     public int getPowderColor() {
         return powderColor;
+    }
+
+    public boolean isOneBeforeFinish() {
+        return requiredGrinds > 0 && grindProgress == requiredGrinds - 1;
+    }
+
+    public boolean isGrindingNow() {
+        return requiredGrinds > 0;
     }
 }

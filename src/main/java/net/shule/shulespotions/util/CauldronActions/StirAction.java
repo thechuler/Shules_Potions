@@ -5,6 +5,8 @@ package net.shule.shulespotions.util.CauldronActions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
+import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.Potions.PotionLiquid;
 
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class StirAction extends CauldronAction {
         switch (toolType) {
 
             case WOOD -> {
-                potion.getStats().setDuration(potion.getStats().getDuration() + 100);
+                potion.getStats().setDurationSeconds(potion.getStats().getDurationSeconds() + 40);
 
             }
 
@@ -47,7 +49,7 @@ public class StirAction extends CauldronAction {
 
             case GOLD -> {
                 stats.setPurity(stats.getPurity() * 2);
-                potion.getStats().setDuration(potion.getStats().getDuration() * 2);
+                potion.getStats().setDurationSeconds(potion.getStats().getDurationSeconds() * 2);
                 stats.setStability(stats.getStability()-30);
             }
 
@@ -150,4 +152,6 @@ public class StirAction extends CauldronAction {
     public String getType() {
         return "stir";
     }
+
+
 }

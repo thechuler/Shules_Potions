@@ -1,9 +1,11 @@
-// 1.20.1	2026-06-26T02:26:09.5617527	Item Models: shulespotions
+// 1.20.1	2026-07-20T02:36:07.9897847	Item Models: shulespotions
 9ef8e89299617c71c4d7ad425e0447fb77cf4751 assets/shulespotions/models/item/alchemist_monocle.json
 7ced90796f2f58332715a49a3792e81f89305e1a assets/shulespotions/models/item/amethyst_dust.json
+bbd71db31e8df0c5ef38d823d2d1faca9947d65e assets/shulespotions/models/item/bastion_fragment.json
 2dd3ccca97296aa2ffc1707a7356f95212e6a526 assets/shulespotions/models/item/copper_dust.json
 16a86da1fbdb7ed67582bfcc9bce49d051aa6095 assets/shulespotions/models/item/crushed_eye.json
 a3a981a65226cf1355fd17c0304701e0d6ea5b51 assets/shulespotions/models/item/diamond_dust.json
+9ffa296a60bf9e22231558a397671ea82a1e3ca3 assets/shulespotions/models/item/effect_codex.json
 490401e0bb807520df1c05ac2ca8384200a7c4f2 assets/shulespotions/models/item/emerald_dust.json
 43ff15948b9ca4f9798982536ca5190d496e17d0 assets/shulespotions/models/item/ghast_heart.json
 7c52bce2a3bceea1ff60ac80e1a761608e9c9d81 assets/shulespotions/models/item/gold_dust.json
@@ -12,6 +14,5 @@ a3a981a65226cf1355fd17c0304701e0d6ea5b51 assets/shulespotions/models/item/diamon
 2a0c0abdc9ff400606d95d52b81bc5f3e2b53a0d assets/shulespotions/models/item/netherite_dust.json
 7904bda4a66e55c0f7b09b9bcf483ff2e03b9a2e assets/shulespotions/models/item/onyx.json
 672b2daf3573e490606824fafe83aab7d78bba89 assets/shulespotions/models/item/pestle.json
-1d023669329c5c3e817870149b1979c5f8499669 assets/shulespotions/models/item/recipe_book.json
 2cd62c6705a29e5c535607a028bb1b918c63c2ec assets/shulespotions/models/item/rotten_apple.json
 4460e776a9282d6898d9c05556445f638e012525 assets/shulespotions/models/item/rotten_fish.json

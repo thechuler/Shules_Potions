@@ -5,7 +5,10 @@
   "block.shulespotions.spoon_rack": "Spoon Rack",
   "block.shulespotions.mortar": "Mortar",
 
+  "fluid_type.shulespotions.potion_fluid": "Potion Liquid",
   "creativetab.main_tab": "Shule's Potions",
+
+  "item.shulespotions.effect_codex": "Effect Codex",
   "item.shulespotions.recipe_scroll": "Recipe Scroll",
   "item.shulespotions.wooden_spoon": "Wooden Spoon",
   "item.shulespotions.golden_spoon": "Golden Spoon",
@@ -15,6 +18,12 @@
   "item.shulespotions.bastion_spoon": "Bastion Spoon",
   "item.shulespotions.sponge_spoon": "Sponge Spoon",
   "item.shulespotions.ender_spoon": "Ender Spoon",
+
+
+  "item.shulespotions.small_potion_bottle": "Small Potion",
+  "item.shulespotions.large_potion_bottle": "Potion",
+  "item.shulespotions.big_potion_bottle": "Big Potion",
+  "item.shulespotions.throwable_potion_bottle": "Throwable Potion",
 
 
   "item.shulespotions.potion_barrel": "Potion Barrel",
@@ -35,9 +44,79 @@
   "item.shulespotions.mandrake_seed": "Mandrake Seed",
   "item.shulespotions.potion_homunculus": "Potion Homunculus",
   "item.shulespotions.ghast_heart": "Ghast Heart",
+  "item.shulespotions.bastion_fragment": "Bastion Fragment",
+
 
 
   "effect.shulespotions.potion_splashed": "Potion Splashed",
+  "effect.shulespotions.leech": "Leech",
+  "effect.shulespotions.comeback": "Comeback",
+  "effect.shulespotions.fly": "Fly",
+  "effect.shulespotions.instability": "Instability",
+  "effect.shulespotions.stone_crusher": "Stone Crusher",
+  "effect.shulespotions.ender_disruption": "Ender Disruption",
+  "effect.shulespotions.oozing": "Oozing",
+  "effect.shulespotions.infested": "Infested",
+  "effect.shulespotions.nether_corruption": "Nether Corruption",
+  "effect.shulespotions.shadow_manipulation": "Shadow Manipulation",
+
+  "effect.minecraft.absorption.description": "Grants the user additional health that absorbs damage before their normal health is affected.",
+  "effect.minecraft.bad_omen.description": "Marks the target with an ominous aura that triggers a raid when entering a village.",
+  "effect.minecraft.blindness.description": "Reduces the target's vision range and prevents sprinting.",
+  "effect.minecraft.conduit_power.description": "Grants the user the ability to breathe underwater, see clearly underwater, and mine faster while submerged.",
+  "effect.minecraft.darkness.description": "Reduces the target's vision, making the surroundings appear dark.",
+  "effect.minecraft.dolphins_grace.description": "Increases the user's swimming speed while moving through water.",
+  "effect.minecraft.fire_resistance.description": "Grants the user immunity to fire and lava damage.",
+  "effect.minecraft.glowing.description": "Causes the target to glow, making them visible through blocks.",
+  "effect.minecraft.haste.description": "Increases the user's mining and attack speed.",
+  "effect.minecraft.health_boost.description": "Increases the user's maximum health.",
+  "effect.minecraft.hero_of_the_village.description": "Grants the user discounts and gifts when trading with villagers.",
+  "effect.minecraft.hunger.description": "Causes the target to lose hunger faster over time.",
+  "effect.minecraft.instant_damage.description": "Instantly deals damage to the target.",
+  "effect.minecraft.instant_health.description": "Instantly restores the user's health.",
+  "effect.minecraft.invisibility.description": "Makes the user invisible.",
+  "effect.minecraft.jump_boost.description": "Increases the user's jump height and reduces fall damage.",
+  "effect.minecraft.levitation.description": "Causes the target to float upward.",
+  "effect.minecraft.luck.description": "Improves the user's chances of obtaining better loot from certain sources.",
+  "effect.minecraft.mining_fatigue.description": "Reduces the target's mining and attack speed.",
+  "effect.minecraft.nausea.description": "Distorts the target's vision, causing the world to appear distorted.",
+  "effect.minecraft.night_vision.description": "Allows the user to see clearly in darkness and underwater.",
+  "effect.minecraft.poison.description": "Deals damage to the target over time but cannot kill them.",
+  "effect.minecraft.regeneration.description": "Restores the user's health over time.",
+  "effect.minecraft.resistance.description": "Reduces damage taken by the user from most sources.",
+  "effect.minecraft.saturation.description": "Restores the user's hunger and saturation instantly.",
+  "effect.minecraft.slow_falling.description": "Allows the user to fall slowly and prevents fall damage.",
+  "effect.minecraft.slowness.description": "Reduces the target's movement speed.",
+  "effect.minecraft.speed.description": "Increases the user's movement speed.",
+  "effect.minecraft.strength.description": "Increases the user's melee attack damage.",
+  "effect.minecraft.unluck.description": "Reduces the target's chances of obtaining better loot from certain sources.",
+  "effect.minecraft.water_breathing.description": "Allows the user to breathe underwater.",
+  "effect.minecraft.weakness.description": "Reduces the target's melee attack damage.",
+  "effect.minecraft.wither.description": "Deals damage to the target over time and can kill them.",
+
+  "effect.shulespotions.comeback.description": "Returns the user to their spawn point.",
+  "effect.shulespotions.ender_disruption.description": "Grants the user the ability to avoid incoming projectiles.",
+  "effect.shulespotions.fly.description": "Grants the user the ability to fly.",
+  "effect.shulespotions.infested.description": "Infects the target, causing it to spawn silverfish when hit.",
+  "effect.shulespotions.instability.description": "Causes the target to move frenetically and involuntarily.",
+  "effect.shulespotions.nether_corruption.description": "Causes the target to corrupt the world behind it, transforming it into the Nether.",
+  "effect.shulespotions.leech.description": "Allows the user to steal health from targets when attacking them.",
+  "effect.shulespotions.oozing.description": "Causes the target to spawn slimes upon death.",
+  "effect.shulespotions.potion_splashed.description": "Obscures the target's vision with potion liquid.",
+  "effect.shulespotions.shadow_manipulation.description": "Grants the user the ability to summon shadow clones on hit. The clones chase the user's target and strike once before disappearing.",
+  "effect.shulespotions.stone_crusher.description": "Grants the user the ability to break multiple blocks at the same time.",
+
+
+
+
+  "shulespotions.screen.effect_codex.source": "Source: ",
+  "shulespotions.screen.effect_codex.instant": "Is Instant?",
+  "shulespotions.screen.effect_codex.category": "Category: ",
+  "shulespotions.screen.effect_codex.beneficial":"Beneficial",
+  "shulespotions.screen.effect_codex.harmful":"Harmful",
+  "shulespotions.screen.effect_codex.description": "Description",
+  "shulespotions.screen.effect_codex.ingredients": "Ingredients",
+  "shulespotions.screen.effect_codex.missing_description": "The Alchemist has no idea of what this effect do...",
 
 
   "tooltip.shulespotions.recipe_scroll": "Right click on a filled cauldron to save the recipe!",
@@ -66,6 +145,8 @@
   "tooltip.shulespotions.alchemist_monocle_stability": "Stability: %s",
   "tooltip.shulespotions.alchemist_monocle_flavor": "Flavor: %s",
   "tooltip.shulespotions.alchemist_monocle_duration": "Duration: %s",
+  "tooltip.shulespotions.alchemist_monocle_uses":"Uses: %s",
+  "tooltip.shulespotions.effects": "Effects: ",
   "tooltip.shulespotions.comingsoon":"Work in progress :D",
 
 

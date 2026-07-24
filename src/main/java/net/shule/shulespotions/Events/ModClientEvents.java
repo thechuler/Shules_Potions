@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
@@ -16,6 +17,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
@@ -30,6 +33,7 @@ import net.shule.shulespotions.Blocks.Renders.SpoonRackRenderer;
 import net.shule.shulespotions.Entities.ModEntities;
 import net.shule.shulespotions.Entities.Models.PotionSplashProjectileModel;
 import net.shule.shulespotions.Entities.Renders.PotionSplashProjectileRenderer;
+import net.shule.shulespotions.Entities.Renders.ShadowClonRenderer;
 import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Fluids.PotionFluidHelper;
 import net.shule.shulespotions.Items.ModItems;
@@ -40,6 +44,7 @@ import net.shule.shulespotions.Particles.Custom.PotionExplotionProvider;
 import net.shule.shulespotions.Particles.ModParticles;
 import net.shule.shulespotions.Renders.CoveredOnPotionLiquidLayer;
 import net.shule.shulespotions.ShulesPotions;
+
 
 @Mod.EventBusSubscriber(modid = ShulesPotions.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModClientEvents {
@@ -62,6 +67,16 @@ public class ModClientEvents {
         event.registerEntityRenderer(
                 ModEntities.POTION_SPLASH_PROJECTILE.get(),
                 PotionSplashProjectileRenderer::new
+        );
+
+        event.registerEntityRenderer(
+                ModEntities.THROWABLE_POTION_BOTTLE_PROJECTILE.get(),
+                ThrownItemRenderer::new
+        );
+
+        event.registerEntityRenderer(
+                ModEntities.SHADOW_CLONE.get(),
+                ShadowClonRenderer::new
         );
     }
 
@@ -131,6 +146,7 @@ public class ModClientEvents {
                 ModItems.SMALL_POTION_BOTTLE.get(),
                 ModItems.LARGE_POTION_BOTTLE.get(),
                 ModItems.BIG_POTION_BOTTLE.get(),
+                ModItems.THROWABLE_POTION_BOTTLE.get(),
                 ModItems.RECIPE_SCROLL.get()
         );
     }
@@ -188,6 +204,7 @@ public class ModClientEvents {
         registerBottle(ModItems.SMALL_POTION_BOTTLE.get());
         registerBottle(ModItems.LARGE_POTION_BOTTLE.get());
         registerBottle(ModItems.BIG_POTION_BOTTLE.get());
+        registerBottle(ModItems.THROWABLE_POTION_BOTTLE.get());
 
 
         ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_POTION_FLUID.get(), RenderType.translucent());
@@ -240,5 +257,8 @@ public class ModClientEvents {
             );
         }
     }
+
+
+
 
 }
