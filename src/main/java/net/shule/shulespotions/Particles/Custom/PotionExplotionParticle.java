@@ -48,7 +48,8 @@ public class PotionExplotionParticle extends TextureSheetParticle {
         this.yd += 0.002;
 
         // fade out
-        this.alpha = 1.0f - ((float) this.age / this.lifetime);
+        float progress = (float) this.age / this.lifetime;
+        this.alpha = 1.0f - (progress * progress); // Al cuadrado
     }
 
 }

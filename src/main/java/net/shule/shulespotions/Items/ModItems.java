@@ -64,15 +64,24 @@ public class ModItems {
 
     public static final RegistryObject<Item> ALCHEMIST_MONOCLE = ITEMS.register("alchemist_monocle", () -> new Item(new Item.Properties().stacksTo(1)));
 
-    public static final RegistryObject<Item> MANDRAKE_SEED = ITEMS.register("mandrake_seed", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> MANDRAKE_SEED = ITEMS.register("mandrake_seed", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+    public static final RegistryObject<Item> ALLAY_ESSENCE = ITEMS.register("allay_essence", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+    public static final RegistryObject<Item> BAT_EAR = ITEMS.register("bat_ear", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
 
-    public static final RegistryObject<Item> ROTTEN_APPLE = ITEMS.register("rotten_apple", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
 
-    public static final RegistryObject<Item> GHAST_HEART = ITEMS.register("ghast_heart", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> ROTTEN_APPLE = ITEMS.register("rotten_apple", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
 
-    public static final RegistryObject<Item> POTION_HOMUNCULUS = ITEMS.register("potion_homunculus", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
+   public static final RegistryObject<Item> ROTTEN_CARROT = ITEMS.register("rotten_carrot", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
 
-    public static final RegistryObject<Item> ROTTEN_FISH = ITEMS.register("rotten_fish", () -> new Item(new Item.Properties()));
+   public static final RegistryObject<Item> ROTTEN_MELON_SLICE = ITEMS.register("rotten_melon_slice", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+
+   public static final RegistryObject<Item> ROTTEN_FISH = ITEMS.register("rotten_fish", () -> new Item(new Item.Properties()));
+
+
+   public static final RegistryObject<Item> GHAST_HEART = ITEMS.register("ghast_heart", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
+
+   public static final RegistryObject<Item> POTION_HOMUNCULUS = ITEMS.register("potion_homunculus", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
+
 
     public static final RegistryObject<Item> EMERALD_DUST = ITEMS.register("emerald_dust", () -> new Item(new Item.Properties()));
 

@@ -9,7 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.shule.shulespotions.Screens.EffectCodexScreen;
+import net.shule.shulespotions.Screens.codex.BaseCodexScreen;
+import net.shule.shulespotions.Screens.codex.IndexSpread;
 import net.shule.shulespotions.Screens.RecipeScrollScreen;
 
 public class EffectCodex extends Item {
@@ -27,7 +28,7 @@ public class EffectCodex extends Item {
 
             if (pLevel.isClientSide) {
                 Minecraft.getInstance().setScreen(
-                        new EffectCodexScreen()
+                        new BaseCodexScreen()
                 );
             }
 

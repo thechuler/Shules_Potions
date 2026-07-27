@@ -24,6 +24,8 @@ public class ProviderItemModel extends ItemModelProvider {
 
         simpleItem(ModItems.EFFECT_CODEX);
         simpleItem(ModItems.ROTTEN_FISH);
+        simpleItem(ModItems.ROTTEN_MELON_SLICE);
+        simpleItem(ModItems.ROTTEN_CARROT);
         simpleItem(ModItems.ONYX);
         simpleItem(ModItems.IRON_DUST);
         simpleItem(ModItems.EMERALD_DUST);
@@ -39,6 +41,8 @@ public class ProviderItemModel extends ItemModelProvider {
         simpleItem(ModItems.ALCHEMIST_MONOCLE);
         simpleItem(ModItems.MANDRAKE_SEED);
         simpleItem(ModItems.BASTION_FRAGMENT);
+        simpleItem(ModItems.BAT_EAR);
+        simpleItem(ModItems.ALLAY_ESSENCE);
 
 
     }

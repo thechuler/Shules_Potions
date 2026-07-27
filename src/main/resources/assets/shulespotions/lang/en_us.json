@@ -31,6 +31,9 @@
 
   "item.shulespotions.rotten_apple": "Rotten Apple",
   "item.shulespotions.rotten_fish": "Rotten Fish",
+  "item.shulespotions.rotten_carrot": "Rotten Carrot",
+  "item.shulespotions.rotten_melon_slice": "Rotten Melon Slice",
+
   "item.shulespotions.emerald_dust": "Emerald Dust",
   "item.shulespotions.iron_dust": "Iron Dust",
   "item.shulespotions.copper_dust": "Copper Dust",
@@ -45,6 +48,8 @@
   "item.shulespotions.potion_homunculus": "Potion Homunculus",
   "item.shulespotions.ghast_heart": "Ghast Heart",
   "item.shulespotions.bastion_fragment": "Bastion Fragment",
+  "item.shulespotions.bat_ear": "Bat Ear",
+  "item.shulespotions.allay_essence": "Allay Essence",
 
 
 
@@ -117,7 +122,7 @@
   "shulespotions.screen.effect_codex.description": "Description",
   "shulespotions.screen.effect_codex.ingredients": "Ingredients",
   "shulespotions.screen.effect_codex.missing_description": "The Alchemist has no idea of what this effect do...",
-
+   "shulespotions.screen.effect_codex.missing_ingredient_description": "Just another regular ingredient",
 
   "tooltip.shulespotions.recipe_scroll": "Right click on a filled cauldron to save the recipe!",
   "tooltip.shulespotions.spoon.wooden":"Increase Duration",
@@ -149,7 +154,27 @@
   "tooltip.shulespotions.effects": "Effects: ",
   "tooltip.shulespotions.comingsoon":"Work in progress :D",
 
+  "shulespotions.purity.name": "Purity",
 
+  "shulespotions.duration.name": "Duration",
+
+  "shulespotions.vitality.name": "Vitality",
+
+  "shulespotions.flavor.name": "Flavor",
+
+  "shulespotions.stability.name": "Stability",
+
+
+  "shulespotions.screen.effect_codex.purity.description": "The Purity of a potion, make it stronger every 20 points of purity, your potion gains a level",
+  "shulespotions.screen.effect_codex.duration.description": "The Duration of a potion determine the time a potion last",
+  "shulespotions.screen.effect_codex.stability.description": "The Stability of a potion determine prevents the alchemist to suffer a chaotic event",
+  "shulespotions.screen.effect_codex.flavor.description": "The Flavor of a potion determine the quantity of hunger it adds (or dismiss) to the player on drink",
+  "shulespotions.screen.effect_codex.vitality.description": "The Vitality of a potion determine the quantity of health it adds (or dismiss) to the player on drink",
+  "shulespotions.codex.effects": "Effects",
+  "shulespotions.codex.stats": "Stats",
+  "shulespotions.codex.ingredients": "Ingredients",
+  "shulespotions.codex.blocks": "Blocks",
+   "shulespotions.codex.index": "Alchemist's Codex",
   "sounds.shulespotions.cauldron_boiling": "Cauldron boiling"
 
 }

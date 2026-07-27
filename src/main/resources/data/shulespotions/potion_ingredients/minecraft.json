@@ -634,5 +634,94 @@
       "minecraft:levitation": 60
     },
     "color": "#bac0f3"
+  },
+  "minecraft:dead_bush": {
+    "vitality": -30,
+    "stability":-20,
+    "effects": {
+      "minecraft:instant_damage": 10
+    },
+    "color": "#da9554"
+  },
+
+  "minecraft:whiter_rose": {
+    "vitality": -25,
+    "stability":-30,
+    "effects": {
+      "minecraft:wither": 20
+    },
+    "color": "#140a01"
+  },
+
+  "minecraft:wither_skeleton_skull": {
+    "vitality": -45,
+    "stability":-60,
+    "effects": {
+      "minecraft:wither": 45
+    },
+    "color": "#140a01"
+  },
+
+  "minecraft:brown_mushroom": {
+    "vitality": -10,
+    "effects": {
+      "minecraft:mining_fatigue": 20
+    },
+    "color": "#bc8655"
+  },
+
+  "minecraft:red_mushroom": {
+    "vitality": 30,
+    "effects": {
+      "minecraft:instant_health": 20
+    },
+    "color": "#be0f0f"
+  },
+
+  "minecraft:crimson_fungus": {
+    "vitality": 10,
+    "effects": {
+      "minecraft:weakness": 10,
+      "minecraft:bad_luck": 10
+    },
+    "color": "#be0f0f"
+  },
+  "minecraft:warped_fungus": {
+    "vitality": -10,
+    "effects": {
+      "minecraft:nausea": 10,
+      "minecraft:bad_luck": 10
+    },
+    "color": "#1da37c"
+  },
+  "minecraft:allium": {
+    "stability": -20,
+    "effects": {
+      "shulespotions:instability": 15
+    },
+    "color": "#69298a"
+  },
+  "minecraft:cornflower": {
+    "stability": -20,
+    "effects": {
+      "shulespotions:comeback": 15
+    },
+    "color": "#5641c1"
+  },
+
+  "minecraft:pitcher_plant": {
+    "stability": -50,
+    "effects": {
+      "shulespotions:fly": 30
+    },
+    "color": "#4c86d7"
+  },
+
+  "minecraft:azure_bluet": {
+    "stability": 20,
+    "effects": {
+      "minecraft:slow_falling": 10
+    },
+    "color": "#ecf0b2"
   }
 }

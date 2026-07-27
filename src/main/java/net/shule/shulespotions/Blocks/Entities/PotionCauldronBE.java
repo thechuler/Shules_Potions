@@ -49,7 +49,7 @@ import static net.shule.shulespotions.util.ColorUtils.*;
 
 public class PotionCauldronBE extends BlockEntity {
 
-
+    public static final int INSTABILITY_PARTICLES_EVENT = 1;
 
     private final List<CauldronAction> actions = new ArrayList<>();
     private int renderColor;
@@ -59,6 +59,7 @@ public class PotionCauldronBE extends BlockEntity {
     private int explosionTriggerId = 0;
     private int lastExplosionTriggerId = 0;
     private int explosionColor = 0;
+    private boolean isFirstLoad = true;
     private final FluidTank tank = new FluidTank(1000) {
         @Override
         protected void onContentsChanged() {
@@ -311,9 +312,6 @@ public class PotionCauldronBE extends BlockEntity {
         return 0;
     }
 
-
-
-
     public static void tick(Level level, PotionCauldronBE be) {
         if (level.isClientSide) return;
 
@@ -338,10 +336,13 @@ public class PotionCauldronBE extends BlockEntity {
         if (!level.isClientSide)
             return;
 
-        if (explosionTriggerId != lastExplosionTriggerId) {
-
+        if (isFirstLoad) {
             lastExplosionTriggerId = explosionTriggerId;
+            isFirstLoad = false;
+        }
 
+        if (explosionTriggerId != lastExplosionTriggerId) {
+            lastExplosionTriggerId = explosionTriggerId;
             spawnPotionExplosionParticles(explosionColor);
         }
 
@@ -451,5 +452,10 @@ public class PotionCauldronBE extends BlockEntity {
     public FluidTank getTank() {
         return tank;
     }
+
+
+
+
+
 
 }

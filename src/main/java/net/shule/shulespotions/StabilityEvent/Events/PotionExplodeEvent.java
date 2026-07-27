@@ -57,6 +57,7 @@ public class PotionExplodeEvent implements StabilityEvent {
                 .getStats().getColor();
 
 
+
         ctx.getCauldron().triggerExplosionParticles(color);
         spawnPotionSplashes(level, pos, 40, color);
         spawnPotionProjectiles(level, color, ctx.getCauldron(), 30);

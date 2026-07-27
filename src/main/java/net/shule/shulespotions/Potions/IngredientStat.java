@@ -101,14 +101,13 @@ public class IngredientStat {
             this.color = mixColors(this.color, other.color);
         }
         other.effectWeights.forEach((effect, value) -> {
-
             int newValue = this.effectWeights.getOrDefault(effect, 0) + value;
-            if (newValue <= 0) {
+            if (newValue == 0) {
                 this.effectWeights.remove(effect);
             } else {
                 this.effectWeights.put(
                         effect,
-                        Math.min(100, newValue)
+                        Math.max(-100, Math.min(100, newValue))
                 );
             }
         });
@@ -233,13 +232,12 @@ public class IngredientStat {
     }
 
     public void addEffectWeight(ResourceLocation effect, int amount) {
-
         int newValue = effectWeights.getOrDefault(effect, 0) + amount;
 
-        if (newValue <= 0) {
+        if (newValue == 0) {
             effectWeights.remove(effect);
         } else {
-            effectWeights.put(effect, Math.min(100, newValue));
+            effectWeights.put(effect, Math.max(-100, Math.min(100, newValue)));
         }
     }
 
@@ -248,11 +246,10 @@ public class IngredientStat {
     }
 
     public void setEffectWeight(ResourceLocation effect, int weight) {
-
-        if (weight <= 0) {
+        if (weight == 0) {
             effectWeights.remove(effect);
         } else {
-            effectWeights.put(effect, Math.min(weight, 100));
+            effectWeights.put(effect, Math.max(-100, Math.min(weight, 100)));
         }
     }
 }
