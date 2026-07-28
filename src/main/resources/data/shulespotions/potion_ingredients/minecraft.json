@@ -644,7 +644,7 @@
     "color": "#da9554"
   },
 
-  "minecraft:whiter_rose": {
+  "minecraft:wither_rose": {
     "vitality": -25,
     "stability":-30,
     "effects": {

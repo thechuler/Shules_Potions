@@ -16,6 +16,7 @@
   },
   "shulespotions:amethyst_dust": {
     "stability": -30,
+    "flavor": -20,
     "color": "#da3fd5",
     "effects": {
       "minecraft:haste": -30,
@@ -52,7 +53,7 @@
     "color": "#80170c",
     "effects": {
       "minecraft:hunger": -30,
-      "minecraft:whiter": -20,
+      "minecraft:wither": -20,
       "minecraft:darkness": -10
     }
   },
@@ -62,7 +63,7 @@
     "color": "#80170c",
     "effects": {
       "minecraft:hunger": -50,
-      "minecraft:whiter": -50,
+      "minecraft:wither": -50,
       "minecraft:darkness": -50,
       "minecraft:blindness": -50,
       "minecraft:nausea": -50,

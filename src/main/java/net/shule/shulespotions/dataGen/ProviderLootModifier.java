@@ -33,7 +33,7 @@ public class ProviderLootModifier extends GlobalLootModifierProvider {
                         ModItems.BASTION_FRAGMENT.get(),
                         2,
                         5,
-                        1f
+                        0.5f
                 ));
 
 
@@ -50,7 +50,7 @@ public class ProviderLootModifier extends GlobalLootModifierProvider {
                         ModItems.BASTION_FRAGMENT.get(),
                         2,
                         5,
-                        1f
+                        0.4f
                 ));
 
 
@@ -67,7 +67,7 @@ public class ProviderLootModifier extends GlobalLootModifierProvider {
                         ModItems.BASTION_FRAGMENT.get(),
                         2,
                         5,
-                        1f
+                        0.3f
                 ));
 
 
@@ -84,7 +84,7 @@ public class ProviderLootModifier extends GlobalLootModifierProvider {
                         ModItems.BASTION_FRAGMENT.get(),
                         2,
                         5,
-                        1f
+                        0.3f
                 ));
 
 
@@ -103,8 +103,41 @@ public class ProviderLootModifier extends GlobalLootModifierProvider {
                         ModItems.GHAST_HEART.get(),
                         1,
                         1,
+                        0.1f
+                ));
+
+        add("allay_essence",
+                new AddItemModifier(
+                        new LootItemCondition[] {
+                                LootTableIdCondition.builder(
+                                        ResourceLocation.fromNamespaceAndPath(
+                                                "minecraft",
+                                                "entities/allay"
+                                        )
+                                ).build()
+                        },
+                        ModItems.ALLAY_ESSENCE.get(),
+                        1,
+                        1,
                         1f
                 ));
+        add("bat_ear",
+                new AddItemModifier(
+                        new LootItemCondition[] {
+                                LootTableIdCondition.builder(
+                                        ResourceLocation.fromNamespaceAndPath(
+                                                "minecraft",
+                                                "entities/bat"
+                                        )
+                                ).build()
+                        },
+                        ModItems.BAT_EAR.get(),
+                        1,
+                        2,
+                        1f
+                ));
+
+
 
 
 
@@ -121,7 +154,7 @@ public class ProviderLootModifier extends GlobalLootModifierProvider {
                         ModItems.MANDRAKE_SEED.get(),
                         1,
                         2,
-                        1f
+                        0.07f
                 ));
 
 

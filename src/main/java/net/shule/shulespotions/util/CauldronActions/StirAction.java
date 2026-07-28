@@ -38,11 +38,11 @@ public class StirAction extends CauldronAction {
             }
 
             case STONE -> {
-             stats.setPurity(stats.getPurity() + 15);
+             stats.setPurity(stats.getPurity() + 20);
             }
 
             case IRON -> {
-                stats.setStability(stats.getStability() + 20);
+                stats.setStability(stats.getStability() + 30);
                 stats.setFlavor(stats.getFlavor() - 20);
             }
 
@@ -50,12 +50,15 @@ public class StirAction extends CauldronAction {
             case GOLD -> {
                 stats.setPurity(stats.getPurity() * 2);
                 potion.getStats().setDurationSeconds(potion.getStats().getDurationSeconds() * 2);
-                stats.setStability(stats.getStability()-30);
+                stats.setStability(stats.getStability()-50);
             }
 
             case DIAMOND -> {
-                stats.setVitality(stats.getVitality() + 40);
-                stats.setStability(0);
+                int purity = stats.getPurity();
+                int durationSeg = stats.getDurationSeconds();
+
+                stats.setPurity(purity + durationSeg / 2);
+                stats.setDurationSeconds(durationSeg / 2);
             }
 
 
@@ -96,7 +99,7 @@ public class StirAction extends CauldronAction {
                 ResourceLocation selected = keys.get(RandomSource.create().nextInt(keys.size()));
                 int weight = stats.getEffectWeight(selected);
                 stats.addEffectWeight(selected, -weight);
-                stats.setStability(stats.getStability() + 40);
+                stats.setStability(stats.getStability() + 70);
             }
 
             case ENDER -> {

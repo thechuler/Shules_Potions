@@ -79,6 +79,15 @@ public class ProviderRecipe extends RecipeProvider {
                 .unlockedBy("has_wooden_spoon", has(ModItems.WOODEN_SPOON.get()))
                 .save(consumer);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModItems.ONYX.get().asItem())
+                .pattern("BBB")
+                .pattern("BDB")
+                .pattern("BBB")
+                .define('B', ModItems.BASTION_FRAGMENT.get())
+                .define('D', Items.DIAMOND)
+                .unlockedBy("has_bastion_fragment", has(ModItems.BASTION_FRAGMENT.get()))
+                .save(consumer);
+
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModItems.IRON_SPOON.get())
                 .pattern("  S")
@@ -153,13 +162,36 @@ public class ProviderRecipe extends RecipeProvider {
                 .unlockedBy("has_rotten_flesh", has(Items.ROTTEN_FLESH))
                 .save(consumer);
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.ROTTEN_CARROT.get())
+                .requires(Items.ROTTEN_FLESH)
+                .requires(Items.CARROT)
+                .unlockedBy("has_rotten_flesh", has(Items.ROTTEN_FLESH))
+                .save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.ROTTEN_MELON_SLICE.get())
+                .requires(Items.ROTTEN_FLESH)
+                .requires(Items.MELON_SLICE)
+                .unlockedBy("has_rotten_flesh", has(Items.ROTTEN_FLESH))
+                .save(consumer);
+
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.ROTTEN_APPLE.get())
                 .requires(Items.ROTTEN_FLESH)
                 .requires(Items.APPLE)
                 .unlockedBy("has_rotten_flesh", has(Items.ROTTEN_FLESH))
                 .save(consumer);
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.EFFECT_CODEX.get())
+                .requires(ModItems.SMALL_POTION_BOTTLE.get())
+                .requires(Items.BOOK)
+                .unlockedBy("has_potion_bottle", has(ModItems.SMALL_POTION_BOTTLE.get()))
+                .save(consumer);
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.THROWABLE_POTION_BOTTLE.get())
+                .requires(ModItems.SMALL_POTION_BOTTLE.get())
+                .requires(Items.PAPER)
+                .unlockedBy("has_potion_bottle", has(ModItems.SMALL_POTION_BOTTLE.get()))
+                .save(consumer);
 
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.SMALL_POTION_BOTTLE.get())
@@ -193,9 +225,9 @@ public class ProviderRecipe extends RecipeProvider {
                 .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"diamond_dust_recipe"));
 
         MortarRecipeBuilder.mortar(ModItems.IRON_DUST.get(),6,3,0.5f,"#d8af93")
-                .addIngredient(Items.RAW_IRON)
-                .addIngredient(Items.RAW_IRON)
-                .addIngredient(Items.RAW_IRON)
+                .addIngredient(Items.IRON_INGOT)
+                .addIngredient(Items.IRON_INGOT)
+                .addIngredient(Items.IRON_INGOT)
                 .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"iron_dust_recipe"));
 
         MortarRecipeBuilder.mortar(ModItems.AMETHYST_DUST.get(),3,2,0.5f,"#b38ef3")
@@ -210,6 +242,30 @@ public class ProviderRecipe extends RecipeProvider {
                 .addIngredient(Items.NETHERITE_INGOT)
                 .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"netherite_dust_recipe"));
 
+        MortarRecipeBuilder.mortar(ModItems.COPPER_DUST.get(),5,3,0.5f,"#c3563c")
+                .addIngredient(Items.COPPER_INGOT)
+                .addIngredient(Items.COPPER_INGOT)
+                .addIngredient(Items.COPPER_INGOT)
+                .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"copper_dust_recipe"));
+
+
+        MortarRecipeBuilder.mortar(ModItems.CRUSHED_EYE.get(),3,3,0.5f,"#7d1b04")
+                .addIngredient(Items.SPIDER_EYE)
+                .addIngredient(Items.SPIDER_EYE)
+                .addIngredient(Items.SPIDER_EYE)
+                .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"crushed_eye_recipe"));
+
+        MortarRecipeBuilder.mortar(ModItems.GOLD_DUST.get(),6,3,0.5f,"#ffde00")
+                .addIngredient(Items.GOLD_INGOT)
+                .addIngredient(Items.GOLD_INGOT)
+                .addIngredient(Items.GOLD_INGOT)
+                .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"gold_dust_recipe"));
+
+        MortarRecipeBuilder.mortar(ModItems.EMERALD_DUST.get(),3,2,0.5f,"#00fd21")
+                .addIngredient(Items.EMERALD)
+                .addIngredient(Items.EMERALD)
+                .addIngredient(Items.EMERALD)
+                .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"emerald_dust_recipe"));
 
 
 
