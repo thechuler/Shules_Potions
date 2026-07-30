@@ -1,0 +1,30 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "froglins"
+    }
+  ],
+  "froglins:tropical_eye": {
+    "purity": -15,
+    "duration": 20,
+    "color":"#0d6228",
+    "effects": {
+      "froglins:infection": 40
+    }
+  },
+
+  "froglins:raw_frogronk_meat": {
+    "duration": 40,
+    "flavor": 30,
+    "color":"#0d6228"
+  },
+  "froglins:raw_frog_meat": {
+    "purity": -10,
+    "duration": 10,
+    "color":"#0d6228",
+    "effects": {
+      "froglins:infection": 20
+    }
+  }
+}

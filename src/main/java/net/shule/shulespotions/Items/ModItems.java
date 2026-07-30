@@ -35,7 +35,7 @@ public class ModItems {
     public static final RegistryObject<Item> BIG_POTION_BOTTLE = ITEMS.register("big_potion_bottle", () -> new PotionLiquidBottleItem(new Item.Properties().stacksTo(1),15,250*3));
 
  public static final RegistryObject<Item> THROWABLE_POTION_BOTTLE = ITEMS.register("throwable_potion_bottle",
-         () -> new ThrowablePotionBottleItem(new Item.Properties(),0,250));
+         () -> new ThrowablePotionBottleItem(new Item.Properties().stacksTo(1),0,250));
 
 
  public static final RegistryObject<Item> EFFECT_CODEX = ITEMS.register("effect_codex", () -> new EffectCodex(new Item.Properties()));

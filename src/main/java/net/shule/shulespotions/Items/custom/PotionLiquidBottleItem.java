@@ -221,15 +221,8 @@ public class PotionLiquidBottleItem extends Item {
 
         List<MobEffect> effects = getResolvedEffects(stack);
 
-        int amplifier = Math.min(4, pl.getStats().getPurity() / 20);
-
-        if(amplifier <= 0){
-            return;
-        }
-
-
-
-
+        int amplifier = Math.max(0, Math.min(4, pl.getStats().getPurity() / 20));
+        
         if (pl.getStats().getDurationSeconds() <= 0) {
             return;
         }

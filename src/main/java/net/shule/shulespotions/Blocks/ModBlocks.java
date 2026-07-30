@@ -59,7 +59,7 @@ public class ModBlocks {
             () -> new PotionSplashBlock(BlockBehaviour.Properties.copy(Blocks.SLIME_BLOCK)));
 
     public static final RegistryObject<Block> SPOON_RACK = registerBlock("spoon_rack",
-            () -> new SpoonRack(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL)));
+            () -> new SpoonRack(BlockBehaviour.Properties.copy(Blocks.ACACIA_PLANKS)));
 
 
 

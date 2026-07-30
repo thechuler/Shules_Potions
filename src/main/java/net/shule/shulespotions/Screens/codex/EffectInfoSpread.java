@@ -214,10 +214,12 @@ public class EffectInfoSpread extends CodexSpread {
         textY += 15;
         int descriptionWidth = 130;
 
+        String forcedDescKey = "effect." + id.getNamespace() + "." + id.getPath() + ".description";
+
         graphics.drawWordWrap(
                 Minecraft.getInstance().font,
                 Component.translatableWithFallback(
-                        effect.getDescriptionId() + ".description",
+                        forcedDescKey,
                         Component.translatable("shulespotions.screen.effect_codex.missing_description").getString()
                 ),
                 leftPageCenter - descriptionWidth / 2 + titleOffsetX + 5,

@@ -4,7 +4,7 @@
   "block.shulespotions.potionshelf": "Potion Shelf",
   "block.shulespotions.spoon_rack": "Spoon Rack",
   "block.shulespotions.mortar": "Mortar",
-
+  "block.shulespotions.potion_splash": "Potion Splash",
   "fluid_type.shulespotions.potion_fluid": "Potion Liquid",
   "creativetab.main_tab": "Shule's Potions",
 
@@ -194,5 +194,33 @@
   "item.shulespotions.rotten_carrot.description": "I guess it was a bad idea to store food next to rotten flesh... Now, what am I going to eat? :(",
   "item.shulespotions.rotten_fish.description": "I guess it was a bad idea to store food next to rotten flesh... Now, what am I going to eat? :(",
   "item.shulespotions.rotten_apple.description": "I guess it was a bad idea to store food next to rotten flesh... Now, what am I going to eat? :(",
-  "item.shulespotions.bastion_fragment.description": "A pretty stone obtained probably from the most dangerous place in hell. Sure! Why not?"
+  "item.shulespotions.bastion_fragment.description": "A pretty stone obtained probably from the most dangerous place in hell. Sure! Why not?",
+
+  "effect.alexsmobs.bug_pheromones.description": "Prevents arthropods from being hostile to the user.",
+  "effect.alexsmobs.clinging.description": "Allows the user to stick to surfaces and walk on ceilings.",
+  "effect.alexsmobs.fleet_footed.description": "Increases the user's speed while jumping.",
+  "effect.alexsmobs.knockback_resistance.description": "Reduces or eliminates knockback received by the user.",
+  "effect.alexsmobs.lava_vision.description": "Allows the user to see clearly through lava.",
+  "effect.alexsmobs.mosquito_repellent.description": "Prevents Crimson Mosquitoes from attacking the user.",
+  "effect.alexsmobs.oiled.description": "Causes the user to float in water.",
+  "effect.alexsmobs.orcas_might.description": "Reduces the recovery time for melee attacks.",
+  "effect.alexsmobs.poison_resistance.description": "Prevents the user from receiving the poison effect.",
+  "effect.alexsmobs.soulsteal.description": "Allows the user to recover health equal to the damage dealt.",
+  "effect.alexsmobs.sunbird_blessing.description": "Grants the user slow falling, increased jump height, and improved aerial mobility.",
+  "effect.alexsmobs.tigers_blessing.description": "Allows the user to interact with tigers and receive their help.",
+
+  "effect.alexsmobs.earthquake.description": "Causes the user's screen to shake violently.",
+
+  "effect.alexsmobs.debilitating_sting.description": "Weakens the target, dealing progressive damage or immobilizing arthropods.",
+  "effect.alexsmobs.ender_flu.description": "Infects the target and spawns an Enderiophage when the effect ends.",
+  "effect.alexsmobs.exsanguination.description": "Causes the target to continuously lose health from bleeding.",
+  "effect.alexsmobs.fear.description": "Paralyzes the target due to fear, limiting their movement.",
+  "effect.alexsmobs.sunbird_curse.description": "Increases the target's falling speed.",
+
+  "effect.alexsmobs.power_down.description": "Causes a blackout, drastically reducing the target's mobility and vision.",
+
+  "effect.froglins.infection.description": "Profanes the target's body, turning them into a disgusting zombie froglin upon death.",
+  
+  "entity.shulespotions.throwable_potion_bottle_projectile": "Throwable Potion Bottle",
+  "entity.shulespotions.potion_splash_projectile": "Potion Splash"
 }

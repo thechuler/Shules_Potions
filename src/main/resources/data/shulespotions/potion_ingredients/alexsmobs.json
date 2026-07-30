@@ -1,0 +1,159 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+
+  "alexsmobs:cockroach_wing": {
+    "purity": -20,
+    "color":"#412514",
+    "effects": {
+      "alexsmobs:bug_pheromones": 30
+    }
+  },
+
+  "alexsmobs:dropbear_claw": {
+    "duration": 10,
+    "color":"#2a2827",
+    "effects": {
+      "alexsmobs:clinging": 35
+    }
+  },
+
+  "minecraft:pumpkin_seeds": {
+    "duration": 5,
+    "color":"#b7896d",
+    "effects": {
+      "alexsmobs:fleet_footed": 10
+    }
+  },
+
+  "alexsmobs:bear_fur": {
+    "stability": 25,
+    "color":"#461c02",
+    "effects": {
+      "alexsmobs:knockback_resistance": 30
+    }
+  },
+
+  "alexsmobs:mosquito_repellent_stew": {
+    "flavor": -30,
+    "color":"#69130a",
+    "effects": {
+      "alexsmobs:mosquito_repellent": 60
+    }
+  },
+  "alexsmobs:mosquito_proboscis": {
+    "flavor": -40,
+    "color":"#69130a",
+    "effects": {
+      "alexsmobs:mosquito_repellent": 20
+    }
+  },
+  "alexsmobs:mosquito_larva": {
+    "flavor": -50,
+    "color":"#69130a",
+    "effects": {
+      "alexsmobs:mosquito_repellent": 20
+    }
+  },
+
+  "alexsmobs:fish_oil": {
+    "stability": 10,
+    "color":"#847929",
+    "effects": {
+      "alexsmobs:oiled": 40
+    }
+  },
+  "alexsmobs:blobfish": {
+    "stability": 5,
+    "color":"#847929",
+    "effects": {
+      "alexsmobs:oiled": 10
+    }
+  },
+
+  "alexsmobs:large_catfish_bucket": {
+    "color":"#406234",
+    "effects": {
+      "alexsmobs:orcas_might": 5
+    }
+  },
+  "alexsmobs:centipede_leg": {
+    "flavor": -30,
+    "color":"#406234",
+    "effects": {
+      "alexsmobs:poison_resistance": 30
+    }
+  },
+  "alexsmobs:soul_heart": {
+    "stability": -20,
+    "vitality": 20,
+    "color":"#249fad",
+    "effects": {
+      "alexsmobs:soulsteal": 40
+    }
+  },
+  "minecraft:gold_ingot": {
+    "purity": 10,
+    "color":"#fff708",
+    "effects": {
+      "alexsmobs:sunbird_blessing": 5
+    }
+  },
+  "minecraft:raw_gold": {
+    "purity": -10,
+    "color":"#fff708",
+    "effects": {
+      "alexsmobs:sunbird_curse": 5
+    }
+  },
+  "minecraft:chicken": {
+    "flavor": -5,
+    "color": "#a55246",
+    "effects": {
+      "alexsmobs:tigers_blessing": 5
+    }
+  },
+  "alexsmobs:rocky_shell": {
+    "stability": 30,
+    "color":"#2a2827",
+    "effects": {
+      "alexsmobs:earthquake": 35
+    }
+  },
+  "alexsmobs:tarantula_hawk_wing_fragment": {
+    "purity": -10,
+    "color":"#e15921",
+    "effects": {
+      "alexsmobs:debilitating_sting": 35
+    }
+  },
+  "alexsmobs:capsid": {
+    "stability": -40,
+    "color":"#684196",
+    "effects": {
+      "alexsmobs:ender_flu": 35
+    }
+  },
+
+  "alexsmobs:shark_tooth": {
+    "vitality": -10,
+    "color":"#f8f6cc",
+    "effects": {
+      "alexsmobs:exsanguination": 15
+    }
+},
+  "alexsmobs:unsettling_kimono": {
+    "color":"#821721",
+    "effects": {
+      "alexsmobs:fear": 5
+    }
+  }
+
+
+
+
+}

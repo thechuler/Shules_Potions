@@ -234,7 +234,7 @@ public class PotionExplodeEvent implements StabilityEvent {
         for (LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, area)) {
             entity.getPersistentData().putInt("PotionSplashColor", color);
             entity.addEffect(new MobEffectInstance(ModMobEffects.POTION_SPLASHED.get(),
-                    20 * 15, 0, false, false));
+                    20 * 15, 0, false, true));
             ModMessages.INSTANCE.send(
                     PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
                     new SyncPotionSplashColorPacket(entity.getId(), color)

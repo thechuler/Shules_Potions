@@ -181,11 +181,34 @@
   "item.shulespotions.rotten_carrot.description": "Supongo que fue mala idea guardar la comida junto a la carne podrida... Ahora, ¿qué voy a comer? :(",
   "item.shulespotions.rotten_fish.description": "Supongo que fue mala idea guardar la comida junto a la carne podrida... Ahora, ¿qué voy a comer? :(",
   "item.shulespotions.rotten_apple.description": "Supongo que fue mala idea guardar la comida junto a la carne podrida... Ahora, ¿qué voy a comer? :(",
-  "item.shulespotions.bastion_fragment.description": "Una piedra bonita obtenida probablemente del lugar más peligroso del infierno. ¡Claro! ¿Por qué no?"
+  "item.shulespotions.bastion_fragment.description": "Una piedra bonita obtenida probablemente del lugar más peligroso del infierno. ¡Claro! ¿Por qué no?",
 
+
+  "effect.alexsmobs.bug_pheromones.description": "Evita que los artrópodos sean hostiles al usuario.",
+  "effect.alexsmobs.clinging.description": "Permite al usuario adherirse a superficies y caminar por techos.",
+  "effect.alexsmobs.fleet_footed.description": "Aumenta la velocidad del usuario mientras salta.",
+  "effect.alexsmobs.knockback_resistance.description": "Reduce o elimina el retroceso recibido por el usuario.",
+  "effect.alexsmobs.lava_vision.description": "Permite al usuario ver claramente a través de la lava.",
+  "effect.alexsmobs.mosquito_repellent.description": "Evita que los mosquitos carmesí ataquen al usuario.",
+  "effect.alexsmobs.oiled.description": "Hace que el usuario flote en el agua",
+  "effect.alexsmobs.orcas_might.description": "Reduce el tiempo necesario para recuperar los ataques cuerpo a cuerpo.",
+  "effect.alexsmobs.poison_resistance.description": "Evita que el usuario reciba el efecto de veneno.",
+  "effect.alexsmobs.soulsteal.description": "Permite al usuario recuperar salud equivalente al daño infligido.",
+  "effect.alexsmobs.sunbird_blessing.description": "Otorga al usuario caída lenta, mayor salto y movilidad aérea mejorada.",
+  "effect.alexsmobs.tigers_blessing.description": "Permite al usuario relacionarse con los tigres y recibir su ayuda.",
+
+  "effect.alexsmobs.earthquake.description": "Hace que la pantalla del usuario tiemble violentamente.",
+
+  "effect.alexsmobs.debilitating_sting.description": "Debilita al objetivo, causando daño progresivo o inmovilizando artrópodos.",
+  "effect.alexsmobs.ender_flu.description": "Infecta al objetivo y genera un Enderiofago cuando termina el efecto.",
+  "effect.alexsmobs.exsanguination.description": "Provoca que el objetivo pierda salud continuamente por sangrado.",
+  "effect.alexsmobs.fear.description": "Paraliza al objetivo debido al miedo, limitando su movimiento.",
+  "effect.alexsmobs.sunbird_curse.description": "Aumenta la velocidad de caída del objetivo.",
+
+  "effect.alexsmobs.power_down.description": "Causa un apagón, reduciendo drásticamente la movilidad y visión del objetivo.",
+
+  "effect.froglins.infection.description": "Profana el cuerpo del objetivo convirtiéndolo en un asqueroso froglin zombie tras su muerte.",
+
+  "entity.shulespotions.throwable_potion_bottle_projectile": "Botella de Poción Arrojadiza",
+  "entity.shulespotions.potion_splash_projectile": "Salpicadura de Poción"
 }
-
-
-
-
-

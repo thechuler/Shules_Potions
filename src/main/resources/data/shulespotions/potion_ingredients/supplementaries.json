@@ -1,0 +1,26 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "supplementaries"
+    }
+  ],
+
+  "minecraft:blaze_powder": {
+    "duration":25,
+    "purity": 18,
+    "vitality": -23,
+    "effects": {
+      "supplementaries:flammable": 18
+    },
+    "color": "#f0902b"
+  },
+
+  "minecraft:iron_ingot": {
+    "duration":30,
+    "effects": {
+      "supplementaries:overencumbered": 20
+    },
+    "color": "#b6bbda"
+  }
+}
