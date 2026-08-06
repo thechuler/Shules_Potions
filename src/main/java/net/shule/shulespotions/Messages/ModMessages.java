@@ -26,5 +26,13 @@ public class ModMessages {
                 SyncPotionSplashColorPacket::decode,
                 SyncPotionSplashColorPacket::handle
         );
+
+        INSTANCE.registerMessage(
+                packetId++,
+                SyncCloneStatusPacket.class,
+                SyncCloneStatusPacket::encode,
+                SyncCloneStatusPacket::decode,
+                SyncCloneStatusPacket::handle
+        );
     }
 }

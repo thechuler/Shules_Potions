@@ -18,6 +18,9 @@ public class ModParticles {
     public static final RegistryObject<SimpleParticleType> BUBBLE =
             PARTICLES.register("bubble", () -> new SimpleParticleType(true));
 
+    public static final RegistryObject<SimpleParticleType> INSTABILITY_BUBBLE =
+            PARTICLES.register("instability_bubble", () -> new SimpleParticleType(true));
+
 
     public static final RegistryObject<SimpleParticleType> POTION_EXPLOTION =
             PARTICLES.register("potion_explotion", () -> new SimpleParticleType(true));

@@ -3,16 +3,15 @@ package net.shule.shulespotions.Screens.codex;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.shule.shulespotions.Potions.IngredientStat;
 import net.shule.shulespotions.Potions.ItemStatRegistry;
 import net.shule.shulespotions.Screens.IngredientButton;
+import net.shule.shulespotions.Screens.codex.base.CodexSpread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +45,7 @@ public class EffectInfoSpread extends CodexSpread {
     public void init(int x, int y) {
         this.guiX = x;
         this.guiY = y;
-        ResourceLocation backTex = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/button_back.png");
-
-        parent.addSpreadWidget(
-                new ImageButton(x + 105, y + BaseCodexScreen.GUI_HEIGHT - 15, 20, 20, 0, 0, 20, backTex, 20, 40, b -> parent.popSpread())
-        );
+        addBackButton(x, y);
         
         ResourceLocation effectId = ForgeRegistries.MOB_EFFECTS.getKey(effect);
         if (effectId != null) {
@@ -82,7 +77,7 @@ public class EffectInfoSpread extends CodexSpread {
         scrollOffset = 0;
 
         int gridWidth = columns * spacing - 6;
-        int rightPageStart = x + 288 - gridWidth / 2;
+        int rightPageStart = getRightPageCenter(x) - gridWidth / 2;
         int startY = y + 55;
 
         for (int i = 0; i < sortedIngredients.size(); i++) {
@@ -104,12 +99,29 @@ public class EffectInfoSpread extends CodexSpread {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        ResourceLocation id = ForgeRegistries.MOB_EFFECTS.getKey(effect);
+        int leftPageCenter = getLeftPageCenter(guiX);
+        int titleOffsetX = 10;
+        int descY = guiY + 168; // 110 + 18 + 25 + 15
+        int descriptionWidth = 130;
+        int startX = leftPageCenter - descriptionWidth / 2 + titleOffsetX + 5;
+        
+        String forcedDescKey = "effect." + (id != null ? id.getNamespace() : "") + "." + (id != null ? id.getPath() : "") + ".description";
+        Component description = Component.translatableWithFallback(
+                forcedDescKey,
+                Component.translatable("shulespotions.screen.effect_codex.missing_description").getString()
+        );
+        
+        if (handleTextClick(description, startX, descY, descriptionWidth, mouseX, mouseY)) {
+            return true;
+        }
+
         if (sortedIngredients.isEmpty()) return false;
 
         int columns = 4;
         int spacing = 34;
         int gridWidth = columns * spacing - 6;
-        int rightPageStart = guiX + 288 - gridWidth / 2;
+        int rightPageStart = getRightPageCenter(guiX) - gridWidth / 2;
         int startY = guiY + 55;
         int visibleHeight = 150;
 
@@ -164,31 +176,20 @@ public class EffectInfoSpread extends CodexSpread {
 
     private void renderEffectInfo(GuiGraphics graphics, int guiX, int guiY) {
         ResourceLocation id = ForgeRegistries.MOB_EFFECTS.getKey(effect);
-        int leftPageCenter = guiX + 96;
-        float scale = 1.5F;
+        int leftPageCenter = getLeftPageCenter(guiX);
         int titleOffsetX = 10;
         int textX = guiX + 28 + titleOffsetX;
         int textY = guiY + 110;
 
         Component title = Component.translatable(effect.getDescriptionId());
-        int titleX = leftPageCenter - Math.round(Minecraft.getInstance().font.width(title) * scale / 2.0F) + titleOffsetX;
-        int titleY = guiY + 22;
-
-        graphics.pose().pushPose();
-        graphics.pose().scale(scale, scale, 1.0F);
-        graphics.drawString(Minecraft.getInstance().font, title,
-                Math.round(titleX / scale),
-                Math.round(titleY / scale),
-                effect.getColor(),
-                false);
-        graphics.pose().popPose();
+        drawCenteredScaledString(graphics, title, leftPageCenter + titleOffsetX, guiY + 22, 1.5F, effect.getColor());
 
         graphics.drawString(Minecraft.getInstance().font,
                 Component.translatable("shulespotions.screen.effect_codex.source"),
                 textX + 25, textY, 0x7A6A52, false);
         graphics.drawString(Minecraft.getInstance().font,
                 id != null ? id.getNamespace() : "-",
-                textX + 25 + 45, textY, 0x3A3A3A, false);
+                textX + 25 + 45, textY, COLOR_TEXT, false);
 
         textY += 18;
 
@@ -204,12 +205,7 @@ public class EffectInfoSpread extends CodexSpread {
         textY += 25;
 
         Component descTitle = Component.translatable("shulespotions.screen.effect_codex.description");
-        graphics.drawString(Minecraft.getInstance().font,
-                descTitle,
-                leftPageCenter - Minecraft.getInstance().font.width(descTitle) / 2 + titleOffsetX,
-                textY,
-                0x5E4A32,
-                false);
+        drawCenteredScaledString(graphics, descTitle, leftPageCenter + titleOffsetX, textY, 1.0F, COLOR_TITLE);
 
         textY += 15;
         int descriptionWidth = 130;
@@ -225,7 +221,7 @@ public class EffectInfoSpread extends CodexSpread {
                 leftPageCenter - descriptionWidth / 2 + titleOffsetX + 5,
                 textY,
                 descriptionWidth,
-                0x3A3A3A
+                COLOR_TEXT
         );
     }
 
@@ -233,18 +229,8 @@ public class EffectInfoSpread extends CodexSpread {
         if (sortedIngredients.isEmpty()) return;
 
         Component title = Component.translatable("shulespotions.screen.effect_codex.ingredients");
-        float scaleText = 1.5F;
-        int scaledWidth = Math.round(Minecraft.getInstance().font.width(title) * scaleText);
-        
-        graphics.pose().pushPose();
-        graphics.pose().scale(scaleText, scaleText, 1.0F);
-
-        int rightPageCenter = guiX + 288;
-        int titleX = rightPageCenter - scaledWidth / 2;
-        int titleY = guiY + 18;
-        graphics.drawString(Minecraft.getInstance().font, title, Math.round(titleX / scaleText), Math.round(titleY / scaleText), 0x5E4A32, false);
-        
-        graphics.pose().popPose();
+        int rightPageCenter = getRightPageCenter(guiX);
+        drawCenteredScaledString(graphics, title, rightPageCenter, guiY + 18, 1.5F, COLOR_TITLE);
 
         int columns = 4;
         int spacing = 34;

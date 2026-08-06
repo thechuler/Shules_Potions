@@ -222,13 +222,6 @@ public class PotionLiquidBottleItem extends Item {
         List<MobEffect> effects = getResolvedEffects(stack);
 
         int amplifier = Math.max(0, Math.min(4, pl.getStats().getPurity() / 20));
-        
-        if (pl.getStats().getDurationSeconds() <= 0) {
-            return;
-        }
-
-
-
         for (MobEffect effect : effects) {
 
             if (effect.isInstantenous()) {
@@ -242,14 +235,16 @@ public class PotionLiquidBottleItem extends Item {
                 );
 
             } else {
-
-                entity.addEffect(
-                        new MobEffectInstance(
-                                effect,
-                                pl.getStats().getDurationTicks(),
-                                amplifier
-                        )
-                );
+                
+                if (pl.getStats().getDurationSeconds() > 0) {
+                    entity.addEffect(
+                            new MobEffectInstance(
+                                    effect,
+                                    pl.getStats().getDurationTicks(),
+                                    amplifier
+                            )
+                    );
+                }
             }
         }
 
@@ -333,6 +328,10 @@ public class PotionLiquidBottleItem extends Item {
             return InteractionResult.sidedSuccess(true);
         }
         
+        if (cauldron.getState() != PotionCauldronBE.CauldronState.FINISHED) {
+            return InteractionResult.PASS;
+        }
+        
 
         ItemStack stack = context.getItemInHand();
 
@@ -362,7 +361,7 @@ public class PotionLiquidBottleItem extends Item {
 
             PotionLiquid pl = PotionFluidHelper.getPotionLiquid(copied);
 
-            List<MobEffect> effects = PotionLiquidUtils.resolve(pl);
+            List<MobEffect> effects = cauldron.getEffects();
 
             setResolvedEffects(stack, effects);
 

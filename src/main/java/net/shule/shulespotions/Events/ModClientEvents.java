@@ -40,8 +40,10 @@ import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.Items.custom.PotionLiquidBottleItem;
 import net.shule.shulespotions.Items.custom.RecipeScroll;
 import net.shule.shulespotions.Particles.Custom.BubbleProvider;
+import net.shule.shulespotions.Particles.Custom.InstabilityBubbleProvider;
 import net.shule.shulespotions.Particles.Custom.PotionExplotionProvider;
 import net.shule.shulespotions.Particles.ModParticles;
+import net.shule.shulespotions.Renders.CloneOverlayLayer;
 import net.shule.shulespotions.Renders.CoveredOnPotionLiquidLayer;
 import net.shule.shulespotions.ShulesPotions;
 
@@ -78,6 +80,11 @@ public class ModClientEvents {
                 ModEntities.SHADOW_CLONE.get(),
                 ShadowClonRenderer::new
         );
+
+        event.registerEntityRenderer(
+                ModEntities.PLAYER_CLONE.get(),
+                net.shule.shulespotions.Entities.Renders.PlayerCloneRenderer::new
+        );
     }
 
     @SubscribeEvent
@@ -95,6 +102,7 @@ public class ModClientEvents {
 
         event.registerSpriteSet(ModParticles.BUBBLE.get(), BubbleProvider::new);
         event.registerSpriteSet(ModParticles.POTION_EXPLOTION.get(), PotionExplotionProvider::new);
+        event.registerSpriteSet(ModParticles.INSTABILITY_BUBBLE.get(), InstabilityBubbleProvider::new);
 
     }
 
@@ -246,6 +254,10 @@ public class ModClientEvents {
                 livingRenderer.addLayer(
                         new CoveredOnPotionLiquidLayer(livingRenderer)
                 );
+
+                livingRenderer.addLayer(
+                        new CloneOverlayLayer(livingRenderer)
+                );
             }
         });
 
@@ -254,6 +266,10 @@ public class ModClientEvents {
 
             playerRenderer.addLayer(
                     new CoveredOnPotionLiquidLayer<>(playerRenderer)
+            );
+
+            playerRenderer.addLayer(
+                    new CloneOverlayLayer<>(playerRenderer)
             );
         }
     }

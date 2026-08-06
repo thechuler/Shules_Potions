@@ -1,6 +1,6 @@
 package net.shule.shulespotions.Blocks.Entities;
 
-import net.minecraft.client.Minecraft;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -9,8 +9,8 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -31,7 +31,6 @@ import net.shule.shulespotions.Fluids.PotionFluidHelper;
 import net.shule.shulespotions.Particles.ModParticles;
 import net.shule.shulespotions.Potions.PotionLiquid;
 import net.shule.shulespotions.Potions.PotionLiquidUtils;
-import net.shule.shulespotions.Sounds.ModSounds;
 import net.shule.shulespotions.StabilityEvent.Events.PotionExplodeEvent;
 import net.shule.shulespotions.StabilityEvent.StabilityEvent;
 import net.shule.shulespotions.util.CauldronActions.AddIngredientAction;
@@ -60,11 +59,20 @@ public class PotionCauldronBE extends BlockEntity {
     private int lastExplosionTriggerId = 0;
     private int explosionColor = 0;
     private boolean isFirstLoad = true;
+    public enum CauldronState { IDLE, BREWING, FINISHED, RUINED }
+    private CauldronState state = CauldronState.IDLE;
+    private List<MobEffect> effects = new ArrayList<>();
+
+
     private final FluidTank tank = new FluidTank(1000) {
         @Override
         protected void onContentsChanged() {
-            if (isEmpty() && !actions.isEmpty()) {
-                actions.clear();
+            if (isEmpty()) {
+                if (!actions.isEmpty()) {
+                    actions.clear();
+                }
+                state = CauldronState.IDLE;
+                effects.clear();
             }
             setChanged();
 
@@ -89,8 +97,7 @@ public class PotionCauldronBE extends BlockEntity {
 
     public PotionCauldronBE(BlockPos pos, BlockState state) {
         super(ModBlockEntities.POTION_CAULDRON_BE.get(), pos, state);
-        int color = randomColor();
-        renderColor = color;
+        renderColor = randomColor();
     }
 
     @Override
@@ -101,12 +108,19 @@ public class PotionCauldronBE extends BlockEntity {
         return super.getCapability(cap, side);
     }
 
+    @Override
+    public net.minecraft.world.phys.AABB getRenderBoundingBox() {
+        return new net.minecraft.world.phys.AABB(worldPosition).inflate(256.0D);
+    }
+
 
     public void checkItem(ItemStack item) {
 
         if (actions.size() >= getMaxIngredients()) return;
 
+        if (this.getState() == CauldronState.FINISHED) return;
         if (tank.isEmpty()) return;
+        
 
         FluidStack fluid = tank.getFluid();
 
@@ -123,6 +137,10 @@ public class PotionCauldronBE extends BlockEntity {
             );
 
             tank.setFluid(potionFluid);
+        }
+
+        if (state == CauldronState.IDLE) {
+            state = CauldronState.BREWING;
         }
 
         applyAction(new AddIngredientAction(item.getItem()), null);
@@ -160,14 +178,6 @@ public class PotionCauldronBE extends BlockEntity {
 
     public void setPotionLiquid(PotionLiquid potion) {
 
-        PotionLiquid oldPotion = getPotionLiquid();
-        int oldStability = oldPotion.getStats().getStability();
-        int newStability = potion.getStats().getStability();
-
-        if (oldStability != newStability) {
-            onStabilityChanged(oldStability, newStability);
-        }
-
         FluidStack fluid = this.tank.getFluid();
 
 
@@ -181,21 +191,6 @@ public class PotionCauldronBE extends BlockEntity {
     }
 
 
-    public void onStabilityChanged(int old, int current){
-        CauldronContext ctx = new CauldronContext(this, null);
-
-        StabilityEvent event = new PotionExplodeEvent();
-
-        if (event.canTrigger(current)) {
-            float chance = event.getChance(ctx);
-
-            if (level.random.nextFloat() > chance) {
-                event.trigger(ctx);
-
-            }
-        }
-    }
-
 
 
 
@@ -206,11 +201,12 @@ public class PotionCauldronBE extends BlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        assert pkt.getTag() != null;
         this.load(pkt.getTag());
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public @NotNull CompoundTag getUpdateTag() {
         return saveWithoutMetadata();
     }
 
@@ -229,7 +225,7 @@ public class PotionCauldronBE extends BlockEntity {
 
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(@NotNull CompoundTag tag) {
 
         super.saveAdditional(tag);
 
@@ -237,37 +233,47 @@ public class PotionCauldronBE extends BlockEntity {
         tag.putInt("SPcolor", renderColor);
         tag.putInt("ExplosionTriggerId", explosionTriggerId);
         tag.putInt("ExplosionColor", explosionColor);
+        tag.putString("CauldronState", state.name());
         ListTag actionList = new ListTag();
 
         for (CauldronAction action : actions) {
 
             CompoundTag actionTag = new CompoundTag();
 
-            actionTag.putString(
-                    "Type",
-                    action.getType()
-            );
+            actionTag.putString("Type", action.getType());
 
-            actionTag.put(
-                    "Data",
-                    action.save()
-            );
+            actionTag.put("Data", action.save());
 
             actionList.add(actionTag);
         }
 
         tag.put("Actions", actionList);
+
+        if (effects != null) {
+            ListTag effectsTag = new ListTag();
+            for (MobEffect effect : effects) {
+                net.minecraft.resources.ResourceLocation id = net.minecraftforge.registries.ForgeRegistries.MOB_EFFECTS.getKey(effect);
+                if (id != null) {
+                    effectsTag.add(net.minecraft.nbt.StringTag.valueOf(id.toString()));
+                }
+            }
+            tag.put("Effects", effectsTag);
+        }
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    public void load(@NotNull CompoundTag tag) {
 
         super.load(tag);
 
         tank.readFromNBT(tag.getCompound("SPTank"));
         explosionTriggerId = tag.getInt("ExplosionTriggerId");
         explosionColor = tag.getInt("ExplosionColor");
-
+        if (tag.contains("CauldronState")) {
+            state = CauldronState.valueOf(tag.getString("CauldronState"));
+        } else if (tag.contains("IsRecipeFinished")) {
+            state = tag.getBoolean("IsRecipeFinished") ? CauldronState.FINISHED : CauldronState.BREWING;
+        }
         renderColor = tag.getInt("SPcolor");
 
 
@@ -289,13 +295,23 @@ public class PotionCauldronBE extends BlockEntity {
                 CompoundTag data =
                         actionTag.getCompound("Data");
 
-                CauldronAction action =
-                        CauldronActionRegistry.load(
-                                type,
-                                data
-                        );
-
+                CauldronAction action = CauldronActionRegistry.load(type, data);
                 actions.add(action);
+            }
+        }
+
+        if (tag.contains("Effects")) {
+            effects = new ArrayList<>();
+            ListTag effectsTag = tag.getList("Effects", Tag.TAG_STRING);
+            for (int i = 0; i < effectsTag.size(); i++) {
+                String idStr = effectsTag.getString(i);
+                net.minecraft.resources.ResourceLocation id = net.minecraft.resources.ResourceLocation.tryParse(idStr);
+                if (id == null) continue;
+                
+                MobEffect effect = net.minecraftforge.registries.ForgeRegistries.MOB_EFFECTS.getValue(id);
+                if (effect != null) {
+                    effects.add(effect);
+                }
             }
         }
     }
@@ -333,6 +349,7 @@ public class PotionCauldronBE extends BlockEntity {
    ;
     public void clientTick() {
 
+        assert level != null;
         if (!level.isClientSide)
             return;
 
@@ -346,11 +363,15 @@ public class PotionCauldronBE extends BlockEntity {
             spawnPotionExplosionParticles(explosionColor);
         }
 
-        if(this.getTank().isEmpty()|| this.getActions().size() >= getMaxIngredients()) {
+        if(this.getTank().isEmpty()) {
             return;
         }
 
         if (this.getTank().getFluid().getFluid() == Fluids.WATER) {
+            return;
+        }
+
+        if(this.getState() == CauldronState.FINISHED){
             return;
         }
 
@@ -360,12 +381,21 @@ public class PotionCauldronBE extends BlockEntity {
         float chance = 0.4f;
 
         if (this.level.random.nextFloat() < chance) {
-
             double offsetX = (this.level.random.nextDouble() - 0.5) * 0.5;
             double offsetZ = (this.level.random.nextDouble() - 0.5) * 0.5;
 
+            PotionLiquid potion = this.getPotionLiquid();
+            int stability = potion.getStats().getStability();
+            
+            float instabilityChance = Math.max(0.0f, (100.0f - stability) / 100.0f);
+
+            net.minecraft.core.particles.SimpleParticleType particleType = 
+                    this.level.random.nextFloat() < instabilityChance 
+                            ? ModParticles.INSTABILITY_BUBBLE.get() 
+                            : ModParticles.BUBBLE.get();
+
             this.level.addParticle(
-                    ModParticles.BUBBLE.get(),
+                    particleType,
                     this.getBlockPos().getX() + 0.5 + offsetX,
                     this.getBlockPos().getY() + 1.0,
                     this.getBlockPos().getZ() + 0.5 + offsetZ,
@@ -403,7 +433,10 @@ public class PotionCauldronBE extends BlockEntity {
         double centerX = worldPosition.getX() + 0.5;
         double centerY = worldPosition.getY() + 1.0;
         double centerZ = worldPosition.getZ() + 0.5;
-
+/*
+        net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT, () -> () ->
+                net.shule.shulespotions.Events.CameraShakeHandler.triggerShake(centerX, centerY, centerZ, 25, 2.0f));
+*/
         int particleCount = 200;
 
         for (int i = 0; i < particleCount; i++) {
@@ -453,8 +486,54 @@ public class PotionCauldronBE extends BlockEntity {
         return tank;
     }
 
+    public CauldronState getState() {
+        return state;
+    }
+
+    public void setState(CauldronState state) {
+        this.state = state;
+    }
+
+    public List<MobEffect> getEffects() {
+        return effects;
+    }
 
 
+
+    public void FinishBrewing(){
+        if (this.state == CauldronState.FINISHED) {
+            return;
+        }
+        
+        PotionLiquid potionLiquid = this.getPotionLiquid();
+        int stability = potionLiquid.getStats().getStability();
+        float chance = Math.max(0, Math.min(100, (50 - stability) * 2));
+        
+        if (level != null && !level.isClientSide) {
+            CauldronContext ctx = new CauldronContext(this, null);
+            StabilityEvent event = new PotionExplodeEvent();
+            
+            if (level.random.nextFloat() * 100 < chance) {
+                event.trigger(ctx);
+                return;
+            }
+            
+            this.effects = PotionLiquidUtils.resolve(potionLiquid);
+            this.state = CauldronState.FINISHED;
+            
+            level.playSound(
+                    null,
+                    worldPosition,
+                    net.minecraft.sounds.SoundEvents.BREWING_STAND_BREW,
+                    net.minecraft.sounds.SoundSource.BLOCKS,
+                    1.0F,
+                    1.0F
+            );
+            
+            setChanged();
+            sync();
+        }
+    }
 
 
 

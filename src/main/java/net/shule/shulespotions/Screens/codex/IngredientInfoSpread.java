@@ -2,7 +2,6 @@ package net.shule.shulespotions.Screens.codex;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
@@ -12,6 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.shule.shulespotions.Potions.IngredientStat;
 import net.shule.shulespotions.Potions.ItemStatRegistry;
 import net.shule.shulespotions.Screens.EffectButton;
+import net.shule.shulespotions.Screens.codex.base.CodexSpread;
 
 public class IngredientInfoSpread extends CodexSpread {
 
@@ -32,16 +32,17 @@ public class IngredientInfoSpread extends CodexSpread {
         return BACKGROUND;
     }
 
+    private int guiX, guiY;
+
     @Override
     public void init(int x, int y) {
-        ResourceLocation backTex = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/button_back.png");
-        parent.addSpreadWidget(
-                new ImageButton(x + 105, y + BaseCodexScreen.GUI_HEIGHT - 15, 20, 20, 0, 0, 20, backTex, 20, 40, b -> parent.popSpread())
-        );
+        this.guiX = x;
+        this.guiY = y;
+        addBackButton(x, y);
 
         IngredientStat stat = ItemStatRegistry.getEntries().get(item);
         if (stat != null && !stat.getEffectWeights().isEmpty()) {
-            int rightPageCenter = x + 288;
+            int rightPageCenter = getRightPageCenter(x);
             int count = stat.getEffectWeights().size();
             int spacing = 34; 
             int columns = 4;
@@ -80,6 +81,26 @@ public class IngredientInfoSpread extends CodexSpread {
     }
 
     @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        int leftPageCenter = getLeftPageCenter(guiX);
+        int titleOffsetX = 10;
+        int textY = guiY + 110 + 15;
+        int descriptionWidth = 130;
+        int startX = leftPageCenter - descriptionWidth / 2 + titleOffsetX + 5;
+        
+        Component description = Component.translatableWithFallback(
+                item.getDescriptionId() + ".description",
+                Component.translatable("shulespotions.screen.effect_codex.missing_ingredient_description").getString()
+        );
+        
+        if (handleTextClick(description, startX, textY, descriptionWidth, mouseX, mouseY)) {
+            return true;
+        }
+
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick, int x, int y) {
         renderItemIcon(graphics, x, y);
         renderItemInfo(graphics, x, y);
@@ -101,31 +122,15 @@ public class IngredientInfoSpread extends CodexSpread {
     }
 
     private void renderItemInfo(GuiGraphics graphics, int guiX, int guiY) {
-        int leftPageCenter = guiX + 96;
-        float scale = 1.5F;
+        int leftPageCenter = getLeftPageCenter(guiX);
         int titleOffsetX = 10;
         int textY = guiY + 110;
 
         Component title = Component.translatable(item.getDescriptionId());
-        int titleX = leftPageCenter - Math.round(Minecraft.getInstance().font.width(title) * scale / 2.0F) + titleOffsetX;
-        int titleY = guiY + 18;
-
-        graphics.pose().pushPose();
-        graphics.pose().scale(scale, scale, 1.0F);
-        graphics.drawString(Minecraft.getInstance().font, title,
-                Math.round(titleX / scale),
-                Math.round(titleY / scale),
-                0x5E4A32,
-                false);
-        graphics.pose().popPose();
+        drawCenteredScaledString(graphics, title, leftPageCenter + titleOffsetX, guiY + 18, 1.5F, COLOR_TITLE);
 
         Component descTitle = Component.translatable("shulespotions.screen.effect_codex.description");
-        graphics.drawString(Minecraft.getInstance().font,
-                descTitle,
-                leftPageCenter - Minecraft.getInstance().font.width(descTitle) / 2 + titleOffsetX,
-                textY,
-                0x5E4A32,
-                false);
+        drawCenteredScaledString(graphics, descTitle, leftPageCenter + titleOffsetX, textY, 1.0F, COLOR_TITLE);
 
         textY += 15;
         int descriptionWidth = 130;
@@ -139,7 +144,7 @@ public class IngredientInfoSpread extends CodexSpread {
                 leftPageCenter - descriptionWidth / 2 + titleOffsetX + 5,
                 textY,
                 descriptionWidth,
-                0x3A3A3A
+                COLOR_TEXT
         );
     }
 
@@ -147,11 +152,10 @@ public class IngredientInfoSpread extends CodexSpread {
         IngredientStat stat = ItemStatRegistry.getEntries().get(item);
         if (stat == null) return;
         
-        int rightPageCenter = guiX + 288;
+        int rightPageCenter = getRightPageCenter(guiX);
         
         Component statsTitle = Component.translatable("shulespotions.codex.stats");
-        int statsTitleWidth = Minecraft.getInstance().font.width(statsTitle);
-        graphics.drawString(Minecraft.getInstance().font, statsTitle, rightPageCenter - statsTitleWidth / 2, guiY + 18, 0x5E4A32, false);
+        drawCenteredScaledString(graphics, statsTitle, rightPageCenter, guiY + 18, 1.0F, COLOR_TITLE);
         
         String[] statNames = {"vitality", "flavor", "stability", "purity", "duration"};
         int[] statValues = {stat.getVitality(), stat.getFlavor(), stat.getStability(), stat.getPurity(), stat.getDurationSeconds()};
@@ -176,8 +180,8 @@ public class IngredientInfoSpread extends CodexSpread {
             String valStr = sName.equals("duration") ? stat.getDurationFormatted() : String.valueOf(sVal);
             int color = 0x3A3A3A;
             if (!sName.equals("duration")) {
-                if (sVal > 0) color = 0x008800; // Verde oscuro para que lea bien
-                else if (sVal < 0) color = 0xAA0000; // Rojo
+                if (sVal > 0) color = 0x008800;
+                else if (sVal < 0) color = 0xAA0000;
             }
             
             int valWidth = Minecraft.getInstance().font.width(valStr);
@@ -190,8 +194,7 @@ public class IngredientInfoSpread extends CodexSpread {
 
         if (!stat.getEffectWeights().isEmpty()) {
             Component effectsTitle = Component.translatable("shulespotions.codex.effects");
-            int effectsTitleWidth = Minecraft.getInstance().font.width(effectsTitle);
-            graphics.drawString(Minecraft.getInstance().font, effectsTitle, rightPageCenter - effectsTitleWidth / 2, guiY + 115, 0x5E4A32, false);
+            drawCenteredScaledString(graphics, effectsTitle, rightPageCenter, guiY + 115, 1.0F, COLOR_TITLE);
         }
     }
 }

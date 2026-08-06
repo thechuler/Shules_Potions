@@ -2,23 +2,22 @@ package net.shule.shulespotions.Screens.codex;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-
 import net.shule.shulespotions.ShulesPotions;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.shule.shulespotions.Potions.IngredientStat;
 import net.shule.shulespotions.Potions.ItemStatRegistry;
 import net.shule.shulespotions.Screens.IngredientButton;
+import net.shule.shulespotions.Screens.codex.base.CodexSpread;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class StatInfoSpread extends CodexSpread{
+public class StatInfoSpread extends CodexSpread {
 
     private final String STAT;
     private static final ResourceLocation BACKGROUND =
@@ -45,11 +44,7 @@ public class StatInfoSpread extends CodexSpread{
     public void init(int x, int y) {
         this.guiX = x;
         this.guiY = y;
-        ResourceLocation backTex = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/button_back.png");
-
-        parent.addSpreadWidget(
-                new net.minecraft.client.gui.components.ImageButton(x + 105, y + BaseCodexScreen.GUI_HEIGHT - 15, 20, 20, 0, 0, 20, backTex, 20, 40, b -> parent.popSpread())
-        );
+        addBackButton(x, y);
         
         sortedIngredients = ItemStatRegistry.getEntries()
                 .entrySet().stream()
@@ -78,7 +73,7 @@ public class StatInfoSpread extends CodexSpread{
         scrollOffset = 0;
 
         int gridWidth = columns * spacing - 6;
-        int rightPageStart = x + 288 - gridWidth / 2;
+        int rightPageStart = getRightPageCenter(x) - gridWidth / 2;
         int startY = y + 55;
 
         for (int i = 0; i < sortedIngredients.size(); i++) {
@@ -100,12 +95,23 @@ public class StatInfoSpread extends CodexSpread{
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        int leftPageCenter = getLeftPageCenter(guiX);
+        int titleOffsetX = 10;
+        int textY = guiY + 110 + 15; // descTitle Y is 110, then +15
+        int descriptionWidth = 130;
+        int startX = leftPageCenter - descriptionWidth / 2 + titleOffsetX + 5;
+        
+        Component descriptionText = Component.translatable("shulespotions.screen.effect_codex."+STAT+".description");
+        if (handleTextClick(descriptionText, startX, textY, descriptionWidth, mouseX, mouseY)) {
+            return true;
+        }
+
         if (sortedIngredients.isEmpty()) return false;
 
         int columns = 4;
         int spacing = 34;
         int gridWidth = columns * spacing - 6;
-        int rightPageStart = guiX + 288 - gridWidth / 2;
+        int rightPageStart = getRightPageCenter(guiX) - gridWidth / 2;
         int startY = guiY + 55;
         int visibleHeight = 150;
 
@@ -138,7 +144,6 @@ public class StatInfoSpread extends CodexSpread{
     }
 
     private void renderStatIcon(GuiGraphics graphics, int guiX, int guiY) {
-
         ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,
                 "textures/gui/" + STAT + "_icon" + ".png"
         );
@@ -155,34 +160,16 @@ public class StatInfoSpread extends CodexSpread{
         graphics.pose().popPose();
     }
 
-
     private void renderStatInfo(GuiGraphics graphics, int guiX, int guiY) {
-        int leftPageCenter = guiX + 96;
-        float scale = 1.5F;
+        int leftPageCenter = getLeftPageCenter(guiX);
         int titleOffsetX = 10;
         int textY = guiY + 110;
 
         Component title = Component.translatable(ShulesPotions.MODID + "." + STAT + ".name");
-        int titleX = leftPageCenter - Math.round(Minecraft.getInstance().font.width(title) * scale / 2.0F) + titleOffsetX;
-        int titleY = guiY + 22;
-
-        graphics.pose().pushPose();
-        graphics.pose().scale(scale, scale, 1.0F);
-        graphics.drawString(Minecraft.getInstance().font, title,
-                Math.round(titleX / scale),
-                Math.round(titleY / scale),
-                0x7A6A52,
-                false);
-        graphics.pose().popPose();
-
+        drawCenteredScaledString(graphics, title, leftPageCenter + titleOffsetX, guiY + 22, 1.5F, 0x7A6A52);
 
         Component descTitle = Component.translatable("shulespotions.screen.effect_codex.description");
-        graphics.drawString(Minecraft.getInstance().font,
-                descTitle,
-                leftPageCenter - Minecraft.getInstance().font.width(descTitle) / 2 + titleOffsetX,
-                textY,
-                0x5E4A32,
-                false);
+        drawCenteredScaledString(graphics, descTitle, leftPageCenter + titleOffsetX, textY, 1.0F, COLOR_TITLE);
                 
         textY += 15;
         int descriptionWidth = 130;
@@ -195,7 +182,7 @@ public class StatInfoSpread extends CodexSpread{
                 leftPageCenter - descriptionWidth / 2 + titleOffsetX + 5,
                 textY,
                 descriptionWidth,
-                0x3A3A3A
+                COLOR_TEXT
         );
     }
 
@@ -214,18 +201,8 @@ public class StatInfoSpread extends CodexSpread{
         if (sortedIngredients.isEmpty()) return;
 
         Component title = Component.translatable("shulespotions.screen.effect_codex.ingredients");
-        float scaleText = 1.5F;
-        int scaledWidth = Math.round(Minecraft.getInstance().font.width(title) * scaleText);
-        
-        graphics.pose().pushPose();
-        graphics.pose().scale(scaleText, scaleText, 1.0F);
-
-        int rightPageCenter = guiX + 288;
-        int titleX = rightPageCenter - scaledWidth / 2;
-        int titleY = guiY + 18;
-        graphics.drawString(Minecraft.getInstance().font, title, Math.round(titleX / scaleText), Math.round(titleY / scaleText), 0x5E4A32, false);
-        
-        graphics.pose().popPose();
+        int rightPageCenter = getRightPageCenter(guiX);
+        drawCenteredScaledString(graphics, title, rightPageCenter, guiY + 18, 1.5F, COLOR_TITLE);
 
         int columns = 4;
         int spacing = 34;

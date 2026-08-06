@@ -142,9 +142,9 @@ public class PotionCauldron extends BaseEntityBlock {
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (level.isClientSide) return;
 
-            if (!(entity instanceof ItemEntity itemEntity)) return;
+        if (!(entity instanceof ItemEntity itemEntity)) return;
 
-            BlockEntity be = level.getBlockEntity(pos);
+        BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof PotionCauldronBE cauldron) {
 
                 if (cauldron.getTank().isEmpty() || cauldron.getActions().size() >= MAX_INGREDIENT_COUNT) return;

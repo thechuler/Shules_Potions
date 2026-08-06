@@ -79,6 +79,18 @@ public class ThrowablePotionBottleProjectile extends ThrowableItemProjectile {
 
         for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, area)) {
             bottle.applyPotion(stack, entity);
+            
+            // Añadir el efecto visual de "empapado en poción" y sincronizar el color
+            entity.getPersistentData().putInt("PotionSplashColor", liquid.getStats().getColor());
+            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                    net.shule.shulespotions.MobEffects.ModMobEffects.POTION_SPLASHED.get(),
+                    20 * 15, 0, false, false
+            ));
+            
+            net.shule.shulespotions.Messages.ModMessages.INSTANCE.send(
+                    net.minecraftforge.network.PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
+                    new net.shule.shulespotions.Messages.SyncPotionSplashColorPacket(entity.getId(), liquid.getStats().getColor())
+            );
         }
 
         discard();

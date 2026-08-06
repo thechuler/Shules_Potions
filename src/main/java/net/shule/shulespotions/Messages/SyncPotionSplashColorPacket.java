@@ -39,7 +39,11 @@ public class SyncPotionSplashColorPacket {
             if (entity == null)
                 return;
 
-            entity.getPersistentData().putInt("PotionSplashColor", msg.color);
+            if (msg.color == -1) {
+                entity.getPersistentData().remove("PotionSplashColor");
+            } else {
+                entity.getPersistentData().putInt("PotionSplashColor", msg.color);
+            }
         });
 
         ctx.get().setPacketHandled(true);

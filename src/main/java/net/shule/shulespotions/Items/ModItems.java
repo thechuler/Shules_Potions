@@ -3,6 +3,9 @@ package net.shule.shulespotions.Items;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -10,6 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Items.custom.*;
+import net.shule.shulespotions.MobEffects.ModMobEffects;
 import net.shule.shulespotions.ShulesPotions;
 import net.shule.shulespotions.util.CauldronActions.StirToolType;
 
@@ -69,13 +73,44 @@ public class ModItems {
     public static final RegistryObject<Item> BAT_EAR = ITEMS.register("bat_ear", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
 
 
-    public static final RegistryObject<Item> ROTTEN_APPLE = ITEMS.register("rotten_apple", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+    public static final RegistryObject<Item> ROTTEN_APPLE = ITEMS.register("rotten_apple", () ->
+            new Item(new Item.Properties().rarity(Rarity.COMMON)
+                    .food(new FoodProperties.Builder()
+                            .saturationMod(3)
+                            .nutrition(4)
+                            .effect(new MobEffectInstance(
+                                    ModMobEffects.INFESTED.get(), 200),
+                                    0.2f)
+                            .build())));
 
-   public static final RegistryObject<Item> ROTTEN_CARROT = ITEMS.register("rotten_carrot", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+   public static final RegistryObject<Item> ROTTEN_CARROT = ITEMS.register("rotten_carrot", () ->
+           new Item(new Item.Properties().rarity(Rarity.COMMON)
+                   .food(new FoodProperties.Builder()
+                           .saturationMod(2)
+                           .nutrition(2)
+                           .effect(new MobEffectInstance(
+                                   MobEffects.BAD_OMEN,200),
+                                   0.2f)
+                           .build())));
 
-   public static final RegistryObject<Item> ROTTEN_MELON_SLICE = ITEMS.register("rotten_melon_slice", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+   public static final RegistryObject<Item> ROTTEN_MELON_SLICE = ITEMS.register("rotten_melon_slice", () ->
+           new Item(new Item.Properties().rarity(Rarity.COMMON)
+                   .food(new FoodProperties.Builder()
+                           .saturationMod(3)
+                           .nutrition(4)
+                           .effect(new MobEffectInstance(
+                                   ModMobEffects.OOZING.get(),200),
+                           0.2f)
+                           .build())));
 
-   public static final RegistryObject<Item> ROTTEN_FISH = ITEMS.register("rotten_fish", () -> new Item(new Item.Properties()));
+   public static final RegistryObject<Item> ROTTEN_FISH = ITEMS.register("rotten_fish", () ->
+           new Item(new Item.Properties()
+                   .food(new FoodProperties.Builder()
+                           .saturationMod(4)
+                           .nutrition(4)
+                           .effect(new MobEffectInstance(MobEffects.POISON,200), 0.2f)
+                           .effect(new MobEffectInstance(MobEffects.CONFUSION,200), 0.2f)
+                           .build())));
 
 
    public static final RegistryObject<Item> GHAST_HEART = ITEMS.register("ghast_heart", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));

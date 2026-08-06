@@ -11,7 +11,7 @@ public class BubbleParticle extends TextureSheetParticle {
     protected BubbleParticle(ClientLevel level, double x, double y, double z,
                              double r, double g, double b,
                              SpriteSet sprites) {
-        super(level, x, y, z, 0, 0, 0); // importante
+        super(level, x, y, z, 0, 0, 0);
 
         this.sprites = sprites;
 
@@ -31,12 +31,13 @@ public class BubbleParticle extends TextureSheetParticle {
 
         this.quadSize *= 1.2f;
 
-        this.setSprite(sprites.get(random));
+        this.setSpriteFromAge(sprites);
     }
 
     @Override
     public void tick() {
         super.tick();
+        this.setSpriteFromAge(this.sprites);
 
         this.yd += 0.002;
 

@@ -3,6 +3,7 @@ package net.shule.shulespotions.Screens.codex;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.shule.shulespotions.Screens.codex.base.CodexSpread;
 
 import java.util.Stack;
 
@@ -53,6 +54,41 @@ public class BaseCodexScreen extends Screen {
             currentSpread.onClose();
         }
         setSpread(spread);
+    }
+
+    public void handleHyperlink(String link) {
+        String[] parts = link.split(":", 2);
+        if (parts.length < 2) return;
+        String type = parts[0];
+        String id = parts[1];
+
+        net.minecraft.resources.ResourceLocation loc = net.minecraft.resources.ResourceLocation.tryParse("shulespotions:" + id);
+        if (loc == null) return;
+
+        switch (type) {
+            case "item":
+                net.minecraft.world.item.Item item = net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(loc);
+                if (item != null && item != net.minecraft.world.item.Items.AIR) {
+                    pushSpread(new IngredientInfoSpread(item));
+                }
+                break;
+            case "inspection":
+                net.minecraft.world.item.Item inspectItem = net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(loc);
+                if (inspectItem != null && inspectItem != net.minecraft.world.item.Items.AIR) {
+                    pushSpread(new ItemInspectionSpread(inspectItem));
+                }
+                break;
+            case "effect":
+                net.minecraft.world.effect.MobEffect effect = net.minecraftforge.registries.ForgeRegistries.MOB_EFFECTS.getValue(loc);
+                if (effect != null) {
+                    pushSpread(new EffectInfoSpread(effect));
+                }
+                break;
+            case "menu":
+                if (id.equals("stats")) pushSpread(new StatsIndexSpread());
+                else if (id.equals("guide")) pushSpread(new GuideindexSpread());
+                break;
+        }
     }
 
     private void setSpread(CodexSpread spread) {

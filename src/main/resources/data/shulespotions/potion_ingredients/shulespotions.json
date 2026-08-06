@@ -167,6 +167,14 @@
     "effects": {
       "shulespotions:leech": 25
     }
-  }
+  },
 
+  "shulespotions:potion_homunculus": {
+    "stability": -5,
+    "vitality": -10,
+    "color": "#373737",
+    "effects": {
+      "shulespotions:cloning": 100
+    }
+  }
 }

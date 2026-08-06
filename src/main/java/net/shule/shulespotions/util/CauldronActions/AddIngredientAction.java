@@ -38,16 +38,15 @@ public class AddIngredientAction extends CauldronAction {
 
         CompoundTag tag = new CompoundTag();
 
-        tag.putString("Item", BuiltInRegistries.ITEM.getKey(item).toString());
+        tag.putString("Item", net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(item).toString());
 
         return tag;
     }
 
     public static AddIngredientAction load(CompoundTag tag) {
 
-        Item item = BuiltInRegistries.ITEM.get(
-                ResourceLocation.parse(
-                        tag.getString("Item")));
+        Item item = net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(
+                new ResourceLocation(tag.getString("Item")));
 
         return new AddIngredientAction(item);
     }

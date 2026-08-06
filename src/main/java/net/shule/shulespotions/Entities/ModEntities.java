@@ -12,6 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.shule.shulespotions.Entities.Projectile.PotionSplashProjectile;
 import net.shule.shulespotions.Entities.Projectile.ThrowablePotionBottleProjectile;
+import net.shule.shulespotions.Entities.entity.PlayerCloneEntity;
 import net.shule.shulespotions.Entities.entity.ShadowClonEntity;
 import net.shule.shulespotions.ShulesPotions;
 
@@ -48,6 +49,15 @@ public class ModEntities {
                             .build("shadow_clone"));
 
 
+    public static final RegistryObject<EntityType<PlayerCloneEntity>> PLAYER_CLONE =
+            ENTITIES.register("player_clone",
+                    () -> EntityType.Builder
+                            .of(PlayerCloneEntity::new, MobCategory.CREATURE) // Animales suelen ser CREATURE
+                            .sized(0.6F, 1.8F) // Tamaño estandar de jugador
+                            .clientTrackingRange(10)
+                            .build("player_clone"));
+
+
 
     @SubscribeEvent
     public static void init(FMLCommonSetupEvent event) {
@@ -62,6 +72,7 @@ public class ModEntities {
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
        event.put(SHADOW_CLONE.get(), ShadowClonEntity.createAttributes().build());
+       event.put(PLAYER_CLONE.get(), PlayerCloneEntity.createAttributes().build());
     //    event.put(NITRO_FLY.get(), NitroMoscaEntity.createAttributes().build());
     }
 

@@ -13,19 +13,19 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
+import net.shule.shulespotions.util.CauldronActions.CauldronContext;
 import net.shule.shulespotions.util.CauldronActions.StirAction;
 import net.shule.shulespotions.util.CauldronActions.StirToolType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SpoonItem extends Item {
+public  class SpoonItem extends Item {
 
-    private final StirToolType toolType;
+
     private final String tooltipId;
     public SpoonItem(StirToolType toolType, Properties properties,String tooltipId) {
         super(properties);
-        this.toolType = toolType;
         this.tooltipId = tooltipId;
     }
 
@@ -44,13 +44,13 @@ public class SpoonItem extends Item {
             return InteractionResult.PASS;
         }
 
-        if(cauldron.getActions().size() >= cauldron.getMaxIngredients() || cauldron.getActions().isEmpty()){
+        if(cauldron.getActions().isEmpty()){
             return  InteractionResult.PASS;
         }
 
-        StirAction action = new StirAction(toolType);
+        if(cauldron.getState() != PotionCauldronBE.CauldronState.BREWING) return  InteractionResult.PASS;
 
-        cauldron.applyAction(action, ctx.getPlayer());
+        performSpoonAction(new CauldronContext(cauldron,ctx.getPlayer()));
 
         level.playSound(
                 null,
@@ -83,4 +83,10 @@ public class SpoonItem extends Item {
 
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
     }
+
+
+    protected void performSpoonAction(CauldronContext cauldron){
+        cauldron.getCauldron().FinishBrewing();
+    }
+
 }
