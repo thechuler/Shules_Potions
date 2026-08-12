@@ -1,4 +1,4 @@
-package net.shule.shulespotions.Items.custom;
+package net.shule.shulespotions.Items.custom.Spoons;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -14,8 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
 import net.shule.shulespotions.util.CauldronActions.CauldronContext;
-import net.shule.shulespotions.util.CauldronActions.StirAction;
-import net.shule.shulespotions.util.CauldronActions.StirToolType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -24,7 +22,7 @@ public  class SpoonItem extends Item {
 
 
     private final String tooltipId;
-    public SpoonItem(StirToolType toolType, Properties properties,String tooltipId) {
+    public SpoonItem(Properties properties,String tooltipId) {
         super(properties);
         this.tooltipId = tooltipId;
     }
@@ -73,14 +71,6 @@ public  class SpoonItem extends Item {
         tooltipComponents.add(Component.translatable("tooltip.shulespotions.spoon." + this.tooltipId)
                         .withStyle(ChatFormatting.GRAY));
 
-        if (Screen.hasShiftDown()) {
-            tooltipComponents.add(Component.translatable("tooltip.shulespotions.spoon."
-                            + this.tooltipId + ".info").withStyle(ChatFormatting.DARK_GRAY));
-        } else {
-            tooltipComponents.add(Component.empty());
-            tooltipComponents.add(Component.translatable("tooltip.shulespotions.hold_shift").withStyle(ChatFormatting.YELLOW));
-        }
-
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
     }
 
@@ -89,4 +79,15 @@ public  class SpoonItem extends Item {
         cauldron.getCauldron().FinishBrewing();
     }
 
+    public static class StoneSpoon extends SpoonItem {
+        public StoneSpoon(Properties properties, String tooltipId) {
+            super(properties, tooltipId);
+        }
+
+
+        @Override
+        protected void performSpoonAction(CauldronContext cauldron) {
+            super.performSpoonAction(cauldron);
+        }
+    }
 }

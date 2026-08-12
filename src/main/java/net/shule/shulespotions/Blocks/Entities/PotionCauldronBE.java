@@ -48,7 +48,7 @@ import static net.shule.shulespotions.util.ColorUtils.*;
 
 public class PotionCauldronBE extends BlockEntity {
 
-    public static final int INSTABILITY_PARTICLES_EVENT = 1;
+
 
     private final List<CauldronAction> actions = new ArrayList<>();
     private int renderColor;
@@ -151,7 +151,8 @@ public class PotionCauldronBE extends BlockEntity {
         PotionLiquid potion = new PotionLiquid();
 
         potion.getStats().setStability(100);
-        potion.getStats().setDurationTicks(100);
+        potion.getStats().setDurationSeconds(20);
+        potion.getStats().setPurity(1);
 
         return potion;
     }

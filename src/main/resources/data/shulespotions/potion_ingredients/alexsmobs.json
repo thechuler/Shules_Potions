@@ -7,7 +7,7 @@
   ],
 
   "alexsmobs:cockroach_wing": {
-    "purity": -20,
+    "purity": -2,
     "color":"#412514",
     "effects": {
       "alexsmobs:bug_pheromones": 30
@@ -97,14 +97,14 @@
     }
   },
   "minecraft:gold_ingot": {
-    "purity": 10,
+    "purity": 1,
     "color":"#fff708",
     "effects": {
       "alexsmobs:sunbird_blessing": 5
     }
   },
   "minecraft:raw_gold": {
-    "purity": -10,
+    "purity": -1,
     "color":"#fff708",
     "effects": {
       "alexsmobs:sunbird_curse": 5
@@ -125,7 +125,7 @@
     }
   },
   "alexsmobs:tarantula_hawk_wing_fragment": {
-    "purity": -10,
+    "purity": -1,
     "color":"#e15921",
     "effects": {
       "alexsmobs:debilitating_sting": 35

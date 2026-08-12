@@ -221,7 +221,7 @@ public class PotionLiquidBottleItem extends Item {
 
         List<MobEffect> effects = getResolvedEffects(stack);
 
-        int amplifier = Math.max(0, Math.min(4, pl.getStats().getPurity() / 20));
+        int amplifier = Math.max(pl.getStats().getPurity(), 1);
         for (MobEffect effect : effects) {
 
             if (effect.isInstantenous()) {

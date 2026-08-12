@@ -25,6 +25,9 @@ public class ModParticles {
     public static final RegistryObject<SimpleParticleType> POTION_EXPLOTION =
             PARTICLES.register("potion_explotion", () -> new SimpleParticleType(true));
 
+    public static final RegistryObject<SimpleParticleType> CORRUPTION_FIRE =
+            PARTICLES.register("corruption_fire", () -> new SimpleParticleType(true));
+
 
 
     public static void register(IEventBus bus) {

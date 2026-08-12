@@ -8,7 +8,7 @@
 
   "minecraft:blaze_powder": {
     "duration":25,
-    "purity": 18,
+    "purity": 1,
     "vitality": -23,
     "effects": {
       "supplementaries:flammable": 18

@@ -1,8 +1,6 @@
 package net.shule.shulespotions.Items;
 
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -13,14 +11,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Items.custom.*;
+import net.shule.shulespotions.Items.custom.IronSpoon;
+import net.shule.shulespotions.Items.custom.Spoons.*;
 import net.shule.shulespotions.MobEffects.ModMobEffects;
 import net.shule.shulespotions.ShulesPotions;
-import net.shule.shulespotions.util.CauldronActions.StirToolType;
-
-import java.util.HashMap;
-import java.util.Map;
-
-
 
 
 public class ModItems {
@@ -44,21 +38,21 @@ public class ModItems {
 
  public static final RegistryObject<Item> EFFECT_CODEX = ITEMS.register("effect_codex", () -> new EffectCodex(new Item.Properties()));
 
-    public static final RegistryObject<Item> WOODEN_SPOON = ITEMS.register("wooden_spoon", () -> new SpoonItem(StirToolType.WOOD,new Item.Properties().stacksTo(1),"wooden"));
+    public static final RegistryObject<Item> WOODEN_SPOON = ITEMS.register("wooden_spoon", () -> new SpoonItem(new Item.Properties().stacksTo(1),"wooden"));
 
-    public static final RegistryObject<Item> GOLDEN_SPOON = ITEMS.register("golden_spoon", () -> new SpoonItem(StirToolType.GOLD,new Item.Properties().stacksTo(1),"golden"));
+    public static final RegistryObject<Item> GOLDEN_SPOON = ITEMS.register("golden_spoon", () -> new GoldenSpoon(new Item.Properties().stacksTo(1),"golden"));
 
-    public static final RegistryObject<Item> DIAMOND_SPOON = ITEMS.register("diamond_spoon", () -> new SpoonItem(StirToolType.DIAMOND,new Item.Properties().stacksTo(1),"diamond"));
+    public static final RegistryObject<Item> DIAMOND_SPOON = ITEMS.register("diamond_spoon", () -> new DiamondSpoon(new Item.Properties().stacksTo(1),"diamond"));
 
-    public static final RegistryObject<Item> STONE_SPOON = ITEMS.register("stone_spoon", () -> new SpoonItem(StirToolType.STONE,new Item.Properties().stacksTo(1),"stone"));
+    public static final RegistryObject<Item> STONE_SPOON = ITEMS.register("stone_spoon", () -> new StoneSpoon(new Item.Properties().stacksTo(1),"stone"));
 
-    public static final RegistryObject<Item> IRON_SPOON = ITEMS.register("iron_spoon", () -> new SpoonItem(StirToolType.IRON,new Item.Properties().stacksTo(1),"iron"));
+    public static final RegistryObject<Item> IRON_SPOON = ITEMS.register("iron_spoon", () -> new IronSpoon(new Item.Properties().stacksTo(1),"iron"));
 
-    public static final RegistryObject<Item> BASTION_SPOON = ITEMS.register("bastion_spoon", () -> new SpoonItem(StirToolType.BASTION,new Item.Properties().stacksTo(1),"bastion"));
+    public static final RegistryObject<Item> BASTION_SPOON = ITEMS.register("bastion_spoon", () -> new BastionSpoon(new Item.Properties().stacksTo(1),"bastion"));
 
-    public static final RegistryObject<Item> SPONGE_SPOON = ITEMS.register("sponge_spoon", () -> new SpoonItem(StirToolType.SPONGE,new Item.Properties().stacksTo(1),"sponge"));
+    public static final RegistryObject<Item> SPONGE_SPOON = ITEMS.register("sponge_spoon", () -> new SpongeSpoon(new Item.Properties().stacksTo(1),"sponge"));
 
-    public static final RegistryObject<Item> ENDER_SPOON = ITEMS.register("ender_spoon", () -> new SpoonItem(StirToolType.ENDER,new Item.Properties().stacksTo(1),"ender"));
+    public static final RegistryObject<Item> ENDER_SPOON = ITEMS.register("ender_spoon", () -> new EnderSpoon(new Item.Properties().stacksTo(1),"ender"));
 
 
     public static final RegistryObject<Item> PESTLE = ITEMS.register("pestle", () -> new Pestle(new Item.Properties()));
@@ -137,6 +131,8 @@ public class ModItems {
 
     public static final RegistryObject<Item> ONYX = ITEMS.register("onyx", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BASTION_FRAGMENT = ITEMS.register("bastion_fragment", () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> CALIZ = ITEMS.register("alchemist_caliz", () -> new AlchemistsCaliz(new Item.Properties()));
 
 
 

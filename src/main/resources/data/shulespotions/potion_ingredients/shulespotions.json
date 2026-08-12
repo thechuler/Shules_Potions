@@ -73,7 +73,7 @@
   },
 
   "shulespotions:mandrake_seed": {
-    "purity": 30,
+    "purity": 2,
     "vitality":20,
     "stability": -30,
     "color": "#e67229",
@@ -84,7 +84,7 @@
     }
   },
   "shulespotions:ghast_heart": {
-    "purity": 50,
+    "purity": 1,
     "vitality":30,
     "stability": -50,
     "color": "#393939",
@@ -153,7 +153,7 @@
   },
   "shulespotions:allay_essence": {
     "stability": 15,
-    "purity": 30,
+    "purity": 1,
     "color": "#18caf5",
     "effects": {
       "shulespotions:comeback": 25,
@@ -167,14 +167,7 @@
     "effects": {
       "shulespotions:leech": 25
     }
-  },
-
-  "shulespotions:potion_homunculus": {
-    "stability": -5,
-    "vitality": -10,
-    "color": "#373737",
-    "effects": {
-      "shulespotions:cloning": 100
-    }
   }
+
+
 }

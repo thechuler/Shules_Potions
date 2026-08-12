@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "shulespotions:item/alchemist_caliz",
+    "layer1": "shulespotions:item/alchemist_caliz_ovelay"
+  }
+}

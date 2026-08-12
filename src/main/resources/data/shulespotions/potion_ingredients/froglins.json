@@ -6,7 +6,7 @@
     }
   ],
   "froglins:tropical_eye": {
-    "purity": -15,
+    "purity": -1,
     "duration": 20,
     "color":"#0d6228",
     "effects": {
@@ -20,7 +20,7 @@
     "color":"#0d6228"
   },
   "froglins:raw_frog_meat": {
-    "purity": -10,
+    "purity": -1,
     "duration": 10,
     "color":"#0d6228",
     "effects": {

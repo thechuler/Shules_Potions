@@ -1,6 +1,10 @@
 package net.shule.shulespotions.Screens.codex;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.shule.shulespotions.Screens.codex.base.DoubleTextSpread;
 import net.shule.shulespotions.Screens.codex.base.MenuSpread;
@@ -21,44 +25,58 @@ public class GuideindexSpread extends MenuSpread {
     @Override
     protected void registerOptions() {
 
-        net.minecraft.network.chat.Component potion_cauldronlink = net.minecraft.network.chat.Component.translatable("block.shulespotions.potion_cauldron")
-                .withStyle(net.minecraft.network.chat.Style.EMPTY
+        Component potion_cauldronlink = Component.translatable("block.shulespotions.potion_cauldron")
+                .withStyle(Style.EMPTY
                         .withColor(ChatFormatting.DARK_PURPLE)
-                        .withHoverEvent(new net.minecraft.network.chat.HoverEvent(net.minecraft.network.chat.HoverEvent.Action.SHOW_TEXT, net.minecraft.network.chat.Component.translatable("shulespotions.codex.see_more")))
-                        .withClickEvent(new net.minecraft.network.chat.ClickEvent(net.minecraft.network.chat.ClickEvent.Action.CHANGE_PAGE, "inspection:potion_cauldron")));
+                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("shulespotions.codex.see_more")))
+                        .withClickEvent(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "inspection:potion_cauldron")));
 
-        net.minecraft.network.chat.Component spoon_link = net.minecraft.network.chat.Component.translatable("shulespotions.codex.spoon")
-                .withStyle(net.minecraft.network.chat.Style.EMPTY
+       Component spoon_link = Component.translatable("shulespotions.codex.spoon")
+                .withStyle(Style.EMPTY
                         .withColor(ChatFormatting.DARK_PURPLE)
-                        .withHoverEvent(new net.minecraft.network.chat.HoverEvent(net.minecraft.network.chat.HoverEvent.Action.SHOW_TEXT, net.minecraft.network.chat.Component.translatable("shulespotions.codex.see_more")))
-                        .withClickEvent(new net.minecraft.network.chat.ClickEvent(net.minecraft.network.chat.ClickEvent.Action.CHANGE_PAGE, "inspection:wooden_spoon")));
+                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Component.translatable("shulespotions.codex.see_more")))
+                        .withClickEvent(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "inspection:wooden_spoon")));
 
 
 
 
         addMenuOption("shulespotions.codex.epilogue", () -> parent.pushSpread(
                 new DoubleTextSpread(
-                        net.minecraft.network.chat.Component.translatable("shulespotions.codex.epilogue.title"),
-                        net.minecraft.network.chat.Component.translatable("shulespotions.codex.epilogue.text1"),
+                      Component.translatable("shulespotions.codex.epilogue.title"),
+                       Component.translatable("shulespotions.codex.epilogue.text1"),
                         null,
-                        net.minecraft.network.chat.Component.translatable("shulespotions.codex.epilogue.text2")
+                       Component.translatable("shulespotions.codex.epilogue.text2")
                 )));
 
 
+        Component scroll_link = Component.translatable("item.shulespotions.recipe_scroll")
+                .withStyle(Style.EMPTY
+                        .withColor(ChatFormatting.DARK_PURPLE)
+                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("shulespotions.codex.see_more")))
+                        .withClickEvent(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "inspection:recipe_scroll")));
+
         addMenuOption("shulespotions.codex.chapter1", () -> parent.pushSpread(
                 new DoubleTextSpread(
-                        net.minecraft.network.chat.Component.translatable("shulespotions.codex.chapter1.title"),
-                        net.minecraft.network.chat.Component.translatable("shulespotions.codex.chapter1.text1", potion_cauldronlink, potion_cauldronlink),
+                        Component.translatable("shulespotions.codex.chapter1.title"),
+                        Component.translatable("shulespotions.codex.chapter1.text1", potion_cauldronlink, potion_cauldronlink),
                         null,
-                        net.minecraft.network.chat.Component.translatable("shulespotions.codex.chapter1.text2", spoon_link)
+                        Component.translatable("shulespotions.codex.chapter1.text2")
                 )));
 
         addMenuOption("shulespotions.codex.chapter2", () -> parent.pushSpread(
                 new DoubleTextSpread(
-                        net.minecraft.network.chat.Component.translatable("shulespotions.codex.chapter2.title"),
-                        net.minecraft.network.chat.Component.translatable("shulespotions.codex.chapter1.text1", potion_cauldronlink, potion_cauldronlink),
+                        Component.translatable("shulespotions.codex.chapter2.title"),
+                        Component.translatable("shulespotions.codex.chapter2.text1", spoon_link),
                         null,
-                        net.minecraft.network.chat.Component.translatable("shulespotions.codex.chapter1.text2", spoon_link)
+                        Component.translatable("shulespotions.codex.chapter2.text2")
+                )));
+
+        addMenuOption("shulespotions.codex.chapter3", () -> parent.pushSpread(
+                new DoubleTextSpread(
+                        Component.translatable("shulespotions.codex.chapter3.title"),
+                       Component.translatable("shulespotions.codex.chapter3.text1"),
+                        null,
+                       Component.translatable("shulespotions.codex.chapter3.text2", scroll_link)
                 )));
     }
 }

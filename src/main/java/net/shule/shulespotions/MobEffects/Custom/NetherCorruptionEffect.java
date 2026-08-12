@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.shule.shulespotions.util.NetherConversionRule;
+import net.shule.shulespotions.Particles.ModParticles;
 
 import java.util.List;
 import java.util.Map;
@@ -24,9 +25,22 @@ public class NetherCorruptionEffect extends MobEffect {
             new NetherConversionRule(BlockTags.DIRT, Blocks.CRIMSON_NYLIUM),
             new NetherConversionRule(BlockTags.BASE_STONE_OVERWORLD, Blocks.NETHERRACK),
             new NetherConversionRule(Blocks.GRAVEL, Blocks.MAGMA_BLOCK),
-            new NetherConversionRule( Blocks.GRASS, Blocks.CRIMSON_ROOTS),
+            new NetherConversionRule(Blocks.GRASS, Blocks.CRIMSON_ROOTS),
             new NetherConversionRule(Blocks.WATER, Blocks.LAVA),
-            new NetherConversionRule(BlockTags.STONE_ORE_REPLACEABLES,Blocks.NETHER_QUARTZ_ORE)
+            new NetherConversionRule(BlockTags.SAND, Blocks.SOUL_SAND),
+            new NetherConversionRule(BlockTags.STONE_ORE_REPLACEABLES, Blocks.NETHER_QUARTZ_ORE),
+            new NetherConversionRule(BlockTags.FLOWERS, Blocks.CRIMSON_FUNGUS),
+            new NetherConversionRule(Blocks.STONE, Blocks.BLACKSTONE),
+            new NetherConversionRule(Blocks.COBBLESTONE, Blocks.BLACKSTONE),
+            new NetherConversionRule(Blocks.CLAY, Blocks.SOUL_SOIL),
+            new NetherConversionRule(BlockTags.PLANKS, Blocks.CRIMSON_PLANKS),
+            new NetherConversionRule(Blocks.BRICKS, Blocks.NETHER_BRICKS),
+            new NetherConversionRule(BlockTags.WOODEN_FENCES, Blocks.NETHER_BRICK_FENCE),
+            new NetherConversionRule(Blocks.VINE, Blocks.WEEPING_VINES),
+            new NetherConversionRule(Blocks.SUGAR_CANE, Blocks.BONE_BLOCK),
+            new NetherConversionRule(Blocks.ICE, Blocks.MAGMA_BLOCK),
+            new NetherConversionRule(BlockTags.WOODEN_STAIRS, Blocks.CRIMSON_STAIRS),
+            new NetherConversionRule(BlockTags.STAIRS, Blocks.NETHER_BRICK_STAIRS)
             );
 
 
@@ -52,18 +66,19 @@ public class NetherCorruptionEffect extends MobEffect {
         int radius = amplifier + 1;
         int height = 8;
 
-        for (int x = -radius; x <= radius; x++) {
-            for (int y = -1; y <= height; y++) {
+        // Bucle Y debe ser el EXTERIOR para convertir por "capas" de arriba a abajo.
+        for (int y = height; y >= -1; y--) {
+            for (int x = -radius; x <= radius; x++) {
                 for (int z = -radius; z <= radius; z++) {
 
                     BlockPos pos = center.offset(x, y, z);
-
                     BlockState state = level.getBlockState(pos);
-
                     Block replacement = getReplacement(state);
 
-                    if (replacement != null) {
-                        level.setBlock(pos, replacement.defaultBlockState(), 3);
+                    // Verifica que el bloque realmente vaya a cambiar para evitar spam de particulas
+                    if (replacement != null && replacement != state.getBlock()) {
+                        level.setBlock(pos, replacement.defaultBlockState(), 2);
+                        level.sendParticles(ModParticles.CORRUPTION_FIRE.get(), pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 1, 0.2, 0.2, 0.2, 0.0);
                     }
                 }
             }

@@ -158,5 +158,21 @@ public class ProviderLootModifier extends GlobalLootModifierProvider {
                 ));
 
 
+        add("ender_spoon_end_city",
+                new AddItemModifier(
+                        new LootItemCondition[] {
+                                LootTableIdCondition.builder(
+                                        ResourceLocation.fromNamespaceAndPath(
+                                                "minecraft",
+                                                "chests/end_city_treasure"
+                                        )
+                                ).build()
+                        },
+                        ModItems.ENDER_SPOON.get(),
+                        1,
+                        1,
+                        0.25f
+                ));
+
     }
 }

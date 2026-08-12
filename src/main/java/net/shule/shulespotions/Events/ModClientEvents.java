@@ -103,6 +103,7 @@ public class ModClientEvents {
         event.registerSpriteSet(ModParticles.BUBBLE.get(), BubbleProvider::new);
         event.registerSpriteSet(ModParticles.POTION_EXPLOTION.get(), PotionExplotionProvider::new);
         event.registerSpriteSet(ModParticles.INSTABILITY_BUBBLE.get(), InstabilityBubbleProvider::new);
+        event.registerSpriteSet(ModParticles.CORRUPTION_FIRE.get(), net.shule.shulespotions.Particles.Custom.CorruptionFireProvider::new);
 
     }
 

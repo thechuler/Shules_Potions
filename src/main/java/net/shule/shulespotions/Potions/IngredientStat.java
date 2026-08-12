@@ -204,7 +204,7 @@ public class IngredientStat {
         this.duration = Duration;
     }
     public void setDurationTicks(int Duration) {
-        this.duration = duration / 20;
+        this.duration = Duration / 20;
     }
 
     public int getDurationTicks() {

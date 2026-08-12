@@ -72,7 +72,7 @@ public class ModEventBusEvents {
 
         if (player == null) return;
 
-        if (stack.is(ModItems.ALCHEMIST_MONOCLE.get())) {
+        if (stack.is(ModItems.EFFECT_CODEX.get())) { //<--- Momentaneamente Effect Codex
 
             event.getToolTip().add(
                     Component.translatable("tooltip.shulespotions.alchemist_monocle")
@@ -81,7 +81,7 @@ public class ModEventBusEvents {
         }
 
         boolean hasMonocle = player.getInventory().contains(
-                new ItemStack(ModItems.ALCHEMIST_MONOCLE.get())
+                new ItemStack(ModItems.EFFECT_CODEX.get())
         );
 
         if (!hasMonocle) return;

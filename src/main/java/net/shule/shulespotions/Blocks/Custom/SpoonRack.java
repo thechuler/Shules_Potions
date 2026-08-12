@@ -22,7 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.shule.shulespotions.Blocks.Entities.SpoonRackBE;
-import net.shule.shulespotions.Items.custom.SpoonItem;
+import net.shule.shulespotions.Items.custom.Spoons.SpoonItem;
 import org.jetbrains.annotations.Nullable;
 
 public class SpoonRack extends BaseEntityBlock {

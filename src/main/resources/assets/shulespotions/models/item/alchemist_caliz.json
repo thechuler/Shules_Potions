@@ -1,0 +1,15 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "shulespotions:item/alchemist_caliz"
+  },
+
+  "overrides": [
+    {
+      "predicate": {
+        "fill_level": 0.1
+      },
+      "model": "shulespotions:item/alchemist_caliz_full"
+    }
+  ]
+}
