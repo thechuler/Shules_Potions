@@ -23,6 +23,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.shule.shulespotions.MobEffects.ModMobEffects;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import net.shule.shulespotions.Blocks.Entities.PotionSplashBE;
 import net.shule.shulespotions.Blocks.Entities.SpoonRackBE;
 import net.shule.shulespotions.Blocks.ModBlockEntities;
@@ -45,6 +54,7 @@ import net.shule.shulespotions.Particles.Custom.PotionExplotionProvider;
 import net.shule.shulespotions.Particles.ModParticles;
 import net.shule.shulespotions.Renders.CloneOverlayLayer;
 import net.shule.shulespotions.Renders.CoveredOnPotionLiquidLayer;
+import net.shule.shulespotions.Renders.ButterFingersLayer;
 import net.shule.shulespotions.ShulesPotions;
 
 
@@ -84,6 +94,11 @@ public class ModClientEvents {
         event.registerEntityRenderer(
                 ModEntities.PLAYER_CLONE.get(),
                 net.shule.shulespotions.Entities.Renders.PlayerCloneRenderer::new
+        );
+
+        event.registerEntityRenderer(
+                ModEntities.SPINNING_BLOCK.get(),
+                net.shule.shulespotions.Entities.Renders.SpinningBlockRenderer::new
         );
     }
 
@@ -259,6 +274,10 @@ public class ModClientEvents {
                 livingRenderer.addLayer(
                         new CloneOverlayLayer(livingRenderer)
                 );
+
+                livingRenderer.addLayer(
+                        new ButterFingersLayer(livingRenderer)
+                );
             }
         });
 
@@ -272,10 +291,113 @@ public class ModClientEvents {
             playerRenderer.addLayer(
                     new CloneOverlayLayer<>(playerRenderer)
             );
+
+            playerRenderer.addLayer(
+                    new ButterFingersLayer<>(playerRenderer)
+            );
         }
     }
 
+    @Mod.EventBusSubscriber(modid = net.shule.shulespotions.ShulesPotions.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+    public static class ForgeEvents {
+        private static final Map<UUID, Integer> migraineStartTicks = new HashMap<>();
 
+        private static boolean scaleHead(EntityModel<?> model, float scale) {
+            boolean headFound = false;
 
+            if (model instanceof HumanoidModel<?> humanoid) {
+                humanoid.head.xScale = scale;
+                humanoid.head.yScale = scale;
+                humanoid.head.zScale = scale;
+                
+                humanoid.hat.xScale = scale;
+                humanoid.hat.yScale = scale;
+                humanoid.hat.zScale = scale;
+                headFound = true;
+            }
+            
 
+            Class<?> clazz = model.getClass();
+            while (clazz != null && clazz != Object.class) {
+                for (java.lang.reflect.Field field : clazz.getDeclaredFields()) {
+                    if (field.getType() == net.minecraft.client.model.geom.ModelPart.class) {
+                        try {
+                            field.setAccessible(true);
+                            net.minecraft.client.model.geom.ModelPart part = (net.minecraft.client.model.geom.ModelPart) field.get(model);
+                            if (part != null) {
+                                if (part.hasChild("head")) {
+                                    net.minecraft.client.model.geom.ModelPart head = part.getChild("head");
+                                    head.xScale = scale;
+                                    head.yScale = scale;
+                                    head.zScale = scale;
+                                    headFound = true;
+                                }
+                                if (part.hasChild("hat")) {
+                                    net.minecraft.client.model.geom.ModelPart hat = part.getChild("hat");
+                                    hat.xScale = scale;
+                                    hat.yScale = scale;
+                                    hat.zScale = scale;
+                                    headFound = true;
+                                }
+                            }
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }
+                clazz = clazz.getSuperclass();
+            }
+            
+            return headFound;
+        }
+
+        @SubscribeEvent
+        public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?> event) {
+            LivingEntity entity = event.getEntity();
+            EntityModel<?> model = event.getRenderer().getModel();
+            float targetScale = 1.0f;
+            boolean hasEffect = false;
+            
+            boolean hasMigraineLocally = entity.hasEffect(ModMobEffects.MIGRAINE.get());
+            boolean hasMigraineSynced = entity.getPersistentData().getBoolean("HasMigraine");
+            
+            if (hasMigraineLocally || hasMigraineSynced) {
+                int amplifier;
+                int startTick;
+                
+                if (hasMigraineLocally) {
+                    amplifier = entity.getEffect(ModMobEffects.MIGRAINE.get()).getAmplifier();
+                    startTick = migraineStartTicks.computeIfAbsent(entity.getUUID(), k -> entity.tickCount);
+                } else {
+                    amplifier = entity.getPersistentData().getInt("MigraineAmplifier");
+                    startTick = entity.getPersistentData().getInt("MigraineStartTick");
+                }
+                
+                int activeTicks = entity.tickCount - startTick;
+                float growthRate = 0.005f * (amplifier + 1);
+                targetScale = 1.0f + (activeTicks * growthRate);
+                hasEffect = true;
+            } else {
+                migraineStartTicks.remove(entity.getUUID());
+            }
+
+            boolean hasDecapitatedLocally = entity.hasEffect(ModMobEffects.DECAPITATED.get());
+            boolean hasDecapitatedSynced = entity.getPersistentData().getBoolean("HasDecapitated");
+
+            if (hasDecapitatedLocally || hasDecapitatedSynced) {
+                targetScale = 0.0f;
+                hasEffect = true;
+            }
+
+            if (hasEffect) {
+                scaleHead(model, targetScale);
+            }
+        }
+
+        @SubscribeEvent
+        public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event) {
+            EntityModel<?> model = event.getRenderer().getModel();
+            scaleHead(model, 1.0f);
+        }
+    }
 }

@@ -4,5 +4,18 @@
     "sounds":[
       "shulespotions:cauldron_boiling"
     ]
+  },
+  "head_explode": {
+    "subtitles": "sounds.shulespotions.head_explode",
+    "sounds":[
+      "shulespotions:head_explode"
+    ]
+  },
+
+  "sneeze": {
+    "subtitles": "sounds.shulespotions.sneeze",
+    "sounds":[
+      "shulespotions:sneeze"
+    ]
   }
 }

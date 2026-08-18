@@ -212,6 +212,10 @@ public class PotionLiquidBottleItem extends Item {
     }
 
     public void applyPotion(ItemStack stack, LivingEntity entity) {
+        applyPotion(stack, entity, entity, entity);
+    }
+
+    public void applyPotion(ItemStack stack, @Nullable net.minecraft.world.entity.Entity pSource, @Nullable net.minecraft.world.entity.Entity pIndirectSource, LivingEntity entity) {
         FluidStack fluid = getFluid(stack);
         PotionLiquid pl = PotionFluidHelper.getPotionLiquid(fluid);
 
@@ -227,8 +231,8 @@ public class PotionLiquidBottleItem extends Item {
             if (effect.isInstantenous()) {
 
                 effect.applyInstantenousEffect(
-                        entity,
-                        entity,
+                        pSource,
+                        pIndirectSource,
                         entity,
                         amplifier,
                         1.0

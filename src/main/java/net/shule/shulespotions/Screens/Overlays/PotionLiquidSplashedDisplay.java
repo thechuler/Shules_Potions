@@ -26,6 +26,11 @@ public class PotionLiquidSplashedDisplay {
             return;
         }
 
+
+        if (!event.getOverlay().id().getPath().equals("hotbar")) {
+            return;
+        }
+
         renderOverlay(event.getGuiGraphics());
     }
 
@@ -39,10 +44,12 @@ public class PotionLiquidSplashedDisplay {
         float g = ((color >> 8) & 255) / 255f;
         float b = (color & 255) / 255f;
 
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
 
-        guiGraphics.setColor(r, g, b, 0.6F);
-
+        guiGraphics.setColor(r, g, b, 0.85F);
         ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(
                 "shulespotions",
                 "textures/misc/covered_potion_liquid_screen.png"
@@ -60,8 +67,9 @@ public class PotionLiquidSplashedDisplay {
                 mc.getWindow().getGuiScaledHeight()
         );
 
+        RenderSystem.depthMask(true);
+        RenderSystem.enableDepthTest();
         guiGraphics.setColor(1F, 1F, 1F, 1F);
-
         RenderSystem.disableBlend();
     }
 }

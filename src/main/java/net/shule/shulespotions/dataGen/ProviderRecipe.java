@@ -208,14 +208,19 @@ public class ProviderRecipe extends RecipeProvider {
                 .unlockedBy("has_potion_bottle", has(ModItems.SMALL_POTION_BOTTLE.get()))
                 .save(consumer);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.BIG_POTION_BOTTLE.get())
-                .requires(ModItems.LARGE_POTION_BOTTLE.get())
-                .requires(Items.GLASS)
-                .requires(Items.GLASS)
-                .requires(Items.GLASS)
-                .requires(Items.PAPER)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.FRAGMENTED_ENDER_PEARL.get(),2)
+                .requires(Items.ENDER_PEARL)
                 .unlockedBy("has_potion_bottle", has(ModItems.SMALL_POTION_BOTTLE.get()))
                 .save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.BUTTER.get())
+                .requires(Items.MILK_BUCKET)
+                .requires(Items.SUGAR)
+                .requires(Items.SUGAR)
+                .unlockedBy("has_milk_bucket", has(Items.MILK_BUCKET))
+                .save(consumer);
+
+
 
 
         MortarRecipeBuilder.mortar(ModItems.DIAMOND_DUST.get(),6,3,0.5f,"#4aedd9")

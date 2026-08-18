@@ -26,7 +26,7 @@ public class NetherCorruptionEffect extends MobEffect {
             new NetherConversionRule(BlockTags.BASE_STONE_OVERWORLD, Blocks.NETHERRACK),
             new NetherConversionRule(Blocks.GRAVEL, Blocks.MAGMA_BLOCK),
             new NetherConversionRule(Blocks.GRASS, Blocks.CRIMSON_ROOTS),
-            new NetherConversionRule(Blocks.WATER, Blocks.LAVA),
+            new NetherConversionRule(Blocks.WATER, Blocks.MAGMA_BLOCK),
             new NetherConversionRule(BlockTags.SAND, Blocks.SOUL_SAND),
             new NetherConversionRule(BlockTags.STONE_ORE_REPLACEABLES, Blocks.NETHER_QUARTZ_ORE),
             new NetherConversionRule(BlockTags.FLOWERS, Blocks.CRIMSON_FUNGUS),
@@ -63,26 +63,52 @@ public class NetherCorruptionEffect extends MobEffect {
     }
 
     private void convertNearbyBlocks(ServerLevel level, BlockPos center, int amplifier) {
-        int radius = amplifier + 1;
-        int height = 8;
+        int radius = amplifier + 2; 
+        int attempts = 60 + (amplifier * 60);
 
-        // Bucle Y debe ser el EXTERIOR para convertir por "capas" de arriba a abajo.
-        for (int y = height; y >= -1; y--) {
-            for (int x = -radius; x <= radius; x++) {
-                for (int z = -radius; z <= radius; z++) {
+        for (int i = 0; i < attempts; i++) {
+            int dx = level.random.nextInt(radius * 2 + 1) - radius;
+            int dy = level.random.nextInt(radius * 2 + 1) - radius;
+            int dz = level.random.nextInt(radius * 2 + 1) - radius;
+            
+            BlockPos pos = center.offset(dx, dy, dz);
+            
 
-                    BlockPos pos = center.offset(x, y, z);
-                    BlockState state = level.getBlockState(pos);
-                    Block replacement = getReplacement(state);
+            if (pos.distSqr(center) > radius * radius) continue;
 
-                    // Verifica que el bloque realmente vaya a cambiar para evitar spam de particulas
-                    if (replacement != null && replacement != state.getBlock()) {
-                        level.setBlock(pos, replacement.defaultBlockState(), 2);
-                        level.sendParticles(ModParticles.CORRUPTION_FIRE.get(), pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 1, 0.2, 0.2, 0.2, 0.0);
-                    }
+            BlockState state = level.getBlockState(pos);
+            Block replacement = getReplacement(state);
+
+            if (replacement != null && replacement != state.getBlock()) {
+                
+                if (pos.distSqr(center) <= 4.0 || isTouchingNetherBlock(level, pos)) {
+                    level.setBlock(pos, replacement.defaultBlockState(), 2);
+                    level.sendParticles(ModParticles.CORRUPTION_FIRE.get(), pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 1, 0.2, 0.2, 0.2, 0.0);
                 }
             }
         }
+    }
+
+    private boolean isTouchingNetherBlock(ServerLevel level, BlockPos pos) {
+        BlockPos[] neighbors = new BlockPos[]{
+            pos.above(), pos.below(), pos.north(), pos.south(), pos.east(), pos.west()
+        };
+        for (BlockPos neighbor : neighbors) {
+            BlockState adjState = level.getBlockState(neighbor);
+            if (isNetherBlock(adjState.getBlock())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean isNetherBlock(Block block) {
+        for (NetherConversionRule rule : CONVERSIONS) {
+            if (block == rule.getReplacement()) {
+                return true;
+            }
+        }
+        return false;
     }
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {

@@ -1,19 +1,22 @@
-// 1.20.1	2026-07-27T18:49:27.5808584	Item Models: shulespotions
+// 1.20.1	2026-08-16T23:58:44.771514	Item Models: shulespotions
 9ef8e89299617c71c4d7ad425e0447fb77cf4751 assets/shulespotions/models/item/alchemist_monocle.json
 d325cc2598171fab8db9a65bd8821fd20bbf2500 assets/shulespotions/models/item/allay_essence.json
 7ced90796f2f58332715a49a3792e81f89305e1a assets/shulespotions/models/item/amethyst_dust.json
 bbd71db31e8df0c5ef38d823d2d1faca9947d65e assets/shulespotions/models/item/bastion_fragment.json
 5ac3f5013a22f4c7bd88e7d1342ab90b3b9fc699 assets/shulespotions/models/item/bat_ear.json
+7ccc8ebc6c071fef97aa796a581a550e54e6955a assets/shulespotions/models/item/butter.json
 2dd3ccca97296aa2ffc1707a7356f95212e6a526 assets/shulespotions/models/item/copper_dust.json
 16a86da1fbdb7ed67582bfcc9bce49d051aa6095 assets/shulespotions/models/item/crushed_eye.json
 a3a981a65226cf1355fd17c0304701e0d6ea5b51 assets/shulespotions/models/item/diamond_dust.json
 9ffa296a60bf9e22231558a397671ea82a1e3ca3 assets/shulespotions/models/item/effect_codex.json
 490401e0bb807520df1c05ac2ca8384200a7c4f2 assets/shulespotions/models/item/emerald_dust.json
+1042334542958ff7a534371907fef1d154cccdad assets/shulespotions/models/item/fragmented_ender_pearl.json
 43ff15948b9ca4f9798982536ca5190d496e17d0 assets/shulespotions/models/item/ghast_heart.json
 7c52bce2a3bceea1ff60ac80e1a761608e9c9d81 assets/shulespotions/models/item/gold_dust.json
 7f1a5868da4e8cf5c4b252ab8db9918db9e950b9 assets/shulespotions/models/item/iron_dust.json
 7f89a704950fbbe6d2c418db62b6be403828e315 assets/shulespotions/models/item/mandrake_seed.json
 2a0c0abdc9ff400606d95d52b81bc5f3e2b53a0d assets/shulespotions/models/item/netherite_dust.json
+e564a3de5e14be0d67a369984d5d99c99dd2e095 assets/shulespotions/models/item/nitro_spores.json
 7904bda4a66e55c0f7b09b9bcf483ff2e03b9a2e assets/shulespotions/models/item/onyx.json
 672b2daf3573e490606824fafe83aab7d78bba89 assets/shulespotions/models/item/pestle.json
 2cd62c6705a29e5c535607a028bb1b918c63c2ec assets/shulespotions/models/item/rotten_apple.json

@@ -34,5 +34,29 @@ public class ModMessages {
                 SyncCloneStatusPacket::decode,
                 SyncCloneStatusPacket::handle
         );
+
+        INSTANCE.registerMessage(
+                packetId++,
+                SyncButterFingersPacket.class,
+                SyncButterFingersPacket::encode,
+                SyncButterFingersPacket::decode,
+                SyncButterFingersPacket::handle
+        );
+
+        INSTANCE.registerMessage(
+                packetId++,
+                SyncMigraineActivePacket.class,
+                SyncMigraineActivePacket::encode,
+                SyncMigraineActivePacket::decode,
+                SyncMigraineActivePacket::handle
+        );
+
+        INSTANCE.registerMessage(
+                packetId++,
+                net.shule.shulespotions.Messages.SyncDecapitatedActivePacket.class,
+                net.shule.shulespotions.Messages.SyncDecapitatedActivePacket::encode,
+                net.shule.shulespotions.Messages.SyncDecapitatedActivePacket::decode,
+                net.shule.shulespotions.Messages.SyncDecapitatedActivePacket::handle
+        );
     }
 }

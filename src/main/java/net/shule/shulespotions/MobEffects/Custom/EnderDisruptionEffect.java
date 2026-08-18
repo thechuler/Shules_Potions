@@ -29,7 +29,6 @@ public class EnderDisruptionEffect extends MobEffect {
     public static void onProjectileImpact(ProjectileImpactEvent event) {
 
 
-        // Solo impactos contra entidades
         if (!(event.getRayTraceResult() instanceof EntityHitResult hit))
             return;
 
@@ -41,20 +40,18 @@ public class EnderDisruptionEffect extends MobEffect {
             return;
 
 
-        // Verifica el efecto
+
         if (!entity.hasEffect(ModMobEffects.ENDER_DISRUPTION.get()))
             return;
 
 
-        // Verifica que sea un proyectil que haga daño
+
         if (!event.getProjectile().getType()
                 .getDescriptionId()
                 .contains("arrow"))
             return;
 
 
-
-        // Intentar teleport cercano
         for (int i = 0; i < 32; i++) {
 
 

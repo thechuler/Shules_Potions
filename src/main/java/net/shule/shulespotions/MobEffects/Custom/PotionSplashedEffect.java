@@ -54,7 +54,8 @@ public class PotionSplashedEffect extends MobEffect {
             BlockPos pos = entity.blockPosition();
             BlockPos posBelow = pos.below();
             
-            if (level.getBlockState(posBelow).isFaceSturdy(level, posBelow, Direction.UP) 
+            if (!level.getBlockState(pos).is(ModBlocks.POTION_SPLASH.get()) &&
+                level.getBlockState(posBelow).isFaceSturdy(level, posBelow, Direction.UP) 
                     && level.getBlockState(pos).canBeReplaced()) {
                 
                 BlockState splashState = 
@@ -73,6 +74,6 @@ public class PotionSplashedEffect extends MobEffect {
 
     @Override
     public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
-        return true; // Le decimos a Minecraft que queremos procesar applyEffectTick todos los ticks
+        return true;
     }
 }

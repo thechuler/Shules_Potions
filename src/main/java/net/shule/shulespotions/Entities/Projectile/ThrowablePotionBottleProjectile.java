@@ -78,7 +78,7 @@ public class ThrowablePotionBottleProjectile extends ThrowableItemProjectile {
         AABB area = getBoundingBox().inflate(4.0D);
 
         for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, area)) {
-            bottle.applyPotion(stack, entity);
+            bottle.applyPotion(stack, this, this.getOwner(), entity);
         }
 
         discard();

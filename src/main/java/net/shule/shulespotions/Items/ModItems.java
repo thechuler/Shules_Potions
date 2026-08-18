@@ -106,11 +106,18 @@ public class ModItems {
                            .effect(new MobEffectInstance(MobEffects.CONFUSION,200), 0.2f)
                            .build())));
 
+    public static final RegistryObject<Item> BUTTER = ITEMS.register("butter", () ->
+            new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .saturationMod(8)
+                            .nutrition(10)
+                            .effect(new MobEffectInstance(ModMobEffects.BUTTER_FINGERS.get(),200), 0.4f)
+                            .build())));
+
 
    public static final RegistryObject<Item> GHAST_HEART = ITEMS.register("ghast_heart", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
 
-   public static final RegistryObject<Item> POTION_HOMUNCULUS = ITEMS.register("potion_homunculus", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
-
+ //  public static final RegistryObject<Item> POTION_HOMUNCULUS = ITEMS.register("potion_homunculus", () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> EMERALD_DUST = ITEMS.register("emerald_dust", () -> new Item(new Item.Properties()));
 
@@ -129,10 +136,16 @@ public class ModItems {
     public static final RegistryObject<Item> NETHERITE_DUST = ITEMS.register("netherite_dust", () -> new Item(new Item.Properties()));
 
 
+    public static final RegistryObject<Item> FRAGMENTED_ENDER_PEARL = ITEMS.register("fragmented_ender_pearl", () -> new Item(new Item.Properties()));
+
+
     public static final RegistryObject<Item> ONYX = ITEMS.register("onyx", () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> BASTION_FRAGMENT = ITEMS.register("bastion_fragment", () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> CALIZ = ITEMS.register("alchemist_caliz", () -> new AlchemistsCaliz(new Item.Properties()));
+    public static final RegistryObject<Item> NITRO_SPORES = ITEMS.register("nitro_spores", () -> new Item(new Item.Properties()));
+
+    // public static final RegistryObject<Item> CALIZ = ITEMS.register("alchemist_caliz", () -> new AlchemistsCaliz(new Item.Properties()));
 
 
 

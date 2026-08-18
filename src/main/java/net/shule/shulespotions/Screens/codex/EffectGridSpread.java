@@ -4,6 +4,9 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.shule.shulespotions.Screens.EffectButton;
 import net.shule.shulespotions.Screens.codex.base.PagedGridSpread;
+import net.minecraft.resources.ResourceLocation;
+
+import java.util.Comparator;
 
 public class EffectGridSpread extends PagedGridSpread<MobEffect> {
 
@@ -14,7 +17,15 @@ public class EffectGridSpread extends PagedGridSpread<MobEffect> {
     private static final int ROWS = 5;
 
     public EffectGridSpread() {
-        super(ForgeRegistries.MOB_EFFECTS.getValues().stream().toList(), COLUMNS, ROWS);
+        super(ForgeRegistries.MOB_EFFECTS.getValues().stream()
+                .sorted(Comparator.comparing((MobEffect e) -> {
+                    ResourceLocation key = ForgeRegistries.MOB_EFFECTS.getKey(e);
+                    return key != null ? key.getNamespace() : "";
+                }).thenComparing(e -> {
+                    ResourceLocation key = ForgeRegistries.MOB_EFFECTS.getKey(e);
+                    return key != null ? key.getPath() : "";
+                }))
+                .toList(), COLUMNS, ROWS);
     }
 
     @Override

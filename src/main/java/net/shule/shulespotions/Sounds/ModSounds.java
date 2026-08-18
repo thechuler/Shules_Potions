@@ -16,6 +16,11 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> CAULDRON_BOILING =
             registerSoundEvent("cauldron_boiling");
 
+    public static final RegistryObject<SoundEvent> HEAD_EXPLODE =
+            registerSoundEvent("head_explode");
+
+    public static final RegistryObject<SoundEvent> SNEEZE =
+            registerSoundEvent("sneeze");
 
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {

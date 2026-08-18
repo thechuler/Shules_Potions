@@ -31,9 +31,7 @@ public class CoveredOnPotionLiquidLayer<T extends LivingEntity, M extends Entity
             float headPitch) {
 
 
-        // En lugar de chequear if (entity.hasEffect(...)), verificamos directamente el NBT
-        // ya que el cliente de Minecraft NO sincroniza la lista de MobEffects de otras entidades,
-        // por lo que hasEffect() siempre devuelve falso para los mobs en el cliente.
+
         if (!entity.getPersistentData().contains("PotionSplashColor")) {
             return;
         }
@@ -45,7 +43,11 @@ public class CoveredOnPotionLiquidLayer<T extends LivingEntity, M extends Entity
         float b = (color & 255) / 255f;
 
 
-        VertexConsumer vc = buffer.getBuffer(RenderType.entityCutout(TEXTURE));
+        VertexConsumer vc = buffer.getBuffer(RenderType.entityTranslucentCull(TEXTURE));
+
+        poseStack.pushPose();
+
+        poseStack.scale(1.01f, 1.01f, 1.01f);
 
         this.getParentModel().renderToBuffer(
                 poseStack,
@@ -55,7 +57,9 @@ public class CoveredOnPotionLiquidLayer<T extends LivingEntity, M extends Entity
                 r,
                 g,
                 b,
-                0.6f
+                0.8f
         );
+
+        poseStack.popPose();
     }
 }

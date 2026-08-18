@@ -23,7 +23,7 @@ import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = ShulesPotions.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class StoneCrusherEffect extends MobEffect {
-    protected StoneCrusherEffect(MobEffectCategory pCategory, int pColor) {
+    public StoneCrusherEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
     }
 
@@ -55,6 +55,7 @@ public class StoneCrusherEffect extends MobEffect {
 
     public static List<BlockPos> getBlocksToBeDestroyed(int range, BlockPos initalBlockPos, ServerPlayer player) {
         List<BlockPos> positions = new ArrayList<>();
+        range = Math.min(range, 4);
 
         BlockHitResult traceResult = player.level().clip(new ClipContext(player.getEyePosition(1f),
                 (player.getEyePosition(1f).add(player.getViewVector(1f).scale(6f))),
@@ -62,11 +63,16 @@ public class StoneCrusherEffect extends MobEffect {
         if (traceResult.getType() == HitResult.Type.MISS) {
             return positions;
         }
+        
+        net.minecraft.world.level.Level level = player.level();
 
         if (traceResult.getDirection() == Direction.DOWN || traceResult.getDirection() == Direction.UP) {
             for (int x = -range; x <= range; x++) {
                 for (int y = -range; y <= range; y++) {
-                    positions.add(new BlockPos(initalBlockPos.getX() + x, initalBlockPos.getY(), initalBlockPos.getZ() + y));
+                    BlockPos pos = new BlockPos(initalBlockPos.getX() + x, initalBlockPos.getY(), initalBlockPos.getZ() + y);
+                    if (level.getBlockState(pos).getDestroySpeed(level, pos) >= 0) {
+                        positions.add(pos);
+                    }
                 }
             }
         }
@@ -74,7 +80,10 @@ public class StoneCrusherEffect extends MobEffect {
         if (traceResult.getDirection() == Direction.NORTH || traceResult.getDirection() == Direction.SOUTH) {
             for (int x = -range; x <= range; x++) {
                 for (int y = -range; y <= range; y++) {
-                    positions.add(new BlockPos(initalBlockPos.getX() + x, initalBlockPos.getY() + y, initalBlockPos.getZ()));
+                    BlockPos pos = new BlockPos(initalBlockPos.getX() + x, initalBlockPos.getY() + y, initalBlockPos.getZ());
+                    if (level.getBlockState(pos).getDestroySpeed(level, pos) >= 0) {
+                        positions.add(pos);
+                    }
                 }
             }
         }
@@ -82,7 +91,10 @@ public class StoneCrusherEffect extends MobEffect {
         if (traceResult.getDirection() == Direction.EAST || traceResult.getDirection() == Direction.WEST) {
             for (int x = -range; x <= range; x++) {
                 for (int y = -range; y <= range; y++) {
-                    positions.add(new BlockPos(initalBlockPos.getX(), initalBlockPos.getY() + y, initalBlockPos.getZ() + x));
+                    BlockPos pos = new BlockPos(initalBlockPos.getX(), initalBlockPos.getY() + y, initalBlockPos.getZ() + x);
+                    if (level.getBlockState(pos).getDestroySpeed(level, pos) >= 0) {
+                        positions.add(pos);
+                    }
                 }
             }
         }

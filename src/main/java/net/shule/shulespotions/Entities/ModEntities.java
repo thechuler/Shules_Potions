@@ -19,7 +19,7 @@ import net.shule.shulespotions.ShulesPotions;
 import java.util.function.Supplier;
 
 
-//Aca podemos crear entidades (no lo vamos a hacer todavia porque es algo mas avanzado)
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEntities {
 
@@ -52,11 +52,19 @@ public class ModEntities {
     public static final RegistryObject<EntityType<PlayerCloneEntity>> PLAYER_CLONE =
             ENTITIES.register("player_clone",
                     () -> EntityType.Builder
-                            .of(PlayerCloneEntity::new, MobCategory.CREATURE) // Animales suelen ser CREATURE
-                            .sized(0.6F, 1.8F) // Tamaño estandar de jugador
+                            .of(PlayerCloneEntity::new, MobCategory.CREATURE)
+                            .sized(0.6F, 1.8F)
                             .clientTrackingRange(10)
                             .build("player_clone"));
 
+    public static final RegistryObject<EntityType<net.shule.shulespotions.Entities.entity.SpinningBlockEntity>> SPINNING_BLOCK =
+            ENTITIES.register("spinning_block",
+                    () -> EntityType.Builder
+                            .<net.shule.shulespotions.Entities.entity.SpinningBlockEntity>of(net.shule.shulespotions.Entities.entity.SpinningBlockEntity::new, MobCategory.MISC)
+                            .sized(0.98F, 0.98F)
+                            .clientTrackingRange(10)
+                            .updateInterval(1)
+                            .build("spinning_block"));
 
 
     @SubscribeEvent

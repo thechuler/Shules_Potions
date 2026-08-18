@@ -102,7 +102,7 @@ public class EffectInfoSpread extends CodexSpread {
         ResourceLocation id = ForgeRegistries.MOB_EFFECTS.getKey(effect);
         int leftPageCenter = getLeftPageCenter(guiX);
         int titleOffsetX = 10;
-        int descY = guiY + 168; // 110 + 18 + 25 + 15
+        int descY = guiY + 168;
         int descriptionWidth = 130;
         int startX = leftPageCenter - descriptionWidth / 2 + titleOffsetX + 5;
         
@@ -184,23 +184,41 @@ public class EffectInfoSpread extends CodexSpread {
         Component title = Component.translatable(effect.getDescriptionId());
         drawCenteredScaledString(graphics, title, leftPageCenter + titleOffsetX, guiY + 22, 1.5F, effect.getColor());
 
+        String modName = "-";
+        if (id != null) {
+            String modId = id.getNamespace();
+            if ("minecraft".equals(modId)) {
+                modName = "Minecraft";
+            } else {
+                modName = net.minecraftforge.fml.ModList.get().getModContainerById(modId)
+                        .map(c -> c.getModInfo().getDisplayName())
+                        .orElse(modId.substring(0, 1).toUpperCase() + modId.substring(1));
+            }
+        }
+
+        int descriptionWidth = 130;
+        int leftMargin = leftPageCenter - descriptionWidth / 2 + titleOffsetX + 5;
+
+        Component sourceLabel = Component.translatable("shulespotions.screen.effect_codex.source");
         graphics.drawString(Minecraft.getInstance().font,
-                Component.translatable("shulespotions.screen.effect_codex.source"),
-                textX + 25, textY, 0x7A6A52, false);
+                sourceLabel,
+                leftMargin, textY, 0x7A6A52, false);
+
         graphics.drawString(Minecraft.getInstance().font,
-                id != null ? id.getNamespace() : "-",
-                textX + 25 + 45, textY, COLOR_TEXT, false);
+                modName,
+                leftMargin + Minecraft.getInstance().font.width(sourceLabel) + 5, textY, COLOR_TEXT, false);
 
         textY += 18;
 
+        Component categoryLabel = Component.translatable("shulespotions.screen.effect_codex.category");
         graphics.drawString(Minecraft.getInstance().font,
-                Component.translatable("shulespotions.screen.effect_codex.category"),
-                textX + 20, textY, 0x7A6A52, false);
+                categoryLabel,
+                leftMargin, textY, 0x7A6A52, false);
         graphics.drawString(Minecraft.getInstance().font,
                 Component.translatable(effect.isBeneficial()
                         ? "shulespotions.screen.effect_codex.beneficial"
                         : "shulespotions.screen.effect_codex.harmful"),
-                textX + 20 + 55, textY, effect.isBeneficial() ? 0x00640b : 0xc10000, false);
+                leftMargin + Minecraft.getInstance().font.width(categoryLabel) + 5, textY, effect.isBeneficial() ? 0x00640b : 0xc10000, false);
 
         textY += 25;
 
@@ -208,7 +226,6 @@ public class EffectInfoSpread extends CodexSpread {
         drawCenteredScaledString(graphics, descTitle, leftPageCenter + titleOffsetX, textY, 1.0F, COLOR_TITLE);
 
         textY += 15;
-        int descriptionWidth = 130;
 
         String forcedDescKey = "effect." + id.getNamespace() + "." + id.getPath() + ".description";
 
@@ -218,7 +235,7 @@ public class EffectInfoSpread extends CodexSpread {
                         forcedDescKey,
                         Component.translatable("shulespotions.screen.effect_codex.missing_description").getString()
                 ),
-                leftPageCenter - descriptionWidth / 2 + titleOffsetX + 5,
+                leftMargin,
                 textY,
                 descriptionWidth,
                 COLOR_TEXT

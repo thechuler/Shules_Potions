@@ -1,5 +1,7 @@
 package net.shule.shulespotions.MobEffects.Custom;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
@@ -7,8 +9,12 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.PacketDistributor;
 import net.shule.shulespotions.Entities.ModEntities;
 import net.shule.shulespotions.Entities.entity.PlayerCloneEntity;
+import net.shule.shulespotions.Messages.ModMessages;
+import net.shule.shulespotions.Messages.SyncCloneStatusPacket;
+import net.shule.shulespotions.Particles.ModParticles;
 import org.jetbrains.annotations.Nullable;
 
 public class CloningEffect extends MobEffect {
@@ -38,27 +44,27 @@ public class CloningEffect extends MobEffect {
            PlayerCloneEntity playerClone = ModEntities.PLAYER_CLONE.get().create(level);
             
             if (playerClone != null) {
-                playerClone.setClonedPlayerUUID(player.getUUID()); // Textura
-                playerClone.tame(player); // Dueño
+                playerClone.setClonedPlayerUUID(player.getUUID());
+                playerClone.tame(player);
                 
-                // Etiqueta de nombre visible
-                playerClone.setCustomName(net.minecraft.network.chat.Component.translatable("entity.shulespotions.player_clone_name", player.getName()));
+
+                playerClone.setCustomName(Component.translatable("entity.shulespotions.player_clone_name", player.getName()));
                 playerClone.setCustomNameVisible(true);
                 
-                // Copiar equipo (armadura e ítems en las manos)
-                for (net.minecraft.world.entity.EquipmentSlot slot : net.minecraft.world.entity.EquipmentSlot.values()) {
+
+                for (EquipmentSlot slot : EquipmentSlot.values()) {
                     playerClone.setItemSlot(slot, player.getItemBySlot(slot).copy());
                 }
             }
             createdEntity = playerClone;
         } else {
-            // Es un mob normal: Clon genérico
+
             createdEntity = pLivingEntity.getType().create(level);
         }
 
         if (createdEntity instanceof LivingEntity clone) {
             
-            // Etiquetamos a la entidad como un clon para poder renderizarle el overlay verde después
+
             clone.getPersistentData().putBoolean("shulespotions:is_clone", true);
             
             clone.moveTo(
@@ -71,12 +77,11 @@ public class CloningEffect extends MobEffect {
             
             if (level.addFreshEntity(clone)) {
                 
-                if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-                    
-                    // Enviar el paquete para sincronizar al cliente que esta entidad es un clon
-                    net.shule.shulespotions.Messages.ModMessages.INSTANCE.send(
-                        net.minecraftforge.network.PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> clone),
-                        new net.shule.shulespotions.Messages.SyncCloneStatusPacket(clone.getId(), true)
+                if (level instanceof ServerLevel serverLevel) {
+
+                    ModMessages.INSTANCE.send(
+                        PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> clone),
+                        new SyncCloneStatusPacket(clone.getId(), true)
                     );
                     
 
@@ -93,7 +98,7 @@ public class CloningEffect extends MobEffect {
                         double pz = clone.getZ() + (level.random.nextDouble() - 0.5) * clone.getBbWidth() * 2.5;
                         
                         serverLevel.sendParticles(
-                            net.shule.shulespotions.Particles.ModParticles.POTION_EXPLOTION.get(), 
+                           ModParticles.POTION_EXPLOTION.get(),
                             px, py, pz, 
                             0,
                             r, g, b, 

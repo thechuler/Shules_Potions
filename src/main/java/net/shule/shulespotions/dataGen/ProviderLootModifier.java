@@ -106,6 +106,22 @@ public class ProviderLootModifier extends GlobalLootModifierProvider {
                         0.1f
                 ));
 
+        add("nitro_spore",
+                new AddItemModifier(
+                        new LootItemCondition[] {
+                                LootTableIdCondition.builder(
+                                        ResourceLocation.fromNamespaceAndPath(
+                                                "minecraft",
+                                                "entities/creeper"
+                                        )
+                                ).build()
+                        },
+                        ModItems.NITRO_SPORES.get(),
+                        1,
+                        2,
+                        0.4f
+                ));
+
         add("allay_essence",
                 new AddItemModifier(
                         new LootItemCondition[] {
@@ -154,7 +170,7 @@ public class ProviderLootModifier extends GlobalLootModifierProvider {
                         ModItems.MANDRAKE_SEED.get(),
                         1,
                         2,
-                        0.07f
+                        0.2f
                 ));
 
 

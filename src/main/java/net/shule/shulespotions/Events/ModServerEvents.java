@@ -15,13 +15,19 @@ import net.minecraftforge.network.PacketDistributor;
 import net.shule.shulespotions.Messages.ModMessages;
 import net.shule.shulespotions.Messages.SyncCloneStatusPacket;
 import net.shule.shulespotions.Messages.SyncPotionSplashColorPacket;
+import net.shule.shulespotions.Messages.SyncMigraineActivePacket;
+import net.shule.shulespotions.Messages.SyncDecapitatedActivePacket;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.shule.shulespotions.MobEffects.Custom.LeechEffect;
+import net.shule.shulespotions.MobEffects.ModMobEffects;
 import net.shule.shulespotions.ShulesPotions;
 
 @Mod.EventBusSubscriber(modid = ShulesPotions.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModServerEvents {
 
-    // Extraemos la lógica a un método para reutilizarla
+
+
     private static void syncEntityData(ServerPlayer playerToReceivePacket, Entity targetEntity) {
         if (targetEntity.level().isClientSide) return;
         
@@ -48,25 +54,47 @@ public class ModServerEvents {
 
     @SubscribeEvent
     public static void onStartTracking(net.minecraftforge.event.entity.player.PlayerEvent.StartTracking event) {
-        // Se dispara cuando vemos a OTRA entidad
+
         syncEntityData((ServerPlayer) event.getEntity(), event.getTarget());
+        
+        if (event.getTarget() instanceof LivingEntity living) {
+            MobEffectInstance migraineEffect = living.getEffect(ModMobEffects.MIGRAINE.get());
+            if (migraineEffect != null) {
+                ModMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()), 
+                    new SyncMigraineActivePacket(living.getId(), migraineEffect.getAmplifier(), true));
+            }
+            
+            MobEffectInstance decapitatedEffect = living.getEffect(ModMobEffects.DECAPITATED.get());
+            if (decapitatedEffect != null) {
+                ModMessages.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()), 
+                    new SyncDecapitatedActivePacket(living.getId(), true));
+            }
+        }
     }
 
     @SubscribeEvent
     public static void onPlayerLoggedIn(net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent event) {
-        // Se dispara para NOSOTROS MISMOS al entrar
         syncEntityData((ServerPlayer) event.getEntity(), event.getEntity());
     }
 
     @SubscribeEvent
     public static void onPlayerRespawn(net.minecraftforge.event.entity.player.PlayerEvent.PlayerRespawnEvent event) {
-        // Se dispara para NOSOTROS MISMOS al revivir
         syncEntityData((ServerPlayer) event.getEntity(), event.getEntity());
     }
 
     @SubscribeEvent
     public static void onPlayerChangeDimension(net.minecraftforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent event) {
-        // Se dispara para NOSOTROS MISMOS al cambiar de dimensión (Nether/End)
         syncEntityData((ServerPlayer) event.getEntity(), event.getEntity());
+    }
+
+    @SubscribeEvent
+    public static void onLivingTick(net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (!entity.level().isClientSide()) {
+            if (entity.getPersistentData().getBoolean("MigraineForceRemove")) {
+                entity.removeEffect(ModMobEffects.MIGRAINE.get());
+                entity.getPersistentData().remove("MigraineForceRemove");
+            }
+        }
     }
 }

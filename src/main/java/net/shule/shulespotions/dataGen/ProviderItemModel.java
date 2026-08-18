@@ -43,6 +43,9 @@ public class ProviderItemModel extends ItemModelProvider {
         simpleItem(ModItems.BASTION_FRAGMENT);
         simpleItem(ModItems.BAT_EAR);
         simpleItem(ModItems.ALLAY_ESSENCE);
+        simpleItem(ModItems.FRAGMENTED_ENDER_PEARL);
+        simpleItem(ModItems.BUTTER);
+        simpleItem(ModItems.NITRO_SPORES);
 
 
     }

@@ -12,7 +12,7 @@ import net.shule.shulespotions.ShulesPotions;
 
 @Mod.EventBusSubscriber(modid = ShulesPotions.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class FlyEffect extends MobEffect {
-    protected FlyEffect(MobEffectCategory pCategory, int pColor) {
+    public FlyEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
     }
 

@@ -57,7 +57,6 @@
       "minecraft:darkness": -10
     }
   },
-
   "shulespotions:netherite_dust": {
     "stability": -40,
     "color": "#80170c",
@@ -71,21 +70,18 @@
       "minecraft:weakness": -50
     }
   },
-
   "shulespotions:mandrake_seed": {
     "purity": 2,
-    "vitality":20,
+    "vitality": 20,
     "stability": -30,
     "color": "#e67229",
     "effects": {
-      "minecraft:blindness": 20,
-      "minecraft:strength": 20,
-      "minecraft:haste": 10
+      "shulespotions:fertilizer": 60
     }
   },
   "shulespotions:ghast_heart": {
     "purity": 1,
-    "vitality":30,
+    "vitality": 30,
     "stability": -50,
     "color": "#393939",
     "effects": {
@@ -93,10 +89,9 @@
       "minecraft:absorption": 30,
       "minecraft:strength": 10,
       "minecraft:slowness": 10,
-      "shulespotions:nether_corruption":20
+      "shulespotions:nether_corruption": 20
     }
   },
-
   "shulespotions:onyx": {
     "stability": -50,
     "color": "#1e1e1e",
@@ -113,7 +108,6 @@
       "shulespotions:nether_corruption": 5
     }
   },
-
   "shulespotions:rotten_apple": {
     "stability": -20,
     "vitality": -30,
@@ -167,7 +161,26 @@
     "effects": {
       "shulespotions:leech": 25
     }
+  },
+  "shulespotions:fragmented_ender_pearl": {
+    "color": "#105e51",
+    "effects": {
+      "shulespotions:swap": 30
+    }
+  },
+  "shulespotions:butter": {
+    "color": "#fff880",
+    "flavor": 30,
+    "effects": {
+      "shulespotions:butter_fingers": 60
+    }
+  },
+  "shulespotions:nitro_spores": {
+    "color": "#3fc947",
+    "purity": -1,
+    "stability": -20,
+    "effects": {
+      "shulespotions:explosive_sneeze": 65
+    }
   }
-
-
 }

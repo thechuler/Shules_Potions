@@ -43,6 +43,10 @@
   "item.shulespotions.bat_ear": "Oreja de Murciélago",
   "item.shulespotions.allay_essence": "Esencia de Allay",
   "item.shulespotions.alchemist_caliz": "Cáliz",
+  "item.shulespotions.fragmented_ender_pearl": "Perla de Ender Fragmentada",
+  "item.shulespotions.nitro_spores": "Nitro Esporas",
+  "item.shulespotions.butter": "Mantequilla",
+
 
   "block.shulespotions.potion_cauldron.commentary": "Mi viejo y confiable caldero... Me trae recuerdos de mi primer brebaje.",
   "block.shulespotions.potion_cauldron.description": "Para utilizar el caldero de pociones primero deberás llenarlo con un cubo de agua. \n Luego, al agregar ingredientes, tu mezcla obtendrá una probabilidad de ganar un determinado efecto.\n Podrás saber si lo obtuviste o no, tras mezclar el líquido con una cuchara.",
@@ -96,6 +100,11 @@
   "item.shulespotions.rotten_fish.description": "Supongo que fue mala idea guardar la comida junto a la carne podrida... Ahora, ¿qué voy a comer? :(",
   "item.shulespotions.rotten_apple.description": "Supongo que fue mala idea guardar la comida junto a la carne podrida... Ahora, ¿qué voy a comer? :(",
   "item.shulespotions.bastion_fragment.description": "Una piedra bonita obtenida probablemente del lugar más peligroso del infierno. ¡Claro! ¿Por qué no?",
+  "item.shulespotions.fragmented_ender_pearl.description": "A pesar de estar rota, aún parece conservar sus propiedades.",
+  "item.shulespotions.nitro_spores.description": "Finalmente descubrí cómo se reproducen los creepers, es sorprendente, asqueroso y me da algo de alergia...",
+  "item.shulespotions.mandrake_seed.description": "Esta cosa simplemente salió del césped y empezó a gritar... Aún puedo escuchar sus gritos...",
+  "item.shulespotions.butter.description": "¡Esencial en un buen desayuno!",
+
 
   "effect.shulespotions.potion_splashed": "Empapado en Poción",
   "effect.shulespotions.leech": "Sanguijuela",
@@ -109,6 +118,18 @@
   "effect.shulespotions.nether_corruption": "Corrupción del Nether",
   "effect.shulespotions.shadow_manipulation": "Manipulación de Sombras",
   "effect.shulespotions.cloning": "Clonación",
+  "effect.shulespotions.high_gravity": "Gravedad Alta",
+  "effect.shulespotions.low_gravity": "Gravedad Baja",
+  "effect.shulespotions.craft_master": "Maestro Artesano",
+  "effect.shulespotions.butter_fingers": "Dedos de Mantequilla",
+  "effect.shulespotions.fertilizer": "Fertilizante",
+  "effect.shulespotions.potion_migraine": "Migraña de Poción",
+  "effect.shulespotions.decapitated": "Decapitado",
+  "effect.shulespotions.orbital_gravity": "Gravedad Orbital",
+  "effect.shulespotions.swap": "Intercambio",
+  "effect.shulespotions.explosive_sneeze": "Estornudo Explosivo",
+  "effect.shulespotions.frost_walk": "Caminata Gélida",
+
   "effect.minecraft.absorption.description": "Otorga al usuario salud adicional que absorbe el daño antes de que su salud normal se vea afectada.",
   "effect.minecraft.bad_omen.description": "Marca al objetivo con un aura ominosa que desencadena una invasión al entrar a una aldea.",
   "effect.minecraft.blindness.description": "Reduce el rango de visión del objetivo y evita que corra.",
@@ -142,6 +163,7 @@
   "effect.minecraft.water_breathing.description": "Permite al usuario respirar bajo el agua.",
   "effect.minecraft.weakness.description": "Reduce el daño de ataque cuerpo a cuerpo del objetivo.",
   "effect.minecraft.wither.description": "Inflige daño al objetivo con el tiempo y puede matarlo.",
+
   "effect.shulespotions.comeback.description": "Devuelve al usuario a su punto de aparición.",
   "effect.shulespotions.ender_disruption.description": "Otorga al usuario la capacidad de esquivar proyectiles entrantes.",
   "effect.shulespotions.fly.description": "Otorga al usuario la capacidad de volar.",
@@ -151,9 +173,22 @@
   "effect.shulespotions.leech.description": "Permite al usuario robar salud a los objetivos al atacarlos.",
   "effect.shulespotions.oozing.description": "Provoca que el objetivo genere slimes al morir.",
   "effect.shulespotions.potion_splashed.description": "Obscurece la visión del objetivo con líquido de poción.",
-  "effect.shulespotions.shadow_manipulation.description": "Otorga al usuario la capacidad de invocar clones de sombra al golpear. Los clones persiguen al objetivo del usuario y atacan una vez antes de desaparecer.",
+  "effect.shulespotions.shadow_manipulation.description": "Otorga al usuario la capacidad de invocar clones de sombra al golpear.",
   "effect.shulespotions.stone_crusher.description": "Otorga al usuario la capacidad de romper múltiples bloques al mismo tiempo.",
   "effect.shulespotions.cloning.description": "Mediante procesos biológicos que aún no comprendo, crea una copia exacta del objetivo.",
+  "effect.shulespotions.high_gravity.description": "Manipula el campo gravitacional del objetivo, incrementándolo y haciéndolo más pesado.",
+  "effect.shulespotions.low_gravity.description": "Manipula el campo gravitacional del objetivo, reduciéndolo y haciéndolo más ligero.",
+  "effect.shulespotions.craft_master.description": "Mejora las habilidades manuales del usuario permitiéndole ahorrar materiales a la hora de craftear.",
+  "effect.shulespotions.butter_fingers.description": "Provoca que los ítems que el objetivo sostenga se resbalen de sus manos.",
+  "effect.shulespotions.fertilizer.description": "Genera un crecimiento acelerado en las plantas al rededor del usuario.",
+  "effect.shulespotions.potion_migraine.description": "Provoca que la cabeza del objetivo se llene de líquido de poción. Cuando el efecto termina su cabeza explotará.",
+  "effect.shulespotions.decapitated.description": "¿Cómo si quiera estoy vivo?",
+  "effect.shulespotions.orbital_gravity.description": "Manipula el campo gravitacional de las entidades cercanas al objetivo haciendo que orbiten a su alrededor.",
+  "effect.shulespotions.swap.description": "Intercambia la posicion del objetivo con la del usuario.",
+  "effect.shulespotions.explosive_sneeze.description": "Provoca que los estornudos del usuario liberen nitroglicerina. En palabras simples un gran BOOM!",
+  "effect.shulespotions.frost_walk.description": "Congela el agua a los pies del usuario temporalmente.",
+
+
   "effect.alexsmobs.bug_pheromones.description": "Evita que los artrópodos sean hostiles al usuario.",
   "effect.alexsmobs.clinging.description": "Permite al usuario adherirse a superficies y caminar por techos.",
   "effect.alexsmobs.fleet_footed.description": "Aumenta la velocidad del usuario mientras salta.",
@@ -175,16 +210,27 @@
   "effect.alexsmobs.power_down.description": "Causa un apagón, reduciendo drásticamente la movilidad y visión del objetivo.",
   "effect.froglins.infection.description": "Profana el cuerpo del objetivo convirtiéndolo en un asqueroso froglin zombie tras su muerte.",
 
+  "death.attack.shulespotions.migraine_explosion": "A %1$s le explotó la cabeza por una fuerte migraña",
+
   "tooltip.shulespotions.recipe_scroll": "¡Haz clic derecho en un caldero lleno para guardar la receta!",
-  "tooltip.shulespotions.spoon.wooden": "Úsala en un caldero para finalizar tu poción.",
-  "tooltip.shulespotions.spoon.wooden.info": "+40s de Duración.",
-  "tooltip.shulespotions.spoon.stone": "Aumenta la Duración 20s.",
-  "tooltip.shulespotions.spoon.iron": "Aumenta la Duración 40s.",
-  "tooltip.shulespotions.spoon.diamond": "Aumenta la Duración 1mn.",
-  "tooltip.shulespotions.spoon.bastion": "Consume el efecto más débil para asegurar el más fuerte.",
-  "tooltip.shulespotions.spoon.golden": "Duplica la Pureza y Duración.",
-  "tooltip.shulespotions.spoon.sponge": "Elimina un efecto al azar para aumentar 2 puntos de pureza.",
-  "tooltip.shulespotions.spoon.ender": "Elimina el efecto más fuerte. Evita que la poción falle.",
+
+  "tooltip.shulespotions.spoon.wooden": "Usala en un caldero para completar tu pocion!",
+
+  "tooltip.shulespotions.spoon.stone": "Aumenta la duracion en 20s",
+
+  "tooltip.shulespotions.spoon.iron": "Aumenta la duracion en 40s",
+
+  "tooltip.shulespotions.spoon.diamond": "Aumenta la duracion en 60s",
+
+  "tooltip.shulespotions.spoon.bastion": "Consume el efecto más débil para asegurar el efecto mas fuerte.",
+
+  "tooltip.shulespotions.spoon.golden": "Duplica la Pureza y Duración",
+
+  "tooltip.shulespotions.spoon.sponge": "Elimina un efecto al azar para aumentar la pureza",
+
+  "tooltip.shulespotions.spoon.ender": "Evita que la pocion falle, a cambio del efecto mas fuerte",
+
+  "tooltip.shulespotions.hold_shift": "Mantén presionado Shift para más información.",
   "tooltip.shulespotions.alchemist_monocle": "Cuando está en el inventario: Muestra las propiedades alquímicas de un ítem.",
   "tooltip.shulespotions.alchemist_monocle_tittle": "Propiedades Alquímicas",
   "tooltip.shulespotions.alchemist_monocle_purity": "Pureza: %s",
@@ -198,6 +244,7 @@
 
   "shulespotions.codex.items": "Herramientas",
   "shulespotions.screen.effect_codex.source": "Fuente: ",
+  "shulespotions.screen.effect_codex.instant": "¿Es Instantáneo?",
   "shulespotions.screen.effect_codex.category": "Categoría: ",
   "shulespotions.screen.effect_codex.beneficial": "Beneficioso",
   "shulespotions.screen.effect_codex.harmful": "Dañino",
@@ -218,7 +265,7 @@
   "shulespotions.codex.spoon": "Cuchara",
   "shulespotions.codex.item.commentary": "El Alquimista no ha dejado anotaciones sobre esto...",
   "shulespotions.codex.see_more": "Ver Más",
-  "shulespotions.codex.guide": "Alquimia Basica",
+  "shulespotions.codex.guide": "Alquimia Básica",
   "shulespotions.codex.epilogue.title": "Epílogo",
   "shulespotions.codex.epilogue": "Epílogo",
   "shulespotions.codex.epilogue.text1": "En el siguiente manuscrito, procederé a inculcarte a ti, lector, sobre el bello arte de la Alquimia. \n ¿Mi nombre? No necesitas saberlo... \n Cuando el conocimiento es el objetivo indiscutible de un escritor, no existen nominaciones ni galardones que dar. \n Por esto mismo, espero que mis saberes plasmados en estas páginas, algún día te sean de ayuda...",

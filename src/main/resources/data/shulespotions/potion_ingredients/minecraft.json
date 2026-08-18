@@ -336,7 +336,7 @@
     "duration":5,
     "stability":-10,
     "effects": {
-      "minecraft:weakness":7
+      "shulespotions:fertilizer":15
     },
     "color": "#e9dfdf"
   },
@@ -769,5 +769,82 @@
       "minecraft:night_vision": 10
     },
     "color": "#efff00"
+  },
+
+  "minecraft:ice": {
+    "stability": 10,
+    "effects": {
+      "shulespotions:frost_walk": 20
+    },
+    "color": "#9ad1fa"
+  },
+  "minecraft:packed_ice": {
+    "stability": 30,
+    "effects": {
+      "shulespotions:frost_walk": 40
+    },
+    "color": "#9ad1fa"
+  },
+  "minecraft:blue_ice": {
+    "stability": 35,
+    "effects": {
+      "shulespotions:frost_walk": 100
+    },
+    "color": "#9ad1fa"
+  },
+  "minecraft:creeper_head": {
+    "stability": -30,
+    "purity": 2,
+    "effects": {
+      "shulespotions:potion_migraine": 70
+    },
+    "color": "#3fc947"
+  },
+
+  "minecraft:anvil": {
+    "duration": 50,
+    "effects": {
+      "shulespotions:craft_master": 50
+    },
+    "color": "#4d4d4d"
+  },
+
+  "minecraft:chipped_anvil": {
+    "duration": 35,
+    "effects": {
+      "shulespotions:craft_master": 35
+    },
+    "color": "#4d4d4d"
+  },
+
+  "minecraft:damaged_anvil": {
+    "duration": 15,
+    "effects": {
+      "shulespotions:craft_master": 15
+    },
+    "color": "#4d4d4d"
+  },
+
+  "minecraft:end_rod": {
+    "duration": 50,
+    "effects": {
+      "shulespotions:orbital_gravity": 70
+    },
+    "color": "#d47ceb"
+  },
+
+  "minecraft:purpur_block": {
+    "duration": 30,
+    "effects": {
+      "shulespotions:high_gravity": 50
+    },
+    "color": "#d47ceb"
+  },
+  "minecraft:end_stone": {
+    "duration": 20,
+    "effects": {
+      "shulespotions:low_gravity": 60
+    },
+    "color": "#eaf8b9"
   }
 }
