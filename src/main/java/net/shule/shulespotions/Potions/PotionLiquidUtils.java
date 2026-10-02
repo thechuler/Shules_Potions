@@ -8,10 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.shule.shulespotions.Fluids.PotionFluidHelper;
-import net.shule.shulespotions.util.ColorUtils;
-import org.joml.Random;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,24 +18,27 @@ public class PotionLiquidUtils {
 
 
 
-    public static List<MobEffect> resolve(PotionLiquid pl) {
+    public static List<MobEffect> resolve(PotionLiquid pl, int cauldronLevel, int maxEffectCount) {
 
         Map<ResourceLocation, Integer> weights = pl.getStats().getEffectWeights();
-
         List<MobEffect> result = new ArrayList<>();
+        java.util.Random random = new java.util.Random();
 
-        Random random = new Random();
+        List<Map.Entry<ResourceLocation, Integer>> sortedEntries = new ArrayList<>(weights.entrySet());
+        sortedEntries.sort((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()));
 
-        for (Map.Entry<ResourceLocation, Integer> entry : weights.entrySet()) {
+        int limit = Math.min(sortedEntries.size(), maxEffectCount);
 
+        for (int i = 0; i < limit; i++) {
+            Map.Entry<ResourceLocation, Integer> entry = sortedEntries.get(i);
             int chance = entry.getValue();
 
             if (random.nextInt(100) < chance) {
-
                 MobEffect effect = BuiltInRegistries.MOB_EFFECT.get(entry.getKey());
-
                 if (effect != null) {
-                    result.add(effect);
+                    if (EffectLevelRegistry.getLevel(effect) <= cauldronLevel) {
+                        result.add(effect);
+                    }
                 }
             }
         }
@@ -46,33 +46,6 @@ public class PotionLiquidUtils {
         return result;
     }
 
-
-
-
-    public static int generatePotionColor(PotionLiquid potion) {
-
-        int purity = potion.getStats().getPurity();
-        int vitality = potion.getStats().getVitality() + 100;
-        int flavor = potion.getStats().getFlavor() + 100;
-        int stability = potion.getStats().getStability() + 100;
-        int power = purity + vitality;
-
-        float hue =
-                (purity * 2f +
-                        vitality * 3f +
-                        flavor * 5f +
-                        stability * 7f +
-                        power * 11f) % 360f;
-
-        float saturation = 0.6f + (vitality / 200f) * 0.4f;
-        float brightness = 0.6f + (stability / 200f) * 0.4f;
-
-        return Color.HSBtoRGB(
-                hue / 360f,
-                Math.min(saturation, 1f),
-                Math.min(brightness, 1f)
-        );
-    }
 
     private static float clamp(float value, float min, float max) {
         return Math.max(min, Math.min(max, value));
@@ -93,9 +66,9 @@ public class PotionLiquidUtils {
     public static PotionLiquid getPotionLiquidFromStack(ItemStack stack) {
 
         CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("SPPotionFluid")) return null;
+        if (tag == null || !tag.contains(net.shule.shulespotions.Items.custom.PotionLiquidTankItem.FLUID_TAG)) return null;
 
-        CompoundTag fluidTag = tag.getCompound("SPPotionFluid");
+        CompoundTag fluidTag = tag.getCompound(net.shule.shulespotions.Items.custom.PotionLiquidTankItem.FLUID_TAG);
 
         FluidStack fluid = FluidStack.loadFluidStackFromNBT(fluidTag);
 

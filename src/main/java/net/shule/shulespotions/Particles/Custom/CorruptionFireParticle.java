@@ -22,7 +22,7 @@ public class CorruptionFireParticle extends TextureSheetParticle {
         this.bCol = 1.0f;
 
         this.lifetime = 20 + random.nextInt(20);
-        this.gravity = -0.05f; // Makes it float upwards
+        this.gravity = -0.05f;
         this.friction = 0.96f;
         this.quadSize *= 1.5f;
 
@@ -33,7 +33,7 @@ public class CorruptionFireParticle extends TextureSheetParticle {
     public void tick() {
         super.tick();
         this.setSpriteFromAge(this.sprites);
-        this.yd += 0.005; // Accelerate upwards slightly
+        this.yd += 0.005;
         this.alpha = 1.0f - ((float) this.age / this.lifetime);
     }
 

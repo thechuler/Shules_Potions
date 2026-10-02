@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraftforge.network.PacketDistributor;
 import net.shule.shulespotions.Messages.ModMessages;
-import net.shule.shulespotions.Messages.SyncButterFingersPacket;
+import net.shule.shulespotions.Messages.Custom.SyncButterFingersPacket;
 
 public class ButterFingersEffect extends MobEffect {
     public ButterFingersEffect(MobEffectCategory pCategory, int pColor) {

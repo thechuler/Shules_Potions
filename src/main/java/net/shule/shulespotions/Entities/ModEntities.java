@@ -14,6 +14,10 @@ import net.shule.shulespotions.Entities.Projectile.PotionSplashProjectile;
 import net.shule.shulespotions.Entities.Projectile.ThrowablePotionBottleProjectile;
 import net.shule.shulespotions.Entities.entity.PlayerCloneEntity;
 import net.shule.shulespotions.Entities.entity.ShadowClonEntity;
+import net.shule.shulespotions.Entities.entity.PlayerArmEntity;
+import net.shule.shulespotions.Entities.entity.PlayerBodyPartEntity;
+import net.shule.shulespotions.Entities.entity.PlayerHeadEntity;
+import net.shule.shulespotions.Entities.entity.PlayerLegEntity;
 import net.shule.shulespotions.ShulesPotions;
 
 import java.util.function.Supplier;
@@ -66,6 +70,33 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("spinning_block"));
 
+    public static final RegistryObject<EntityType<PlayerHeadEntity>> PLAYER_HEAD =
+            ENTITIES.register("player_head",
+                    () -> EntityType.Builder
+                            .<PlayerHeadEntity>of(PlayerHeadEntity::new, MobCategory.MISC)
+                            .sized(0.5F, 0.5F)
+                            .clientTrackingRange(10)
+                            .updateInterval(1)
+                            .build("player_head"));
+
+    public static final RegistryObject<EntityType<PlayerArmEntity>> PLAYER_ARM =
+            ENTITIES.register("player_arm",
+                    () -> EntityType.Builder
+                            .<PlayerArmEntity>of(PlayerArmEntity::new, MobCategory.MISC)
+                            .sized(0.5F, 0.3F)
+                            .clientTrackingRange(10)
+                            .updateInterval(1)
+                            .build("player_arm"));
+
+    public static final RegistryObject<EntityType<PlayerLegEntity>> PLAYER_LEG =
+            ENTITIES.register("player_leg",
+                    () -> EntityType.Builder
+                            .<PlayerLegEntity>of(PlayerLegEntity::new, MobCategory.MISC)
+                            .sized(0.5F, 0.3F)
+                            .clientTrackingRange(10)
+                            .updateInterval(1)
+                            .build("player_leg"));
+
 
     @SubscribeEvent
     public static void init(FMLCommonSetupEvent event) {
@@ -81,6 +112,9 @@ public class ModEntities {
     public static void registerAttributes(EntityAttributeCreationEvent event) {
        event.put(SHADOW_CLONE.get(), ShadowClonEntity.createAttributes().build());
        event.put(PLAYER_CLONE.get(), PlayerCloneEntity.createAttributes().build());
+       event.put(PLAYER_HEAD.get(), PlayerBodyPartEntity.createAttributes().build());
+       event.put(PLAYER_ARM.get(), PlayerBodyPartEntity.createAttributes().build());
+       event.put(PLAYER_LEG.get(), PlayerBodyPartEntity.createAttributes().build());
     //    event.put(NITRO_FLY.get(), NitroMoscaEntity.createAttributes().build());
     }
 

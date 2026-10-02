@@ -4,11 +4,13 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.shule.shulespotions.Blocks.ModBlocks;
 import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.ShulesPotions;
 
@@ -38,7 +40,7 @@ public class ProviderItemModel extends ItemModelProvider {
         simpleItem(ModItems.PESTLE);
         simpleItem(ModItems.GHAST_HEART);
         simpleItem(ModItems.ROTTEN_APPLE);
-        simpleItem(ModItems.ALCHEMIST_MONOCLE);
+      //  simpleItem(ModItems.ALCHEMIST_MONOCLE);
         simpleItem(ModItems.MANDRAKE_SEED);
         simpleItem(ModItems.BASTION_FRAGMENT);
         simpleItem(ModItems.BAT_EAR);
@@ -46,7 +48,17 @@ public class ProviderItemModel extends ItemModelProvider {
         simpleItem(ModItems.FRAGMENTED_ENDER_PEARL);
         simpleItem(ModItems.BUTTER);
         simpleItem(ModItems.NITRO_SPORES);
+        simpleItem(ModItems.CRUSHED_TOTEM);
+        simpleItem(ModItems.DOLPHIN_FIN);
+        simpleItem(ModItems.FERMENTED_CARROT);
 
+        simpleItem(ModItems.COMMON_LOOT_BUNLDE);
+        simpleItem(ModItems.UNCOMMON_LOOT_BUNLDE);
+        simpleItem(ModItems.INUSUAL_LOOT_BUNLDE);
+        simpleItem(ModItems.RARE_LOOT_BUNLDE);
+        simpleItem(ModItems.EXOTIC_LOOT_BUNLDE);
+        simpleItem(ModItems.ANCIENT_LOOT_BUNLDE);
+        simpleItem(ModItems.ANCIENT_KEY);
 
     }
 
@@ -58,16 +70,6 @@ public class ProviderItemModel extends ItemModelProvider {
                 .texture("layer0",
                          ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID, "item/" + item.getId().getPath()));
     }
-
-
-    /*
-    private ItemModelBuilder recipeSheetItem(RegistryObject<Item> item) {
-        return withExistingParent(item.getId().getPath(),
-                mcLoc("item/generated"))
-                .texture("layer0", modLoc("item/recipe_sheet_base"))
-                .texture("layer1", modLoc("item/recipe_sheet_overlay"));
-    }
-*/
 
 
 

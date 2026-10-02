@@ -1,2 +1,3 @@
-// 1.20.1	2026-08-16T23:58:44.7736976	Tags for minecraft:block mod id shulespotions
-0803a3deb4a9aa9274cf1f8d8736f51af8db5a66 data/minecraft/tags/blocks/mineable/pickaxe.json
+// 1.20.1	2026-09-30T10:19:26.0992921	Tags for minecraft:block mod id shulespotions
+466684ede02e2517731b7f4e677f920ff3b39148 data/minecraft/tags/blocks/mineable/pickaxe.json
+b5370e2a0f8eaf2436c62ba390045bdbf7ae1b0f data/minecraft/tags/blocks/needs_iron_tool.json

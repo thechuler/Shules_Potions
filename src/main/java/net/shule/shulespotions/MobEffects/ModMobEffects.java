@@ -89,6 +89,9 @@ public class ModMobEffects {
     public static RegistryObject<MobEffect> FROST_WALK = MOB_EFFECTS.register("frost_walk",
             ()-> new FrostWalkEffect(MobEffectCategory.BENEFICIAL,0x85e9f5));
 
+    public static RegistryObject<MobEffect> BODY_BREAK_DOWN = MOB_EFFECTS.register("body_break_down",
+            () -> new BodyBreakDownEffect(MobEffectCategory.HARMFUL, 0x8a2be2));
+
 
 
     public static void register(IEventBus bus) {

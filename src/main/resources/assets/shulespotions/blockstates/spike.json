@@ -1,0 +1,17 @@
+{
+  "variants": {
+    "facing=up,has_potion=false": { "model": "shulespotions:block/spike_base" },
+    "facing=down,has_potion=false": { "model": "shulespotions:block/spike_base", "x": 180 },
+    "facing=north,has_potion=false": { "model": "shulespotions:block/spike_base", "x": 270 },
+    "facing=south,has_potion=false": { "model": "shulespotions:block/spike_base", "x": 90 },
+    "facing=west,has_potion=false": { "model": "shulespotions:block/spike_base", "x": 90, "y": 270 },
+    "facing=east,has_potion=false": { "model": "shulespotions:block/spike_base", "x": 90, "y": 90 },
+
+    "facing=up,has_potion=true": { "model": "shulespotions:block/spike" },
+    "facing=down,has_potion=true": { "model": "shulespotions:block/spike", "x": 180 },
+    "facing=north,has_potion=true": { "model": "shulespotions:block/spike", "x": 270 },
+    "facing=south,has_potion=true": { "model": "shulespotions:block/spike", "x": 90 },
+    "facing=west,has_potion=true": { "model": "shulespotions:block/spike", "x": 90, "y": 270 },
+    "facing=east,has_potion=true": { "model": "shulespotions:block/spike", "x": 90, "y": 90 }
+  }
+}

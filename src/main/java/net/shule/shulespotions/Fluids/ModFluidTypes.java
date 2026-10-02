@@ -24,6 +24,10 @@ public class ModFluidTypes {
             FluidType.Properties.create().lightLevel(2).density(15).viscosity(5).sound(SoundAction.get("drink"),
                     SoundEvents.HONEY_DRINK));
 
+    public static final RegistryObject<FluidType> UNFINISHED_POTION_FLUID_TYPE = register("unfinished_potion_fluid",
+            FluidType.Properties.create().lightLevel(2).density(15).viscosity(5).sound(SoundAction.get("drink"),
+                    SoundEvents.HONEY_DRINK));
+
 
 
     private static RegistryObject<FluidType> register(String name, FluidType.Properties properties) {

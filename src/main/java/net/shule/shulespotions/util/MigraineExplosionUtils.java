@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 
 import net.shule.shulespotions.MobEffects.ModMobEffects;
 import net.shule.shulespotions.Messages.ModMessages;
-import net.shule.shulespotions.Messages.SyncPotionSplashColorPacket;
+import net.shule.shulespotions.Messages.Custom.SyncPotionSplashColorPacket;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;

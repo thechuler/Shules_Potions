@@ -3,11 +3,11 @@ package net.shule.shulespotions.Items.custom;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -15,8 +15,11 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
@@ -30,6 +33,7 @@ import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
 import net.shule.shulespotions.Fluids.PotionFluidHelper;
 import net.shule.shulespotions.Potions.PotionLiquid;
 import net.shule.shulespotions.Potions.PotionLiquidUtils;
+import net.shule.shulespotions.ShulesPotions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,10 +41,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class PotionLiquidBottleItem extends Item {
-
-    private static final String FLUID_TAG = "StoredFluid";
-    private static final String EFFECTS_TAG = "ResolvedEffects";
+public class PotionLiquidBottleItem extends PotionLiquidTankItem {
 
     private final int useDuration;
     public final int capacity;
@@ -48,118 +49,18 @@ public class PotionLiquidBottleItem extends Item {
     public PotionLiquidBottleItem(Properties properties,
                                   int useDuration,
                                   int capacity) {
-
         super(properties);
-
         this.useDuration = useDuration;
         this.capacity = capacity;
-
-    }
-
-    /*
-     *
-     * =========================================
-     * FLUID STORAGE
-     * =========================================
-     *
-     */
-
-    public void setFluid(ItemStack stack, FluidStack fluid) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.put(FLUID_TAG, fluid.writeToNBT(new CompoundTag()));
-    }
-
-    public FluidStack getFluid(ItemStack stack) {
-
-        CompoundTag tag = stack.getTag();
-
-        if (tag == null || !tag.contains(FLUID_TAG)) {
-            return FluidStack.EMPTY;
-        }
-
-        return FluidStack.loadFluidStackFromNBT(
-                tag.getCompound(FLUID_TAG)
-        );
-    }
-
-    public boolean hasFluid(ItemStack stack) {
-        return !getFluid(stack).isEmpty();
-    }
-
-    public void removeFluid(ItemStack stack) {
-
-        CompoundTag tag = stack.getTag();
-
-        if (tag != null) {
-            tag.remove(FLUID_TAG);
-            tag.remove(EFFECTS_TAG);
-        }
-    }
-
-    /*
-     *
-     * =========================================
-     * RESOLVED EFFECTS
-     * =========================================
-     *
-     */
-
-    public void setResolvedEffects(ItemStack stack,
-                                   List<MobEffect> effects) {
-
-        CompoundTag tag = stack.getOrCreateTag();
-
-        ListTag list = new ListTag();
-
-        for (MobEffect effect : effects) {
-
-            CompoundTag effectTag = new CompoundTag();
-
-            effectTag.putString(
-                    "Id",
-                    BuiltInRegistries.MOB_EFFECT
-                            .getKey(effect)
-                            .toString()
-            );
-
-            list.add(effectTag);
-        }
-
-        tag.put(EFFECTS_TAG, list);
     }
 
     public List<MobEffect> getResolvedEffects(ItemStack stack) {
-
-        List<MobEffect> effects = new ArrayList<>();
-
-        CompoundTag tag = stack.getTag();
-
-        if (tag == null || !tag.contains(EFFECTS_TAG)) {
-            return effects;
+        FluidStack fluid = getFluid(stack);
+        if (fluid.isEmpty()) {
+            return new ArrayList<>();
         }
-
-        ListTag list =
-                tag.getList(EFFECTS_TAG, Tag.TAG_COMPOUND);
-
-        for (int i = 0; i < list.size(); i++) {
-
-            CompoundTag effectTag =
-                    list.getCompound(i);
-
-            ResourceLocation id =
-                    ResourceLocation.parse(
-                            effectTag.getString("Id")
-                    );
-
-            MobEffect effect =
-                    BuiltInRegistries.MOB_EFFECT.get(id);
-
-            if (effect != null) {
-                effects.add(effect);
-            }
-        }
-
-        return effects;
+        PotionLiquid pl = PotionFluidHelper.getPotionLiquid(fluid);
+        return pl.getResolvedEffects();
     }
 
     /*
@@ -215,7 +116,13 @@ public class PotionLiquidBottleItem extends Item {
         applyPotion(stack, entity, entity, entity);
     }
 
-    public void applyPotion(ItemStack stack, @Nullable net.minecraft.world.entity.Entity pSource, @Nullable net.minecraft.world.entity.Entity pIndirectSource, LivingEntity entity) {
+    public static final ResourceKey<DamageType> ALCHEMY_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID, "alchemy_damage"));
+
+    public void applyPotion(ItemStack stack, @Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity entity) {
+        applyPotion(stack, pSource, pIndirectSource, entity, false);
+    }
+
+    public void applyPotion(ItemStack stack, @Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity entity, boolean onlyIfAbsent) {
         FluidStack fluid = getFluid(stack);
         PotionLiquid pl = PotionFluidHelper.getPotionLiquid(fluid);
 
@@ -225,7 +132,7 @@ public class PotionLiquidBottleItem extends Item {
 
         List<MobEffect> effects = getResolvedEffects(stack);
 
-        int amplifier = Math.max(pl.getStats().getPurity(), 1);
+        int amplifier = Math.max(0, pl.getStats().getPurity() - 1);
         for (MobEffect effect : effects) {
 
             if (effect.isInstantenous()) {
@@ -241,13 +148,15 @@ public class PotionLiquidBottleItem extends Item {
             } else {
                 
                 if (pl.getStats().getDurationSeconds() > 0) {
-                    entity.addEffect(
-                            new MobEffectInstance(
-                                    effect,
-                                    pl.getStats().getDurationTicks(),
-                                    amplifier
-                            )
-                    );
+                    if (!onlyIfAbsent || !entity.hasEffect(effect)) {
+                        entity.addEffect(
+                                new MobEffectInstance(
+                                        effect,
+                                        pl.getStats().getDurationTicks(),
+                                        amplifier
+                                )
+                        );
+                    }
                 }
             }
         }
@@ -256,11 +165,13 @@ public class PotionLiquidBottleItem extends Item {
         int vitality = pl.getStats().getVitality();
 
         float healthChange = (vitality / 100.0f) * entity.getMaxHealth();
-        float newHealth = entity.getHealth() + healthChange;
-
-        newHealth = Math.max(0, Math.min(newHealth, entity.getMaxHealth()));
-
-        entity.setHealth(newHealth);
+        
+        if (healthChange > 0) {
+            entity.heal(healthChange);
+        } else if (healthChange < 0) {
+            DamageSource source = entity.damageSources().magic();
+            entity.hurt(source, -healthChange);
+        }
 
 
         if (entity instanceof Player player) {
@@ -362,12 +273,6 @@ public class PotionLiquidBottleItem extends Item {
             copied.setAmount(Math.min(capacity, cauldronFluid.getAmount()));
 
             setFluid(stack, copied);
-
-            PotionLiquid pl = PotionFluidHelper.getPotionLiquid(copied);
-
-            List<MobEffect> effects = cauldron.getEffects();
-
-            setResolvedEffects(stack, effects);
 
             cauldron.getTank().drain(copied.getAmount(), IFluidHandler.FluidAction.EXECUTE);
 
@@ -501,11 +406,19 @@ public class PotionLiquidBottleItem extends Item {
                 }
 
 
+                int purity = pl.getStats().getPurity();
+                MutableComponent effectComp;
+                if (purity > 1) {
+                    Component levelComp = purity <= 10
+                            ? Component.translatable("enchantment.level." + purity)
+                            : Component.literal(String.valueOf(purity));
+                    effectComp = Component.translatable("potion.withAmplifier", effect.getDisplayName(), levelComp);
+                } else {
+                    effectComp = effect.getDisplayName().copy();
+                }
+
                 line.append(
-                        Component.literal(
-                                effect.getDisplayName()
-                                        .getString()
-                        ).withStyle(style ->
+                        effectComp.withStyle(style ->
                                 style.withColor(
                                         effect.getColor()
                                 )

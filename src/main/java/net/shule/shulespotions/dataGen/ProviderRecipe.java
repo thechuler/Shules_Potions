@@ -8,6 +8,10 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 import net.shule.shulespotions.Blocks.ModBlocks;
 import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.Recipes.MortarRecipeBuilder;
@@ -26,7 +30,36 @@ public class ProviderRecipe extends RecipeProvider {
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 
+        simpleCookingRecipe(consumer, "smelting",
+                RecipeSerializer.SMELTING_RECIPE,
+                200,
+                ModBlocks.METEORITE_STONE.get(),
+                ModBlocks.METEORITE_STONE_BURNED.get(),
+                0.1f);
 
+        simpleCookingRecipe(consumer,
+                "blasting",
+                RecipeSerializer.BLASTING_RECIPE,
+                100,
+                ModBlocks.METEORITE_STONE.get(),
+                ModBlocks.METEORITE_STONE_BURNED.get(),
+                0.1f);
+
+        simpleCookingRecipe(consumer,
+                "smelting",
+                RecipeSerializer.SMELTING_RECIPE,
+                200,
+                ModBlocks.METEORITE_STONE_BURNED.get(),
+                ModBlocks.METEORITE_STONE_PETRIFIED.get(),
+                0.2f);
+
+        simpleCookingRecipe(consumer,
+                "blasting",
+                RecipeSerializer.BLASTING_RECIPE,
+                100,
+                ModBlocks.METEORITE_STONE_BURNED.get(),
+                ModBlocks.METEORITE_STONE_PETRIFIED.get(),
+                0.2f);
 
 
 
@@ -46,6 +79,15 @@ public class ProviderRecipe extends RecipeProvider {
                 .define('P', ModItems.LARGE_POTION_BOTTLE.get())
                 .define('C', Items.COPPER_BLOCK)
                 .unlockedBy("has_potion_bottle", has(ModItems.SMALL_POTION_BOTTLE.get()))
+                .save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModBlocks.METEOR_CAULDRON.get().asItem())
+                .pattern("M M")
+                .pattern("MPM")
+                .pattern("MMM")
+                .define('P', ModItems.LARGE_POTION_BOTTLE.get())
+                .define('M', ModBlocks.METEORITE_STONE.get())
+                .unlockedBy("has_large_potion_bottle", has(ModItems.LARGE_POTION_BOTTLE.get()))
                 .save(consumer);
 
 
@@ -79,14 +121,7 @@ public class ProviderRecipe extends RecipeProvider {
                 .unlockedBy("has_wooden_spoon", has(ModItems.WOODEN_SPOON.get()))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModItems.ONYX.get().asItem())
-                .pattern("BBB")
-                .pattern("BDB")
-                .pattern("BBB")
-                .define('B', ModItems.BASTION_FRAGMENT.get())
-                .define('D', Items.DIAMOND)
-                .unlockedBy("has_bastion_fragment", has(ModItems.BASTION_FRAGMENT.get()))
-                .save(consumer);
+
 
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModItems.IRON_SPOON.get())
@@ -125,13 +160,12 @@ public class ProviderRecipe extends RecipeProvider {
                 .unlockedBy("has_diamond_spoon", has(ModItems.DIAMOND_SPOON.get()))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModItems.ALCHEMIST_MONOCLE.get())
-                .pattern(" G ")
-                .pattern("GCG")
-                .pattern(" G ")
-                .define('G', Items.GOLD_INGOT)
-                .define('C', Items.GLASS_PANE)
-                .unlockedBy("has_diamond_spoon", has(Items.GOLD_INGOT))
+        ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModBlocks.SPIKE.get().asItem())
+                .pattern(" N ")
+                .pattern("NIN")
+                .define('N', Items.IRON_NUGGET)
+                .define('I', Items.IRON_INGOT)
+                .unlockedBy("has_iron", has(Items.IRON_INGOT))
                 .save(consumer);
 
 
@@ -235,13 +269,13 @@ public class ProviderRecipe extends RecipeProvider {
                 .addIngredient(Items.IRON_INGOT)
                 .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"iron_dust_recipe"));
 
-        MortarRecipeBuilder.mortar(ModItems.AMETHYST_DUST.get(),3,2,0.5f,"#b38ef3")
+        MortarRecipeBuilder.mortar(ModItems.AMETHYST_DUST.get(),3,3,0.5f,"#b38ef3")
                 .addIngredient(Items.AMETHYST_SHARD)
                 .addIngredient(Items.AMETHYST_SHARD)
                 .addIngredient(Items.AMETHYST_SHARD)
                 .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"amethyst_dust_recipe"));
 
-        MortarRecipeBuilder.mortar(ModItems.NETHERITE_DUST.get(),8,6,0.5f,"#3b393b")
+        MortarRecipeBuilder.mortar(ModItems.NETHERITE_DUST.get(),8,3,0.5f,"#3b393b")
                 .addIngredient(Items.NETHERITE_INGOT)
                 .addIngredient(Items.NETHERITE_INGOT)
                 .addIngredient(Items.NETHERITE_INGOT)
@@ -266,15 +300,24 @@ public class ProviderRecipe extends RecipeProvider {
                 .addIngredient(Items.GOLD_INGOT)
                 .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"gold_dust_recipe"));
 
-        MortarRecipeBuilder.mortar(ModItems.EMERALD_DUST.get(),3,2,0.5f,"#00fd21")
+        MortarRecipeBuilder.mortar(ModItems.EMERALD_DUST.get(),3,3,0.5f,"#00fd21")
                 .addIngredient(Items.EMERALD)
                 .addIngredient(Items.EMERALD)
                 .addIngredient(Items.EMERALD)
                 .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"emerald_dust_recipe"));
 
+        MortarRecipeBuilder.mortar(ModItems.CRUSHED_TOTEM.get(),4,3,0.5f,"#eee482")
+                .addIngredient(Items.TOTEM_OF_UNDYING)
+                .addIngredient(Items.EMERALD)
+                .addIngredient(Items.GOLD_INGOT)
+                .save(consumer,ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,"crushed_totem_recipe"));
 
 
     }
-
+    protected static void simpleCookingRecipe(Consumer<FinishedRecipe> consumer, String cookingMethod, RecipeSerializer<? extends AbstractCookingRecipe> serializer, int cookingTime, ItemLike material, ItemLike result, float experience) {
+        SimpleCookingRecipeBuilder.generic(Ingredient.of(material),RecipeCategory.BUILDING_BLOCKS, result, experience, cookingTime, serializer)
+                .unlockedBy(getHasName(material), has(material))
+                .save(consumer, ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID, getItemName(result) + "_from_" + cookingMethod));
+    }
 
 }

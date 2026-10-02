@@ -13,7 +13,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.shule.shulespotions.Entities.ModEntities;
 import net.shule.shulespotions.Entities.entity.PlayerCloneEntity;
 import net.shule.shulespotions.Messages.ModMessages;
-import net.shule.shulespotions.Messages.SyncCloneStatusPacket;
+import net.shule.shulespotions.Messages.Custom.SyncCloneStatusPacket;
 import net.shule.shulespotions.Particles.ModParticles;
 import org.jetbrains.annotations.Nullable;
 

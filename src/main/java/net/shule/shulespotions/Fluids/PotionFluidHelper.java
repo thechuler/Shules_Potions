@@ -6,7 +6,7 @@ import net.shule.shulespotions.Potions.PotionLiquid;
 
 public class PotionFluidHelper {
 
-    private static final String TAG_KEY = "PotionLiquid";
+    public static final String TAG_KEY = "PotionFluidData";
 
     public static FluidStack withPotionLiquid(FluidStack stack, PotionLiquid pl) {
         CompoundTag tag = stack.getOrCreateTag();

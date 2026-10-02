@@ -21,11 +21,21 @@ public class ModFluids {
     public static final RegistryObject<FlowingFluid> FLOWING_POTION_FLUID = FLUIDS.register("flowing_potion_fluid",
             () -> new ForgeFlowingFluid.Flowing(ModFluids.POTION_FLUID_PROPERTIES));
 
+    public static final RegistryObject<FlowingFluid> SOURCE_UNFINISHED_POTION_FLUID = FLUIDS.register("unfinished_potion_fluid",
+            () -> new ForgeFlowingFluid.Source(ModFluids.UNFINISHED_POTION_FLUID_PROPERTIES));
+
+    public static final RegistryObject<FlowingFluid> FLOWING_UNFINISHED_POTION_FLUID = FLUIDS.register("flowing_unfinished_potion_fluid",
+            () -> new ForgeFlowingFluid.Flowing(ModFluids.UNFINISHED_POTION_FLUID_PROPERTIES));
+
 
     public static final ForgeFlowingFluid.Properties POTION_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
             ModFluidTypes.POTION_FLUID_TYPE, SOURCE_POTION_FLUID, FLOWING_POTION_FLUID)
             .slopeFindDistance(2).levelDecreasePerBlock(2).block(ModBlocks.POTION_FLUID_BLOCK)
             .bucket(ModItems.POTION_BARREL);
+            
+    public static final ForgeFlowingFluid.Properties UNFINISHED_POTION_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
+            ModFluidTypes.UNFINISHED_POTION_FLUID_TYPE, SOURCE_UNFINISHED_POTION_FLUID, FLOWING_UNFINISHED_POTION_FLUID)
+            .slopeFindDistance(2).levelDecreasePerBlock(2).block(ModBlocks.UNFINISHED_POTION_FLUID_BLOCK);
 
 
     public static void register(IEventBus eventBus) {

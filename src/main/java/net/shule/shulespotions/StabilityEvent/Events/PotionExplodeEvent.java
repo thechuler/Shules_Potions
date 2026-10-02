@@ -2,7 +2,6 @@ package net.shule.shulespotions.StabilityEvent.Events;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -25,16 +24,13 @@ import net.shule.shulespotions.Blocks.ModBlocks;
 import net.shule.shulespotions.Entities.ModEntities;
 import net.shule.shulespotions.Entities.Projectile.PotionSplashProjectile;
 import net.shule.shulespotions.Messages.ModMessages;
-import net.shule.shulespotions.Messages.SyncPotionSplashColorPacket;
+import net.shule.shulespotions.Messages.Custom.SyncPotionSplashColorPacket;
 import net.shule.shulespotions.MobEffects.ModMobEffects;
-import net.shule.shulespotions.Particles.ModParticles;
 import net.shule.shulespotions.StabilityEvent.StabilityEvent;
 import net.shule.shulespotions.util.CauldronActions.CauldronContext;
-import net.shule.shulespotions.util.ColorUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class PotionExplodeEvent implements StabilityEvent {
     @Override

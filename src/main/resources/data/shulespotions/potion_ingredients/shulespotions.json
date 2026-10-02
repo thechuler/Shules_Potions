@@ -1,144 +1,169 @@
 {
+
+  "shulespotions:crushed_totem": {
+    "color": "#eee60f",
+    "effects": {
+      "minecraft:bad_omen": 50,
+      "minecraft:hero_of_the_village": 50
+    }
+  },
+
+  "shulespotions:rotten_carrot": {
+    "stability": -20,
+    "vitality": -2,
+    "flavor": -3,
+    "color": "#4a693a",
+    "effects": {
+      "minecraft:bad_omen": 100
+    }
+  },
+
+
+  "shulespotions:onyx": {
+    "stability": 35,
+    "color": "#1e1e1e",
+    "effects": {
+      "shulespotions:shadow_manipulation": 100
+    }
+  },
+
+  "shulespotions:dolphin_fin": {
+    "stability": -20,
+    "duration": 30,
+    "flavor": 5,
+    "effects": {
+      "minecraft:dolphins_grace": 100
+    },
+    "color": "#9ad1fa"
+  },
+
+  "shulespotions:fermented_carrot": {
+    "flavor": -4,
+    "vitality": 5,
+    "effects": {
+      "minecraft:invisibility": 100
+    },
+    "color": "#da6100"
+  },
+
+  "shulespotions:relic_of_instability": {
+    "effects": {
+      "shulespotions:body_break_down": 100
+    },
+    "color": "#ff9000"
+  },
+
+
   "shulespotions:emerald_dust": {
-    "stability": -30,
+    "stability": 10,
     "color": "#009613",
     "effects": {
-      "minecraft:hero_of_the_village": -30,
-      "minecraft:luck": -20
+      "minecraft:luck": 100
     }
   },
+
   "shulespotions:iron_dust": {
-    "stability": -30,
     "color": "#e6ba7e",
     "effects": {
-      "minecraft:weakness": -30
+      "minecraft:weakness": 40
     }
   },
+
   "shulespotions:amethyst_dust": {
     "stability": -30,
-    "flavor": -20,
+    "flavor": -2,
     "color": "#da3fd5",
     "effects": {
-      "minecraft:haste": -30,
-      "minecraft:speed": -20
+      "minecraft:haste": 20,
+      "minecraft:speed": 20
     }
   },
   "shulespotions:gold_dust": {
-    "stability": -30,
-    "color": "#eee60f",
-    "effects": {
-      "minecraft:blindness": -30,
-      "minecraft:glowing": -10
-    }
+    "stability": 30,
+    "duration": 35,
+    "color": "#eee60f"
   },
   "shulespotions:copper_dust": {
-    "stability": -30,
+    "stability": -40,
     "color": "#e97e52",
     "effects": {
-      "minecraft:poison": -30,
-      "minecraft:nausea": -20
+      "minecraft:poison": 30,
+      "minecraft:blindness": 30
     }
   },
+
   "shulespotions:diamond_dust": {
     "stability": -30,
     "color": "#52e9e9",
     "effects": {
-      "minecraft:levitation": -30,
-      "minecraft:jump_boost": -20,
-      "minecraft:bad_luck": -10
+      "minecraft:mining_fatigue": 30,
+      "shulespotions:stone_crusher": 50
     }
   },
   "shulespotions:crushed_eye": {
     "stability": -30,
     "color": "#80170c",
     "effects": {
-      "minecraft:hunger": -30,
-      "minecraft:wither": -20,
-      "minecraft:darkness": -10
+      "minecraft:blindness": 40,
+      "minecraft:hunger": 40
     }
   },
+
   "shulespotions:netherite_dust": {
-    "stability": -40,
-    "color": "#80170c",
-    "effects": {
-      "minecraft:hunger": -50,
-      "minecraft:wither": -50,
-      "minecraft:darkness": -50,
-      "minecraft:blindness": -50,
-      "minecraft:nausea": -50,
-      "minecraft:poison": -50,
-      "minecraft:weakness": -50
-    }
+    "stability": 40,
+    "purity": 1,
+    "duration":60,
+    "vitality": 5,
+    "color": "#80170c"
   },
   "shulespotions:mandrake_seed": {
-    "purity": 2,
-    "vitality": 20,
+    "vitality": 2,
     "stability": -30,
     "color": "#e67229",
     "effects": {
-      "shulespotions:fertilizer": 60
+      "shulespotions:fertilizer": 100
     }
   },
   "shulespotions:ghast_heart": {
-    "purity": 1,
-    "vitality": 30,
+    "vitality": -5,
     "stability": -50,
     "color": "#393939",
     "effects": {
-      "shulespotions:instability": 20,
-      "minecraft:absorption": 30,
-      "minecraft:strength": 10,
-      "minecraft:slowness": 10,
-      "shulespotions:nether_corruption": 20
+      "shulespotions:fly": 20,
+      "shulespotions:nether_corruption": 100
     }
   },
-  "shulespotions:onyx": {
-    "stability": -50,
-    "color": "#1e1e1e",
-    "effects": {
-      "shulespotions:shadow_manipulation": 40,
-      "minecraft:darkness": 10,
-      "minecraft:blindness": 10
-    }
-  },
+
   "shulespotions:bastion_fragment": {
     "stability": -10,
     "color": "#1e1e1e",
     "effects": {
-      "shulespotions:nether_corruption": 5
+      "shulespotions:nether_corruption": 100
     }
   },
   "shulespotions:rotten_apple": {
     "stability": -20,
-    "vitality": -30,
-    "flavor": -30,
+    "vitality": -3,
+    "flavor": -3,
     "color": "#4a693a",
     "effects": {
-      "shulespotions:infested": 20
+      "shulespotions:infested": 100
     }
   },
-  "shulespotions:rotten_carrot": {
-    "stability": -25,
-    "vitality": -20,
-    "flavor": -35,
-    "color": "#4a693a",
-    "effects": {
-      "minecraft:bad_omen": 20
-    }
-  },
+
   "shulespotions:rotten_melon_slice": {
     "stability": -20,
-    "vitality": -20,
-    "flavor": -20,
+    "vitality": -2,
+    "flavor": -2,
     "color": "#4a693a",
     "effects": {
-      "shulespotions:oozing": 20
+      "shulespotions:oozing": 100
     }
   },
   "shulespotions:rotten_fish": {
     "stability": -20,
-    "vitality": -20,
-    "flavor": -20,
+    "vitality": -2,
+    "flavor": -2,
     "color": "#4a693a",
     "effects": {
       "minecraft:nausea": 20,
@@ -146,41 +171,62 @@
     }
   },
   "shulespotions:allay_essence": {
-    "stability": 15,
-    "purity": 1,
+    "stability": 20,
     "color": "#18caf5",
     "effects": {
-      "shulespotions:comeback": 25,
-      "minecraft:invisibility": 10
+      "shulespotions:comeback": 100
     }
   },
   "shulespotions:bat_ear": {
-    "stability": -5,
-    "vitality": -10,
+    "stability": -3,
+    "vitality": 3,
     "color": "#373737",
     "effects": {
-      "shulespotions:leech": 25
+      "shulespotions:leech": 100
     }
   },
   "shulespotions:fragmented_ender_pearl": {
     "color": "#105e51",
     "effects": {
-      "shulespotions:swap": 30
+      "shulespotions:swap": 100
     }
   },
   "shulespotions:butter": {
     "color": "#fff880",
-    "flavor": 30,
+    "flavor": 7,
     "effects": {
-      "shulespotions:butter_fingers": 60
+      "shulespotions:butter_fingers": 100
     }
   },
   "shulespotions:nitro_spores": {
     "color": "#3fc947",
-    "purity": -1,
     "stability": -20,
     "effects": {
-      "shulespotions:explosive_sneeze": 65
+      "shulespotions:explosive_sneeze": 100
+    }
+  },
+
+  "shulespotions:meteorite_stone": {
+    "color": "#353759",
+    "stability": 20,
+    "effects": {
+      "shulespotions:orbital_gravity": 100
+    }
+  },
+
+  "shulespotions:meteorite_stone_burned": {
+    "color": "#353759",
+    "stability": 20,
+    "effects": {
+      "shulespotions:low_gravity": 100
+    }
+  },
+
+  "shulespotions:meteorite_stone_petrified": {
+    "color": "#353759",
+    "stability": 20,
+    "effects": {
+      "shulespotions:high_gravity": 100
     }
   }
 }

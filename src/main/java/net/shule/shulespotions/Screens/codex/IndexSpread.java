@@ -43,8 +43,11 @@ public class IndexSpread extends MenuSpread {
                     ModItems.PESTLE.get(),
                     ModBlocks.COPPER_CAULDRON.get().asItem(),
                     ModBlocks.POTION_CAULDRON.get().asItem(),
+                    ModBlocks.METEOR_CAULDRON.get().asItem(),
+                    ModBlocks.BIG_CAULDRON.get().asItem(),
                     ModBlocks.SPOON_RACK.get().asItem(),
                     ModBlocks.MORTAR.get().asItem()
+
 
 
 

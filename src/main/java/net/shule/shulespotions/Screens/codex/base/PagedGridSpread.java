@@ -92,7 +92,7 @@ public abstract class PagedGridSpread<T> extends CodexSpread {
                 Minecraft.getInstance().font,
                 "Page " + (currentPage + 1) + "/" + getMaxPages(),
                 x + BaseCodexScreen.GUI_WIDTH / 2,
-                y + BaseCodexScreen.GUI_HEIGHT - 35,
+                y + BaseCodexScreen.GUI_HEIGHT - 25,
                 COLOR_TITLE
         );
     }

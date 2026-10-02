@@ -5,7 +5,7 @@ import net.shule.shulespotions.Screens.codex.base.MenuSpread;
 public class StatsIndexSpread extends MenuSpread {
 
     public StatsIndexSpread() {
-        super("shulespotions.codex.stats", 60);
+        super("shulespotions.codex.stats", 50);
     }
 
     @Override
@@ -21,5 +21,6 @@ public class StatsIndexSpread extends MenuSpread {
         addMenuOption("shulespotions.duration.name", () -> parent.pushSpread(new StatInfoSpread("duration")));
         addMenuOption("shulespotions.stability.name", () -> parent.pushSpread(new StatInfoSpread("stability")));
         addMenuOption("shulespotions.flavor.name", () -> parent.pushSpread(new StatInfoSpread("flavor")));
+        addMenuOption("shulespotions.complexity.name", () -> parent.pushSpread(new ComplexityStatInfoSpread()));
     }
 }

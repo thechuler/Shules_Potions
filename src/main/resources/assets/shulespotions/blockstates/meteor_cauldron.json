@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "shulespotions:block/meteor_cauldron"
+    },
+    "facing=east": {
+      "model": "shulespotions:block/meteor_cauldron",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "shulespotions:block/meteor_cauldron",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "shulespotions:block/meteor_cauldron",
+      "y": 270
+    }
+  }
+}

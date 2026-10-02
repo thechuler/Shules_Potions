@@ -13,6 +13,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
+import net.shule.shulespotions.Fluids.PotionFluidHelper;
 import net.shule.shulespotions.Potions.PotionLiquid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -34,7 +35,7 @@ public class AlchemistsCaliz extends Item {
             if (liquid != null && (liquid.getStats().getColor() != -1 || liquid.getStats().getStability() != 0)) {
                 ItemStack stack = pContext.getItemInHand();
                 CompoundTag tag = stack.getOrCreateTag();
-                tag.put("caliz_liquid", liquid.save());
+                tag.put(PotionFluidHelper.TAG_KEY, liquid.save());
                 stack.setTag(tag);
                 
                 if (level.isClientSide) {
@@ -50,9 +51,9 @@ public class AlchemistsCaliz extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack stack = pPlayer.getItemInHand(pUsedHand);
         
-        if (stack.hasTag() && stack.getTag().contains("caliz_liquid")) {
+        if (stack.hasTag() && stack.getTag().contains(PotionFluidHelper.TAG_KEY)) {
             if (pLevel.isClientSide) {
-                PotionLiquid liquid = PotionLiquid.load(stack.getTag().getCompound("caliz_liquid"));
+                PotionLiquid liquid = PotionLiquid.load(stack.getTag().getCompound(PotionFluidHelper.TAG_KEY));
                 openScreen(liquid);
             }
             return InteractionResultHolder.sidedSuccess(stack, pLevel.isClientSide());

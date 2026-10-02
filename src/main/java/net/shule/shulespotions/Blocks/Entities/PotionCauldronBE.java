@@ -2,6 +2,7 @@ package net.shule.shulespotions.Blocks.Entities;
 
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -9,8 +10,11 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -18,6 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -46,7 +51,7 @@ import java.util.List;
 
 import static net.shule.shulespotions.util.ColorUtils.*;
 
-public class PotionCauldronBE extends BlockEntity {
+public class PotionCauldronBE extends PotionLiquidTankBE {
 
 
 
@@ -61,56 +66,39 @@ public class PotionCauldronBE extends BlockEntity {
     private boolean isFirstLoad = true;
     public enum CauldronState { IDLE, BREWING, FINISHED, RUINED }
     private CauldronState state = CauldronState.IDLE;
-    private List<MobEffect> effects = new ArrayList<>();
-
-
-    private final FluidTank tank = new FluidTank(1000) {
-        @Override
-        protected void onContentsChanged() {
-            if (isEmpty()) {
-                if (!actions.isEmpty()) {
-                    actions.clear();
-                }
-                state = CauldronState.IDLE;
-                effects.clear();
-            }
-            setChanged();
-
-            if (level != null && !level.isClientSide) {
-                sync();
-            }
-        }
-
-        @Override
-        public boolean isFluidValid(FluidStack stack) {
-            Fluid fluid = stack.getFluid();
-            return fluid == Fluids.WATER ||
-                    fluid == ModFluids.SOURCE_POTION_FLUID.get();
-        }
-
-    };
-
-
-    private final LazyOptional<IFluidHandler> fluidHandler =
-            LazyOptional.of(() -> tank);
+    private int maxEffectCount = 4;
 
 
     public PotionCauldronBE(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.POTION_CAULDRON_BE.get(), pos, state);
+        super(ModBlockEntities.POTION_CAULDRON_BE.get(), pos, state, 1000);
         renderColor = randomColor();
-    }
-
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.FLUID_HANDLER) {
-            return fluidHandler.cast();
+        if (state.getBlock() instanceof PotionCauldron cauldron) {
+            this.maxEffectCount = cauldron.getMAX_EFFECT_COUNT();
         }
-        return super.getCapability(cap, side);
+    }
+    
+    @Override
+    protected void onContentsChanged() {
+        if (fluidTank.isEmpty()) {
+            if (!actions.isEmpty()) {
+                actions.clear();
+            }
+            state = CauldronState.IDLE;
+        }
+        super.onContentsChanged();
     }
 
     @Override
-    public net.minecraft.world.phys.AABB getRenderBoundingBox() {
-        return new net.minecraft.world.phys.AABB(worldPosition).inflate(256.0D);
+    protected boolean isFluidValid(FluidStack stack) {
+        Fluid fluid = stack.getFluid();
+        return fluid == Fluids.WATER ||
+                fluid == ModFluids.SOURCE_UNFINISHED_POTION_FLUID.get() ||
+                fluid == ModFluids.SOURCE_POTION_FLUID.get();
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(worldPosition).inflate(256.0D);
     }
 
 
@@ -119,15 +107,15 @@ public class PotionCauldronBE extends BlockEntity {
         if (actions.size() >= getMaxIngredients()) return;
 
         if (this.getState() == CauldronState.FINISHED) return;
-        if (tank.isEmpty()) return;
+        if (getTank().isEmpty()) return;
         
 
-        FluidStack fluid = tank.getFluid();
+        FluidStack fluid = getTank().getFluid();
 
         if (fluid.getFluid() == Fluids.WATER) {
 
             FluidStack potionFluid = new FluidStack(
-                    ModFluids.SOURCE_POTION_FLUID.get(),
+                    ModFluids.SOURCE_UNFINISHED_POTION_FLUID.get(),
                     fluid.getAmount()
             );
 
@@ -136,7 +124,7 @@ public class PotionCauldronBE extends BlockEntity {
                     createInitialPotionLiquid()
             );
 
-            tank.setFluid(potionFluid);
+            getTank().setFluid(potionFluid);
         }
 
         if (state == CauldronState.IDLE) {
@@ -151,7 +139,7 @@ public class PotionCauldronBE extends BlockEntity {
         PotionLiquid potion = new PotionLiquid();
 
         potion.getStats().setStability(100);
-        potion.getStats().setDurationSeconds(20);
+        potion.getStats().setDurationSeconds(5);
         potion.getStats().setPurity(1);
 
         return potion;
@@ -173,13 +161,13 @@ public class PotionCauldronBE extends BlockEntity {
 
 
     public PotionLiquid getPotionLiquid() {
-        return PotionFluidHelper.getPotionLiquid(this.tank.getFluid());
+        return PotionFluidHelper.getPotionLiquid(getTank().getFluid());
     }
 
 
     public void setPotionLiquid(PotionLiquid potion) {
 
-        FluidStack fluid = this.tank.getFluid();
+        FluidStack fluid = getTank().getFluid();
 
 
         PotionFluidHelper.withPotionLiquid(fluid, potion);
@@ -227,39 +215,23 @@ public class PotionCauldronBE extends BlockEntity {
 
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
-
         super.saveAdditional(tag);
 
-        tag.put("SPTank", tank.writeToNBT(new CompoundTag()));
         tag.putInt("SPcolor", renderColor);
         tag.putInt("ExplosionTriggerId", explosionTriggerId);
         tag.putInt("ExplosionColor", explosionColor);
         tag.putString("CauldronState", state.name());
+        tag.putInt("MaxEffectCount", maxEffectCount);
         ListTag actionList = new ListTag();
 
         for (CauldronAction action : actions) {
-
             CompoundTag actionTag = new CompoundTag();
-
             actionTag.putString("Type", action.getType());
-
             actionTag.put("Data", action.save());
-
             actionList.add(actionTag);
         }
 
         tag.put("Actions", actionList);
-
-        if (effects != null) {
-            ListTag effectsTag = new ListTag();
-            for (MobEffect effect : effects) {
-                net.minecraft.resources.ResourceLocation id = net.minecraftforge.registries.ForgeRegistries.MOB_EFFECTS.getKey(effect);
-                if (id != null) {
-                    effectsTag.add(net.minecraft.nbt.StringTag.valueOf(id.toString()));
-                }
-            }
-            tag.put("Effects", effectsTag);
-        }
     }
 
     @Override
@@ -267,7 +239,6 @@ public class PotionCauldronBE extends BlockEntity {
 
         super.load(tag);
 
-        tank.readFromNBT(tag.getCompound("SPTank"));
         explosionTriggerId = tag.getInt("ExplosionTriggerId");
         explosionColor = tag.getInt("ExplosionColor");
         if (tag.contains("CauldronState")) {
@@ -276,43 +247,21 @@ public class PotionCauldronBE extends BlockEntity {
             state = tag.getBoolean("IsRecipeFinished") ? CauldronState.FINISHED : CauldronState.BREWING;
         }
         renderColor = tag.getInt("SPcolor");
-
+        if (tag.contains("MaxEffectCount")) {
+            maxEffectCount = tag.getInt("MaxEffectCount");
+        }
 
         actions.clear();
 
         if (tag.contains("Actions")) {
-
-            ListTag actionList =
-                    tag.getList("Actions", Tag.TAG_COMPOUND);
-
+            ListTag actionList = tag.getList("Actions", Tag.TAG_COMPOUND);
             for (int i = 0; i < actionList.size(); i++) {
-
-                CompoundTag actionTag =
-                        actionList.getCompound(i);
-
-                String type =
-                        actionTag.getString("Type");
-
-                CompoundTag data =
-                        actionTag.getCompound("Data");
+                CompoundTag actionTag = actionList.getCompound(i);
+                String type = actionTag.getString("Type");
+                CompoundTag data = actionTag.getCompound("Data");
 
                 CauldronAction action = CauldronActionRegistry.load(type, data);
                 actions.add(action);
-            }
-        }
-
-        if (tag.contains("Effects")) {
-            effects = new ArrayList<>();
-            ListTag effectsTag = tag.getList("Effects", Tag.TAG_STRING);
-            for (int i = 0; i < effectsTag.size(); i++) {
-                String idStr = effectsTag.getString(i);
-                net.minecraft.resources.ResourceLocation id = net.minecraft.resources.ResourceLocation.tryParse(idStr);
-                if (id == null) continue;
-                
-                MobEffect effect = net.minecraftforge.registries.ForgeRegistries.MOB_EFFECTS.getValue(id);
-                if (effect != null) {
-                    effects.add(effect);
-                }
             }
         }
     }
@@ -329,6 +278,10 @@ public class PotionCauldronBE extends BlockEntity {
         return 0;
     }
 
+    public int getMaxEffectCount() {
+        return this.maxEffectCount;
+    }
+
     public static void tick(Level level, PotionCauldronBE be) {
         if (level.isClientSide) return;
 
@@ -343,13 +296,33 @@ public class PotionCauldronBE extends BlockEntity {
             be.sync();
         }
 
-
+        if (be.getBlockState().getBlock() instanceof PotionCauldron cauldron) {
+            if (!be.getTank().isEmpty() && be.getActions().size() < be.getMaxIngredients()) {
+               AABB captureArea = cauldron.getItemCaptureAABB(be.getBlockPos());
+                java.util.List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, captureArea);
+                
+                for (ItemEntity itemEntity : items) {
+                    if (itemEntity.isAlive()) {
+                        ItemStack stack = itemEntity.getItem();
+                        be.checkItem(stack);
+                        
+                        level.playSound(null, be.getBlockPos(), SoundEvents.AMBIENT_UNDERWATER_ENTER, SoundSource.BLOCKS, 0.6F, 2F + level.random.nextFloat() * 0.2F);
+                        if (stack.getCount() > 1) {
+                            stack.shrink(1);
+                        } else {
+                            itemEntity.discard();
+                        }
+                        
+                        if (be.getActions().size() >= be.getMaxIngredients()) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
-
-   ;
     public void clientTick() {
-
         assert level != null;
         if (!level.isClientSide)
             return;
@@ -380,17 +353,25 @@ public class PotionCauldronBE extends BlockEntity {
         float[] rgb = intToRGB(color);
 
         float chance = 0.4f;
+        float spread = 0.5f;
+        float baseY = 1.0f;
+
+        if (this.getBlockState().getBlock() instanceof PotionCauldron cauldronBlock) {
+            chance = cauldronBlock.getBubbleParticleChance();
+            spread = cauldronBlock.getBubbleParticleSpread();
+            baseY = cauldronBlock.getBubbleParticleY();
+        }
 
         if (this.level.random.nextFloat() < chance) {
-            double offsetX = (this.level.random.nextDouble() - 0.5) * 0.5;
-            double offsetZ = (this.level.random.nextDouble() - 0.5) * 0.5;
+            double offsetX = (this.level.random.nextDouble() - 0.5) * spread;
+            double offsetZ = (this.level.random.nextDouble() - 0.5) * spread;
 
             PotionLiquid potion = this.getPotionLiquid();
             int stability = potion.getStats().getStability();
             
             float instabilityChance = Math.max(0.0f, (100.0f - stability) / 100.0f);
 
-            net.minecraft.core.particles.SimpleParticleType particleType = 
+            SimpleParticleType particleType =
                     this.level.random.nextFloat() < instabilityChance 
                             ? ModParticles.INSTABILITY_BUBBLE.get() 
                             : ModParticles.BUBBLE.get();
@@ -398,7 +379,7 @@ public class PotionCauldronBE extends BlockEntity {
             this.level.addParticle(
                     particleType,
                     this.getBlockPos().getX() + 0.5 + offsetX,
-                    this.getBlockPos().getY() + 1.0,
+                    this.getBlockPos().getY() + baseY,
                     this.getBlockPos().getZ() + 0.5 + offsetZ,
                     rgb[0],
                     rgb[1],
@@ -434,22 +415,31 @@ public class PotionCauldronBE extends BlockEntity {
         double centerX = worldPosition.getX() + 0.5;
         double centerY = worldPosition.getY() + 1.0;
         double centerZ = worldPosition.getZ() + 0.5;
+
+        int particleCount = 200;
+        double explosionRadius = 2.5;
+        double explosionHeight = 1.8;
+
+        if (this.getBlockState().getBlock() instanceof PotionCauldron cauldronBlock) {
+            particleCount = cauldronBlock.getExplosionParticleCount();
+            explosionRadius = cauldronBlock.getExplosionParticleRadius();
+            explosionHeight = cauldronBlock.getExplosionParticleHeightSpread();
+            centerY = worldPosition.getY() + cauldronBlock.getExplosionParticleY();
+        }
 /*
         net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT, () -> () ->
                 net.shule.shulespotions.Events.CameraShakeHandler.triggerShake(centerX, centerY, centerZ, 25, 2.0f));
 */
-        int particleCount = 200;
-
         for (int i = 0; i < particleCount; i++) {
 
             double angle = random.nextDouble() * Math.PI * 2.0;
 
-            double radius = random.nextDouble() * 2.5;
+            double radius = random.nextDouble() * explosionRadius;
 
             double offsetX = Math.cos(angle) * radius;
             double offsetZ = Math.sin(angle) * radius;
 
-            double offsetY = random.nextDouble() * 1.8;
+            double offsetY = random.nextDouble() * explosionHeight;
 
             level.addParticle(
                     ModParticles.POTION_EXPLOTION.get(),
@@ -483,20 +473,12 @@ public class PotionCauldronBE extends BlockEntity {
         return actions;
     }
 
-    public FluidTank getTank() {
-        return tank;
-    }
-
     public CauldronState getState() {
         return state;
     }
 
     public void setState(CauldronState state) {
         this.state = state;
-    }
-
-    public List<MobEffect> getEffects() {
-        return effects;
     }
 
 
@@ -519,7 +501,20 @@ public class PotionCauldronBE extends BlockEntity {
                 return;
             }
             
-            this.effects = PotionLiquidUtils.resolve(potionLiquid);
+            int cauldronLevel = 1;
+            int maxEffects = 4;
+            if (this.getBlockState().getBlock() instanceof PotionCauldron cauldron) {
+                cauldronLevel = cauldron.getCauldronLevel();
+                maxEffects = cauldron.getMAX_EFFECT_COUNT();
+            }
+            List<MobEffect> resolved = PotionLiquidUtils.resolve(potionLiquid, cauldronLevel, maxEffects);
+            potionLiquid.setResolvedEffects(resolved);
+            potionLiquid.setFinished(true);
+
+            FluidStack newFluid = new FluidStack(ModFluids.SOURCE_POTION_FLUID.get(), getTank().getFluidAmount());
+            PotionFluidHelper.withPotionLiquid(newFluid, potionLiquid);
+            getTank().setFluid(newFluid);
+
             this.state = CauldronState.FINISHED;
             
             level.playSound(

@@ -1,0 +1,43 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "shulespotions:inusual_loot_bundle"}
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:diamond" }
+      ]
+    },
+
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "shulespotions:rare_loot_bundle" }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:totem_of_undying" }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "shulespotions:exotic_loot_bundle" }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:iron_ingot" }
+      ]
+    }
+
+  ]
+}

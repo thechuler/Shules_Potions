@@ -3,6 +3,7 @@ package net.shule.shulespotions.Messages;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
+import net.shule.shulespotions.Messages.Custom.*;
 
 public class ModMessages {
 
@@ -53,10 +54,26 @@ public class ModMessages {
 
         INSTANCE.registerMessage(
                 packetId++,
-                net.shule.shulespotions.Messages.SyncDecapitatedActivePacket.class,
-                net.shule.shulespotions.Messages.SyncDecapitatedActivePacket::encode,
-                net.shule.shulespotions.Messages.SyncDecapitatedActivePacket::decode,
-                net.shule.shulespotions.Messages.SyncDecapitatedActivePacket::handle
+                SyncDecapitatedActivePacket.class,
+                SyncDecapitatedActivePacket::encode,
+                SyncDecapitatedActivePacket::decode,
+                SyncDecapitatedActivePacket::handle
+        );
+
+        INSTANCE.registerMessage(
+                packetId++,
+                SyncBodyPartsPacket.class,
+                SyncBodyPartsPacket::encode,
+                SyncBodyPartsPacket::decode,
+                SyncBodyPartsPacket::handle
+        );
+
+        INSTANCE.registerMessage(
+                packetId++,
+                ControlHeadPacket.class,
+                ControlHeadPacket::encode,
+                ControlHeadPacket::decode,
+                ControlHeadPacket::handle
         );
     }
 }

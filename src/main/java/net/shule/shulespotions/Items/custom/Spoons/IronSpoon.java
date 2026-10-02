@@ -4,11 +4,10 @@ import net.shule.shulespotions.Potions.IngredientStat;
 import net.shule.shulespotions.Potions.PotionLiquid;
 import net.shule.shulespotions.util.CauldronActions.CauldronContext;
 
-public class IronSpoon extends SpoonItem{
+public class IronSpoon extends SpoonItem {
     public IronSpoon(Properties properties, String tooltipId) {
         super(properties, tooltipId);
     }
-
 
     @Override
     protected void performSpoonAction(CauldronContext cauldron) {
@@ -19,7 +18,7 @@ public class IronSpoon extends SpoonItem{
 
 
 
-        stats.setDurationSeconds(sec + 40);
+        stats.setDurationSeconds(sec + 30);
 
 
 

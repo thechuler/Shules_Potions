@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "shulespotions:block/potion_cauldron_base"
+    },
+    "facing=east": {
+      "model": "shulespotions:block/potion_cauldron_base",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "shulespotions:block/potion_cauldron_base",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "shulespotions:block/potion_cauldron_base",
+      "y": 270
     }
   }
 }

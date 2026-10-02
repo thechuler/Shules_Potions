@@ -1,0 +1,138 @@
+{
+  "minecraft:glowing": 1,
+  "minecraft:hunger": 1,
+  "minecraft:nausea": 1,
+  "minecraft:dolphins_grace": 1,
+  "minecraft:instant_damage": 1,
+  "minecraft:instant_health": 1,
+  "minecraft:saturation": 1,
+  "minecraft:slow_falling": 1,
+  "shulespotions:ender_disruption": 1,
+  "shulespotions:instability": 1,
+  "shulespotions:potion_splashed": 1,
+  "shulespotions:butter_fingers": 1,
+  "shulespotions:fertilizer": 1,
+  "shulespotions:explosive_sneeze": 1,
+
+
+  "minecraft:jump_boost": 2,
+  "minecraft:invisibility": 2,
+  "minecraft:blindness": 2,
+  "minecraft:slowness": 2,
+  "minecraft:speed": 2,
+  "minecraft:fire_resistance": 2,
+  "minecraft:health_boost": 2,
+  "minecraft:levitation": 2,
+  "minecraft:luck": 2,
+  "minecraft:unluck": 2,
+  "minecraft:poison": 2,
+  "minecraft:water_breathing": 2,
+  "shulespotions:infested": 2,
+  "shulespotions:oozing": 2,
+  "shulespotions:cloning": 2,
+  "shulespotions:orbital_gravity": 2,
+  "shulespotions:high_gravity": 2,
+  "shulespotions:low_gravity": 2,
+  "shulespotions:swap": 2,
+  "shulespotions:frost_walk": 2,
+
+
+  "minecraft:haste": 3,
+  "minecraft:mining_fatigue": 3,
+  "minecraft:bad_omen": 3,
+  "minecraft:conduit_power": 3,
+  "minecraft:darkness": 3,
+  "minecraft:night_vision": 3,
+  "minecraft:regeneration": 3,
+  "minecraft:strength": 3,
+  "minecraft:weakness": 3,
+  "shulespotions:comeback": 3,
+  "shulespotions:shadow_manipulation": 3,
+  "shulespotions:stone_crusher": 3,
+  "shulespotions:body_break_down": 3,
+
+
+  "minecraft:absorption": 4,
+  "minecraft:resistance": 4,
+  "minecraft:wither": 4,
+  "shulespotions:nether_corruption": 4,
+  "shulespotions:leech": 4,
+  "shulespotions:craft_master": 4,
+  "shulespotions:potion_migraine": 4,
+  "shulespotions:decapitated": 4,
+  "minecraft:hero_of_the_village": 5,
+  "shulespotions:fly": 5,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  "alexsmobs:bug_pheromones": 1,
+  "alexsmobs:clinging": 1,
+  "alexsmobs:fleet_footed": 1,
+  "alexsmobs:knockback_resistance": 1,
+  "alexsmobs:lava_vision": 1,
+  "alexsmobs:mosquito_repellent": 1,
+  "alexsmobs:oiled": 1,
+  "alexsmobs:orcas_might": 1,
+  "alexsmobs:poison_resistance": 1,
+  "alexsmobs:soulsteal": 1,
+  "alexsmobs:sunbird_blessing": 1,
+  "alexsmobs:tigers_blessing": 1,
+  "alexsmobs:earthquake": 1,
+  "alexsmobs:debilitating_sting": 1,
+  "alexsmobs:ender_flu": 1,
+  "alexsmobs:exsanguination": 1,
+  "alexsmobs:fear": 1,
+  "alexsmobs:sunbird_curse": 1,
+  "alexsmobs:power_down": 1,
+
+  "froglins:infection": 1
+}

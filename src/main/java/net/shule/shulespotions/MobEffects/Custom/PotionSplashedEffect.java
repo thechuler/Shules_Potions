@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.network.PacketDistributor;
 import net.shule.shulespotions.Messages.ModMessages;
-import net.shule.shulespotions.Messages.SyncPotionSplashColorPacket;
+import net.shule.shulespotions.Messages.Custom.SyncPotionSplashColorPacket;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

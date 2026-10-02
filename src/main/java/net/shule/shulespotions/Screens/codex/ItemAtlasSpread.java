@@ -12,8 +12,8 @@ import java.util.List;
 public class ItemAtlasSpread extends PagedGridSpread<Item> {
 
     private static final int ITEM_SIZE = 28;
-    private static final int ITEM_SPACING_X = 34;
-    private static final int ITEM_SPACING_Y = 34;
+    private static final int ITEM_SPACING_X = 38;
+    private static final int ITEM_SPACING_Y = 36;
     private static final int COLUMNS = 4;
     private static final int ROWS = 5;
 
@@ -27,8 +27,8 @@ public class ItemAtlasSpread extends PagedGridSpread<Item> {
         int gridWidth = (COLUMNS - 1) * ITEM_SPACING_X + ITEM_SIZE;
         int gridHeight = (ROWS - 1) * ITEM_SPACING_Y + ITEM_SIZE;
 
-        int leftPageStart = guiX + (pageWidth - gridWidth) / 2;
-        int rightPageStart = guiX + pageWidth + (pageWidth - gridWidth) / 2;
+        int leftPageStart = guiX + (pageWidth - gridWidth) / 2 + 10;
+        int rightPageStart = guiX + pageWidth + (pageWidth - gridWidth) / 2 - 10;
         int topStart = guiY + (BaseCodexScreen.GUI_HEIGHT - gridHeight) / 2;
 
         for (int i = 0; i < itemsPerPage; i++) {

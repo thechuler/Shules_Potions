@@ -21,6 +21,14 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> SNEEZE =
             registerSoundEvent("sneeze");
+    public static final RegistryObject<SoundEvent> BLOWING =
+            registerSoundEvent("blowing");
+    public static final RegistryObject<SoundEvent> SELECTION =
+            registerSoundEvent("selection");
+    public static final RegistryObject<SoundEvent> BODY_BREAK =
+            registerSoundEvent("body_break");
+    public static final RegistryObject<SoundEvent> CRUMBLING =
+            registerSoundEvent("crumbling");
 
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {

@@ -17,5 +17,31 @@
     "sounds":[
       "shulespotions:sneeze"
     ]
+  },
+
+  "blowing": {
+    "subtitles": "sounds.shulespotions.blowing",
+    "sounds":[
+      "shulespotions:blowing"
+    ]
+  },
+  "selection": {
+    "subtitles": "sounds.shulespotions.selection",
+    "sounds":[
+      "shulespotions:selection"
+    ]
+  },
+
+  "body_break": {
+    "subtitles": "sounds.shulespotions.body_break",
+    "sounds":[
+      "shulespotions:body_break"
+    ]
+  },
+  "crumbling": {
+    "subtitles": "sounds.shulespotions.crumbling",
+    "sounds":[
+      "shulespotions:crumbling"
+    ]
   }
 }

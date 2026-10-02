@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraftforge.network.PacketDistributor;
 import net.shule.shulespotions.Messages.ModMessages;
-import net.shule.shulespotions.Messages.SyncDecapitatedActivePacket;
+import net.shule.shulespotions.Messages.Custom.SyncDecapitatedActivePacket;
 
 public class DecapitatedEffect extends MobEffect {
     public DecapitatedEffect(MobEffectCategory pCategory, int pColor) {

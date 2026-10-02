@@ -1,6 +1,5 @@
 package net.shule.shulespotions.Particles;
 
-
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -21,17 +20,23 @@ public class ModParticles {
     public static final RegistryObject<SimpleParticleType> INSTABILITY_BUBBLE =
             PARTICLES.register("instability_bubble", () -> new SimpleParticleType(true));
 
-
     public static final RegistryObject<SimpleParticleType> POTION_EXPLOTION =
             PARTICLES.register("potion_explotion", () -> new SimpleParticleType(true));
 
     public static final RegistryObject<SimpleParticleType> CORRUPTION_FIRE =
             PARTICLES.register("corruption_fire", () -> new SimpleParticleType(true));
 
+    public static final RegistryObject<SimpleParticleType> POTION_SMOKE =
+            PARTICLES.register("potion_smoke", () -> new SimpleParticleType(true));
+
+    public static final RegistryObject<SimpleParticleType> ANCIENT_PARTICLE =
+            PARTICLES.register("ancient_particle", () -> new SimpleParticleType(true));
+
+    public static final RegistryObject<SimpleParticleType> OMINOUS_FIRE =
+            PARTICLES.register("ominous_fire", () -> new SimpleParticleType(true));
 
 
     public static void register(IEventBus bus) {
         PARTICLES.register(bus);
     }
-
 }

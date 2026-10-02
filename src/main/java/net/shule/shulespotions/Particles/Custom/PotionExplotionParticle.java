@@ -1,18 +1,18 @@
 package net.shule.shulespotions.Particles.Custom;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 
 public class PotionExplotionParticle extends TextureSheetParticle {
 
-  private final SpriteSet sprites;
+    private final SpriteSet sprites;
 
     protected PotionExplotionParticle(
             ClientLevel level, double x, double y, double z,
-            double r, double g, double b, SpriteSet sprites) {super(level, x, y, z);
+            double r, double g, double b, SpriteSet sprites) {
+        super(level, x, y, z);
         this.sprites = sprites;
 
         // Movimiento random o leve
@@ -34,12 +34,10 @@ public class PotionExplotionParticle extends TextureSheetParticle {
         this.setSprite(sprites.get(random));
     }
 
-
     @Override
     public ParticleRenderType getRenderType() {
-       return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
-
 
     @Override
     public void tick() {
@@ -51,5 +49,4 @@ public class PotionExplotionParticle extends TextureSheetParticle {
         float progress = (float) this.age / this.lifetime;
         this.alpha = 1.0f - (progress * progress); // Al cuadrado
     }
-
 }

@@ -4,29 +4,35 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
+import net.shule.shulespotions.Blocks.ModBlocks;
 import net.shule.shulespotions.ShulesPotions;
+
+import java.util.List;
 
 
 public class ModConfiguredFeatures {
-    public static final ResourceKey<ConfiguredFeature<?, ?>> GRONITE_ORE = registerKey("gronite_ore");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ONYX_ORE = registerKey("onyx_ore");
 
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
-      /*
+
         RuleTest stoneReplaceable = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
         RuleTest deepslateReplaceables = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
-        RuleTest netherrackReplacables = new BlockMatchTest(Blocks.NETHERRACK);
-        RuleTest endReplaceables = new BlockMatchTest(Blocks.END_STONE);
 
         List<OreConfiguration.TargetBlockState> overworldPiedraCargada = List.of(OreConfiguration.target(stoneReplaceable,
-                ModBlocks.GRONITE_ORE.get().defaultBlockState()));
+                ModBlocks.ONYX_ORE.get().defaultBlockState()));
 
 
-        register(context, GRONITE_ORE, Feature.ORE, new OreConfiguration(overworldPiedraCargada, 3));
+        register(context, ONYX_ORE, Feature.ORE, new OreConfiguration(overworldPiedraCargada, 3));
 
-   */
+
     }
 
 

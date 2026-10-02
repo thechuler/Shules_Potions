@@ -1,19 +1,38 @@
 package net.shule.shulespotions.Screens;
 
+import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.math.Axis;
+import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.StringUtil;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.shule.shulespotions.Blocks.Custom.BigCauldronCore;
+import net.shule.shulespotions.Blocks.Custom.PotionCauldron;
+import net.shule.shulespotions.Blocks.ModBlocks;
 import net.shule.shulespotions.Items.custom.RecipeScroll;
+import net.shule.shulespotions.Potions.EffectLevelRegistry;
 import net.shule.shulespotions.Potions.PotionLiquid;
 import net.shule.shulespotions.Potions.PotionLiquidUtils;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,7 +41,22 @@ public class RecipeScrollScreen extends Screen {
     private final ItemStack scrollStack;
 
     private static final ResourceLocation SCROLL_BACKGROUND =
-            ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/scroll_screen1.png");
+            ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/scroll_screen2.png");
+
+    private static final ResourceLocation CONTAINER =
+            ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/container.png");
+
+    private static final ResourceLocation CONTAINER_HOVER =
+            ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/container_hover.png");
+
+    private static final ResourceLocation CONTAINER_BLOCKED =
+            ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/container_blocked.png");
+
+    private static final ResourceLocation CONTAINER_LOW_TOLERANCY =
+            ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/container_low_tolerancy.png");
+
+    private static final ResourceLocation CAULDRON_CONTAINER =
+            ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/cauldron_container.png");
 
     private static final ResourceLocation VITALITY_ICON =
             ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/vitality_icon.png");
@@ -33,15 +67,19 @@ public class RecipeScrollScreen extends Screen {
     private static final ResourceLocation FLAVOR_ICON =
             ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/flavor_icon.png");
 
-    private static final ResourceLocation STABILITY_ICON =
-            ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/stability_icon.png");
-
     private static final ResourceLocation DURATION_ICON =
             ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/duration_icon.png");
 
+    private static final ResourceLocation COMPLEXITY_ICON =
+            ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/complexity_icon.png");
 
-    private static final int GUI_WIDTH = 336;
-    private static final int GUI_HEIGHT = 266;
+
+    private static final ResourceLocation STABILITY_BAR =
+            ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/stability_bar_container.png");
+
+
+    private static final int GUI_WIDTH = 348;
+    private static final int GUI_HEIGHT = 240;
 
 
     private long animationStartTime;
@@ -77,7 +115,7 @@ public class RecipeScrollScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
 
         renderBackground(graphics);
 
@@ -88,7 +126,9 @@ public class RecipeScrollScreen extends Screen {
 
         super.render(graphics, mouseX, mouseY, partialTick);
 
-        renderTitle(graphics, x, y,1.5f);
+        renderTitle(graphics, x, y);
+
+        renderCauldron(graphics, x, y);
 
         renderIngredients(graphics, mouseX, mouseY, x , y);
 
@@ -104,170 +144,123 @@ public class RecipeScrollScreen extends Screen {
         return false;
     }
 
-    // =========================
-    // BACKGROUND
-    // =========================
 
     private void renderBackgroundTexture(GuiGraphics graphics, int x, int y) {
-        graphics.blit(
-                SCROLL_BACKGROUND,
-                x,
-                y,
-                0,
-                0,
-                GUI_WIDTH,
-                GUI_HEIGHT,
-                GUI_WIDTH,
-                GUI_HEIGHT
-        );
+        graphics.blit(SCROLL_BACKGROUND, x, y, 0, 0, GUI_WIDTH, GUI_HEIGHT, GUI_WIDTH, GUI_HEIGHT);
     }
 
-    // =========================
-    // TITLE
-    // =========================
-
-    private void renderTitle(GuiGraphics graphics, int x, int y,float scale) {
+    private void renderTitle(GuiGraphics graphics, int x, int y) {
 
         graphics.pose().pushPose();
 
+        graphics.pose().translate(x + (float) GUI_WIDTH / 2, y + 43, 0);
 
-
-        graphics.pose().translate(
-                x + GUI_WIDTH / 2,
-                y + 73,
-                0
-        );
-
-        graphics.pose().scale(scale, scale, 1F);
+        graphics.pose().scale((float) 1.5, (float) 1.5, 1F);
 
         Component title = scrollStack.getHoverName();
 
         int width = this.font.width(title);
 
-        graphics.drawString(
-                this.font,
-                title,
-                -width / 2,
-                0,
-                0x70635b,
-                false
-        );
+        graphics.drawString(this.font, title, -width / 2, 0, 0x70635b, false);
 
         graphics.pose().popPose();
     }
 
 
-
-
-
     private void renderIngredients(GuiGraphics graphics, int mouseX, int mouseY, int x, int y) {
 
         List<CompoundTag> actions = RecipeScroll.getActions(scrollStack);
-
-        int startX = x + 232;
-        int startY = y + 100;
-
-        int columns = 3;
-        int spacing = 20;
-
-        int ingredientIndex = 0;
+        
+        List<ItemStack> validIngredients = new ArrayList<>();
 
         for (CompoundTag actionTag : actions) {
-
-            String type = actionTag.getString("Type");
-
-            if (!type.equals("add_ingredient")) {
-                continue;
+            if ("add_ingredient".equals(actionTag.getString("Type"))) {
+                String itemId = actionTag.getCompound("Data").getString("Item");
+                Item item = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(itemId));
+                if (item != null) {
+                    validIngredients.add(new ItemStack(item));
+                }
             }
+        }
 
-            CompoundTag data = actionTag.getCompound("Data");
+        Block targetBlock = RecipeScroll.getCauldronBlock(scrollStack);
+        if (targetBlock == null) {
+            targetBlock = ModBlocks.POTION_CAULDRON.get();
+        }
 
-            String itemId = data.getString("Item");
+        int maxIngredientCount = 0;
+        if (targetBlock instanceof PotionCauldron cauldron) {
+            maxIngredientCount = cauldron.getMAX_INGREDIENT_COUNT();
+        }
 
-            Item item = ForgeRegistries.ITEMS.getValue(
-                    ResourceLocation.parse(itemId)
-            );
+        int startX = x + 215;
+        int startY = y + 165; 
 
-            if (item == null) {
-                continue;
-            }
+        int columns = 4;
+        int maxSlots = 8;
+        int spacing = 20;
 
-            ItemStack ingredient = new ItemStack(item);
-
-            int delayPerIngredient = 5;
-
-            int startTick =
-                    ingredientIndex * delayPerIngredient;
-
-            float progress =
-                    (animationTicks - startTick) / 8.0F;
-
-            progress = Math.max(
-                    0F,
-                    Math.min(1F, progress)
-            );
-
-            float scale;
-
-            if (progress < 0.7F) {
-                scale = progress / 0.7F * 1.2F;
-            } else {
-                float t =
-                        (progress - 0.7F) / 0.3F;
-
-                scale =
-                        1.2F - (0.2F * t);
-            }
-
-            int column = ingredientIndex % columns;
-            int row = ingredientIndex / columns;
-
+        for (int i = 0; i < maxSlots; i++) {
+            int column = i % columns;
+            int row = i / columns;
             int itemX = startX + (column * spacing);
             int itemY = startY + (row * spacing);
 
-            renderAnimatedIngredient(
-                    graphics,
-                    ingredient,
-                    itemX,
-                    itemY,
-                    scale
-            );
+            boolean isHovered = mouseX >= itemX && mouseX <= itemX + 16 && mouseY >= itemY && mouseY <= itemY + 16;
+            boolean isBlocked = i >= maxIngredientCount;
+            
+            if (i < validIngredients.size()) {
+                ItemStack ingredient = validIngredients.get(i);
+                int delayPerIngredient = 5;
+                int startTick = i * delayPerIngredient;
+                float progress = Math.max(0F, Math.min(1F, (animationTicks - startTick) / 8.0F));
 
-            renderIngredientTooltip(
-                    graphics,
-                    ingredient,
-                    mouseX,
-                    mouseY,
-                    itemX,
-                    itemY
-            );
+                float scale;
+                if (progress < 0.7F) {
+                    scale = progress / 0.7F * 1.2F;
+                } else {
+                    float t = (progress - 0.7F) / 0.3F;
+                    scale = 1.2F - (0.2F * t);
+                }
 
-            ingredientIndex++;
+                renderAnimatedIngredient(graphics, ingredient, itemX, itemY, scale, isHovered && !isBlocked);
+                
+                if (isBlocked) {
+                    renderBlockedOverlay(graphics, itemX, itemY, 8, 8);
+                    if (isHovered) {
+                        graphics.renderTooltip(this.font, Component.translatable("gui.shulespotions.slot_blocked"), mouseX, mouseY);
+                    }
+                } else {
+                    renderIngredientTooltip(graphics, ingredient, mouseX, mouseY, itemX, itemY);
+                }
+            } else {
+                renderEmptyContainer(graphics, itemX, itemY, 8, 8);
+                if (isBlocked) {
+                    renderBlockedOverlay(graphics, itemX, itemY, 8, 8);
+                    if (isHovered) {
+                        graphics.renderTooltip(this.font, Component.translatable("gui.shulespotions.slot_blocked"), mouseX, mouseY);
+                    }
+                }
+            }
         }
     }
 
 
-    private void renderAnimatedIngredient(GuiGraphics graphics, ItemStack stack, int x, int y, float scale) {
+    private void renderAnimatedIngredient(GuiGraphics graphics, ItemStack stack, int x, int y, float scale, boolean isHovered) {
 
         graphics.pose().pushPose();
 
-        graphics.pose().translate(
-                x + 8,
-                y + 8,
-                0
-        );
+        graphics.pose().translate(x + 8, y + 8, 0);
+        
+        graphics.pose().scale(0.8F, 0.8F, 1F);
 
-        graphics.pose().scale(
-                scale,
-                scale,
-                1F
-        );
+        ResourceLocation containerTex = isHovered ? CONTAINER_HOVER : CONTAINER;
 
-        graphics.renderItem(
-                stack,
-                -8,
-                -8
-        );
+        graphics.blit(containerTex, -11, -11, 0, 0, 22, 22, 22, 22);
+
+        graphics.pose().scale(scale, scale, 1F);
+
+        graphics.renderItem(stack, -8, -8);
 
         graphics.pose().popPose();
     }
@@ -280,17 +273,9 @@ public class RecipeScrollScreen extends Screen {
     }
 
 
-    // =========================
-    // STATS
-    // =========================
 
     private void renderPotionStats(GuiGraphics graphics, int mouseX, int mouseY, int x, int y, PotionLiquid pl) {
-
         if (pl == null) return;
-
-        int startX = x + 115;
-        int startY = y + 200;
-        int spacing = 30;
 
         int vitality = getAnimatedValue(startVitality, targetVitality);
         int purity = getAnimatedValue(startPurity, targetPurity);
@@ -298,54 +283,76 @@ public class RecipeScrollScreen extends Screen {
         int stability = getAnimatedValue(startStability, targetStability);
         int duration = getAnimatedValue(startDuration, targetDuration);
 
+        Block targetBlock = RecipeScroll.getCauldronBlock(scrollStack);
+        if (targetBlock == null) {
+            targetBlock = ModBlocks.POTION_CAULDRON.get();
+        }
+        int cauldronLevel = 1;
+        if (targetBlock instanceof PotionCauldron cauldron) {
+            cauldronLevel = cauldron.getCauldronLevel();
+        }
+        
+        float barScale = 1.3f;
+        int vStartX = x + 50;
+        int vStartY = y + 50;
 
-        renderStatIcon(graphics, VITALITY_ICON, "Vitality", vitality,
-                startX, startY, mouseX, mouseY);
+        renderVerticalStabilityBar(graphics, stability, vStartX, vStartY, mouseX, mouseY, barScale);
 
-        renderStatIcon(graphics, PURITY_ICON, "Purity",
-                purity, startX + spacing , startY, mouseX, mouseY);
+        int statsX = vStartX + (int)(22 * barScale) + 8;
+        int statsY = vStartY + 20;
+        
+        float iconScale = 1.0f; 
+        int statSpacingY = (int)(16 * iconScale) + 5;
 
-        renderStatIcon(graphics, FLAVOR_ICON, "Flavor",
-                flavor, startX + spacing * 2, startY , mouseX, mouseY);
-
-        renderStatIcon(graphics, STABILITY_ICON, "Stability",
-                stability, startX + spacing * 3, startY , mouseX, mouseY);
-
-        renderStatIcon(graphics, DURATION_ICON, "Duration",
-                duration, startX + spacing * 4, startY , mouseX, mouseY);
+        renderStatIcon(graphics, DURATION_ICON, Component.translatable("shulespotions.duration.name"), StringUtil.formatTickDuration(duration * 20), statsX, statsY, mouseX, mouseY, iconScale);
+        renderStatIcon(graphics, PURITY_ICON, Component.translatable("shulespotions.purity.name"), String.valueOf(purity), statsX, statsY + statSpacingY, mouseX, mouseY, iconScale);
+        renderStatIcon(graphics, VITALITY_ICON, Component.translatable("shulespotions.vitality.name"), String.valueOf(vitality), statsX, statsY + statSpacingY * 2, mouseX, mouseY, iconScale);
+        renderStatIcon(graphics, FLAVOR_ICON, Component.translatable("shulespotions.flavor.name"), String.valueOf(flavor), statsX, statsY + statSpacingY * 3, mouseX, mouseY, iconScale);
+        renderStatIcon(graphics, COMPLEXITY_ICON, Component.translatable("shulespotions.complexity.name"), String.valueOf(cauldronLevel), statsX, statsY + statSpacingY * 4, mouseX, mouseY, iconScale);
     }
 
-    private void renderStatIcon(GuiGraphics graphics, ResourceLocation texture, String tooltip, int value,
-                                int x, int y, int mouseX, int mouseY) {
+    private void renderVerticalStabilityBar(GuiGraphics graphics, int value, int x, int y, int mouseX, int mouseY, float scale) {
+        int clampedValue = Math.max(0, Math.min(100, value));
+        int barWidth = 16;
+        int barMaxHeight = 110;
+
+        int finalColor = 0xFF000000 | 11369299;
+        
+        float fraction = clampedValue / 100.0f;
+        int fillHeight = (int) (barMaxHeight * fraction);
+        int fillY = barMaxHeight - fillHeight;
 
         graphics.pose().pushPose();
-
-        float scale = 0.75F;
-
         graphics.pose().translate(x, y, 0);
         graphics.pose().scale(scale, scale, 1F);
 
-         int size = 16;
 
-         graphics.blit(texture, 0, 0, 0, 0, size, size, size, size);
-
-        graphics.setColor(1F, 1F, 1F, 1F);
-
-        graphics.drawString(this.font,
-                String.valueOf(value),
-                22,
-                4,
-                0xFFD5AD);
-
+        graphics.fill(3, fillY, 3 + barWidth, barMaxHeight, finalColor);
+        graphics.blit(RecipeScrollScreen.STABILITY_BAR, 0, 0, 0, 0, 22, 110, 22, 110);
+        
         graphics.pose().popPose();
 
+        if (mouseX >= x && mouseX <= x + (22 * scale) && mouseY >= y && mouseY <= y + (110 * scale)) {
+            graphics.renderTooltip(this.font, Component.translatable("shulespotions.stability.name").append(": " + value), mouseX, mouseY);
+        }
+    }
 
-        if (mouseX >= x && mouseX <= x + (16 * scale) &&
-                mouseY >= y && mouseY <= y + (16 * scale)) {
+    private void renderStatIcon(GuiGraphics graphics, ResourceLocation texture, Component tooltip, String textValue,
+                                int x, int y, int mouseX, int mouseY, float scale) {
 
-            graphics.renderTooltip(this.font,
-                    Component.literal(tooltip),
-                    mouseX, mouseY);
+        graphics.pose().pushPose();
+        graphics.pose().translate(x, y, 0);
+        graphics.pose().scale(scale, scale, 1F);
+
+        int size = 16;
+
+        graphics.blit(texture, 0, 0, 0, 0, size, size, size, size);
+        graphics.setColor(1F, 1F, 1F, 1F);
+        graphics.drawString(this.font, textValue, 22, 4, 0x70635b, false);
+        graphics.pose().popPose();
+
+        if (mouseX >= x && mouseX <= x + (16 * scale) && mouseY >= y && mouseY <= y + (16 * scale)) {
+            graphics.renderTooltip(this.font, tooltip, mouseX, mouseY);
         }
     }
 
@@ -368,148 +375,206 @@ public class RecipeScrollScreen extends Screen {
         targetDuration = pl.getStats().getDurationSeconds();
     }
 
+
+
     private float getAnimationProgress() {
-
         long elapsed = System.currentTimeMillis() - animationStartTime;
-
         return Math.min(1F, elapsed / (float) ANIMATION_DURATION);
     }
 
+
+
     private int getAnimatedValue(int start, int target) {
-
         float progress = getAnimationProgress();
-
         progress = 1F - (float)Math.pow(1F - progress, 3);
-
-        return Math.round(
-                Mth.lerp(progress, start, target)
-        );
+        return Math.round(Mth.lerp(progress, start, target));
     }
 
 
 
-    // =========================
-    // EFFECTS
-    // =========================
 
-
-    private void renderPotionEffects(GuiGraphics graphics, int mouseX, int mouseY, int x, int y,
-                                     PotionLiquid pl) {
-
+    private void renderPotionEffects(GuiGraphics graphics, int mouseX, int mouseY, int x, int y, PotionLiquid pl) {
         if (pl == null) return;
 
-        List<MobEffect> effects =
-                PotionLiquidUtils.getPossibleEffects(pl);
+        List<MobEffect> effects = new ArrayList<>(PotionLiquidUtils.getPossibleEffects(pl));
+        effects.sort((e1, e2) -> Integer.compare(PotionLiquidUtils.getEffectChance(pl, e2), PotionLiquidUtils.getEffectChance(pl, e1)));
 
-        if (effects.isEmpty()) return;
+        Block targetBlock = RecipeScroll.getCauldronBlock(scrollStack);
 
-        int startX = x + 60;
-        int startY = y + 110;
+        if (targetBlock == null) {
+            targetBlock = ModBlocks.POTION_CAULDRON.get();
+        }
+
+        int maxEffectCount = 4;
+        int cauldronLevel = 1;
+        if (targetBlock instanceof PotionCauldron cauldron) {
+            maxEffectCount = cauldron.getMAX_EFFECT_COUNT();
+            cauldronLevel = cauldron.getCauldronLevel();
+        }
+
+        int startX = x + 215;
+        int startY = y + 70;
 
         int spacingX = 20;
         int spacingY = 20;
 
-        int maxColumns = 3;
+        int maxColumns = 4;
+        int maxSlots = 16;
         int delayPerEffect = 5;
-        for (int i = 0; i < effects.size(); i++) {
 
-            MobEffect effect = effects.get(i);
+        for (int i = 0; i < maxSlots; i++) {
 
-            ResourceLocation id =
-                    ForgeRegistries.MOB_EFFECTS.getKey(effect);
-
-            if (id == null) continue;
-
-            ResourceLocation texture =
-                    ResourceLocation.fromNamespaceAndPath(
-                            id.getNamespace(),
-                            "textures/mob_effect/" + id.getPath() + ".png"
-                    );
             int column = i % maxColumns;
             int row = i / maxColumns;
-
             int iconX = startX + (column * spacingX);
             int iconY = startY + (row * spacingY);
 
-            int startTick = i * delayPerEffect;
+            boolean isHovered = mouseX >= iconX && mouseX <= iconX + 16 && mouseY >= iconY && mouseY <= iconY + 16;
+            boolean isBlocked = i >= maxEffectCount;
+            
+            if (i < effects.size()) {
+                MobEffect effect = effects.get(i);
+                ResourceLocation id = ForgeRegistries.MOB_EFFECTS.getKey(effect);
 
-            float scale = getPopAnimationScale(startTick);
+                if (id == null) continue;
 
-            renderAnimatedEffect(
-                    graphics,
-                    texture,
-                    iconX,
-                    iconY,
-                    scale
-            );
+                ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "textures/mob_effect/" + id.getPath() + ".png");
+                int startTick = i * delayPerEffect;
+                float scale = getPopAnimationScale(startTick);
+                boolean isLowTolerance = cauldronLevel < EffectLevelRegistry.getLevel(effect);
 
-            if (mouseX >= iconX && mouseX <= iconX + 16 &&
-                    mouseY >= iconY && mouseY <= iconY + 16) {
+                renderAnimatedEffect(graphics, texture, iconX, iconY, scale, isHovered && !isBlocked);
 
-                int chance = PotionLiquidUtils.getEffectChance(pl, effect);
+                if (isBlocked) {
+                    renderBlockedOverlay(graphics, iconX, iconY, 9, 9);
+                    if (isHovered) {
+                        graphics.renderTooltip(this.font, Component.translatable("gui.shulespotions.slot_blocked"), mouseX, mouseY);
+                    }
 
-                graphics.renderTooltip(
-                        this.font,
-                        List.of(
-                                Component.translatable(effect.getDescriptionId()),
-                                Component.literal(chance + "%")
-                        ),
-                        java.util.Optional.empty(),
-                        mouseX,
-                        mouseY
-                );
+                } else if (isLowTolerance) {
+                    renderLowTolerancyOverlay(graphics, iconX, iconY);
+
+                    if (isHovered) {
+                        graphics.renderTooltip(this.font, Component.translatable("gui.shulespotions.too_complex"), mouseX, mouseY);
+                    }
+
+                } else if (isHovered) {
+
+                    int chance = PotionLiquidUtils.getEffectChance(pl, effect);
+                    graphics.renderTooltip(
+                            this.font,
+                            List.of(Component.translatable(effect.getDescriptionId()), Component.literal(chance + "%")),
+                            java.util.Optional.empty(),
+                            mouseX,
+                            mouseY
+                    );
+                }
+            } else {
+
+                renderEmptyContainer(graphics, iconX, iconY, 9, 9);
+                if (isBlocked) {
+                    renderBlockedOverlay(graphics, iconX, iconY, 9, 9);
+                    if (isHovered) {
+                        graphics.renderTooltip(this.font, Component.translatable("gui.shulespotions.slot_blocked"), mouseX, mouseY);
+                    }
+                }
             }
         }
     }
 
-    private void renderAnimatedEffect(GuiGraphics graphics, ResourceLocation texture, int x, int y, float scale) {
 
+    private void renderEmptyContainer(GuiGraphics graphics, int x, int y, int offsetX, int offsetY) {
         graphics.pose().pushPose();
-
-        graphics.pose().translate(
-                x + 9,
-                y + 9,
-                0
-        );
-
-        graphics.pose().scale(
-                scale,
-                scale,
-                1F
-        );
-
-        graphics.blit(
-                texture,
-                -9,
-                -9,
-                0,
-                0,
-                18,
-                18,
-                18,
-                18
-        );
-
+        graphics.pose().translate(x + offsetX, y + offsetY, 0);
+        graphics.pose().scale(0.8F, 0.8F, 1F);
+        graphics.blit(CONTAINER, -11, -11, 0, 0, 22, 22, 22, 22);
         graphics.pose().popPose();
     }
 
+    private void renderBlockedOverlay(GuiGraphics graphics, int x, int y, int offsetX, int offsetY) {
+        graphics.pose().pushPose();
+        graphics.pose().translate(x + offsetX, y + offsetY, 150);
+        graphics.pose().scale(0.8F, 0.8F, 1F);
+        
+        com.mojang.blaze3d.systems.RenderSystem.enableBlend();
+        com.mojang.blaze3d.systems.RenderSystem.defaultBlendFunc();
+        graphics.blit(CONTAINER_BLOCKED, -11, -11, 0, 0, 22, 22, 22, 22);
+        com.mojang.blaze3d.systems.RenderSystem.disableBlend();
+        
+        graphics.pose().popPose();
+    }
+
+    private void renderLowTolerancyOverlay(GuiGraphics graphics, int x, int y) {
+        graphics.pose().pushPose();
+        graphics.pose().translate(x + 9, y + 9, 150);
+        graphics.pose().scale(0.8F, 0.8F, 1F);
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        graphics.blit(CONTAINER_LOW_TOLERANCY, -11, -11, 0, 0, 22, 22, 22, 22);
+        RenderSystem.disableBlend();
+        graphics.pose().popPose();
+    }
+
+    private void renderAnimatedEffect(GuiGraphics graphics, ResourceLocation texture, int x, int y, float scale, boolean isHovered) {
+        graphics.pose().pushPose();
+        graphics.pose().translate(x + 9, y + 9, 0);
+        graphics.pose().scale(0.8F, 0.8F, 1F);
+        ResourceLocation containerTex = isHovered ? CONTAINER_HOVER : CONTAINER;
+        graphics.blit(containerTex, -11, -11, 0, 0, 22, 22, 22, 22);
+        graphics.pose().scale(scale, scale, 1F);
+        graphics.blit(texture, -9, -9, 0, 0, 18, 18, 18, 18);
+        graphics.pose().popPose();
+    }
 
     private float getPopAnimationScale(int startTick) {
-
         float progress = (animationTicks - startTick) / 8.0F;
-
         progress = Math.max(0F, Math.min(1F, progress));
-
         if (progress < 0.7F) {
             return progress / 0.7F * 1.2F;
         }
-
         float t = (progress - 0.7F) / 0.3F;
-
         return 1.2F - (0.2F * t);
     }
 
+    private void renderCauldron(GuiGraphics graphics, int x, int y) {
+        
+        int cauldronOffsetX = 160 + 5;
+        int cauldronOffsetY = 120 + 10;
+
+
+        graphics.blit(CAULDRON_CONTAINER, x + cauldronOffsetX - 35, y + cauldronOffsetY - 35, 0, 0, 70, 70, 70, 70);
+
+        Block targetBlock = RecipeScroll.getCauldronBlock(scrollStack);
+        if (targetBlock == null) {
+            targetBlock = ModBlocks.POTION_CAULDRON.get();
+        }
+
+        graphics.pose().pushPose();
+        graphics.pose().translate(x + cauldronOffsetX, y + cauldronOffsetY, 150.0f);
+        float scale = 35.0f;
+        if (targetBlock instanceof BigCauldronCore) {
+            scale *= 0.4f;
+        }
+        graphics.pose().scale(scale, -scale, scale);
+        float angle = (Util.getMillis() % 4000L) / 4000.0f * 360.0f;
+        graphics.pose().mulPose(Axis.YP.rotationDegrees(angle));
+        graphics.pose().mulPose(Axis.XP.rotationDegrees(25.0f));
+        graphics.pose().translate(-0.5f, -0.5f, -0.5f);
+
+        BlockState cauldronState = targetBlock.defaultBlockState();
+        BlockRenderDispatcher blockRenderer = Minecraft.getInstance().getBlockRenderer();
+        MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
+
+        Lighting.setupForFlatItems();
+        blockRenderer.renderSingleBlock(
+                cauldronState, graphics.pose(), bufferSource,
+                LightTexture.FULL_BRIGHT,
+                OverlayTexture.NO_OVERLAY,
+                ModelData.EMPTY, null
+        );
+        bufferSource.endBatch();
+        Lighting.setupFor3DItems();
+
+        graphics.pose().popPose();
     }
-
-
-
+}

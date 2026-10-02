@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "shulespotions:block/sitting_ancient_statue"
+    },
+    "facing=east": {
+      "model": "shulespotions:block/sitting_ancient_statue",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "shulespotions:block/sitting_ancient_statue",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "shulespotions:block/sitting_ancient_statue",
+      "y": 270
+    }
+  }
+}

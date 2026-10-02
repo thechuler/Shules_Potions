@@ -22,7 +22,6 @@ public class HighGravityEffect extends MobEffect {
 
     public HighGravityEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
-        // Reducimos la velocidad progresivamente. -0.15 significa -15% por nivel (debido a MULTIPLY_TOTAL y como escala el multiplicador internamente)
         this.addAttributeModifier(
                 Attributes.MOVEMENT_SPEED,
                 "a1b2c3d4-e5f6-7890-1234-56789abcdef0",

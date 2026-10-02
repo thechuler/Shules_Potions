@@ -5,10 +5,13 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.fml.ModList;
+import net.shule.shulespotions.Potions.EffectLevelRegistry;
 import net.shule.shulespotions.Potions.ItemStatRegistry;
 import net.shule.shulespotions.Screens.IngredientButton;
 import net.shule.shulespotions.Screens.codex.base.CodexSpread;
@@ -24,6 +27,26 @@ public class EffectInfoSpread extends CodexSpread {
                     "shulespotions",
                     "textures/gui/effect_codex_screen_effect.png"
             );
+            
+    private static final ResourceLocation LEVEL_STAR =
+            ResourceLocation.fromNamespaceAndPath(
+                    "shulespotions",
+                    "textures/gui/level_star.png"
+            );
+
+    private static final ResourceLocation BENEFICIAL_SPRITE = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/beneficial.png");
+    private static final ResourceLocation HARMFUL_SPRITE = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/harmfull.png");
+    private static final ResourceLocation NEUTRAL_SPRITE = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/neutral.png");
+    
+    private static final ResourceLocation LEVEL_1 = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/level_1.png");
+    private static final ResourceLocation LEVEL_2 = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/level_2.png");
+    private static final ResourceLocation LEVEL_3 = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/level_3.png");
+    private static final ResourceLocation LEVEL_4 = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/level_4.png");
+    private static final ResourceLocation LEVEL_5 = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/level_5.png");
+    private static final ResourceLocation LEVEL_6 = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/level_6.png");
+    
+    private static final ResourceLocation INSTANT_SPRITE = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/instant.png");
+    private static final ResourceLocation DURATION_SPRITE = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/duration.png");
 
     private final MobEffect effect;
     private int guiX, guiY;
@@ -72,13 +95,15 @@ public class EffectInfoSpread extends CodexSpread {
 
         int rows = (int) Math.ceil(sortedIngredients.size() / (double) columns);
         int totalContentHeight = rows * spacing;
-        int visibleHeight = 150;
+        int visibleHeight = 65;
         maxScroll = Math.max(0, totalContentHeight - visibleHeight);
         scrollOffset = 0;
 
         int gridWidth = columns * spacing - 6;
-        int rightPageStart = getRightPageCenter(x) - gridWidth / 2;
-        int startY = y + 55;
+        int leftPageCenter = getLeftPageCenter(x);
+        int titleOffsetX = 10;
+        int leftPageStart = leftPageCenter - gridWidth / 2 + titleOffsetX + 5;
+        int startY = y + 155;
 
         for (int i = 0; i < sortedIngredients.size(); i++) {
             Item item = sortedIngredients.get(i);
@@ -87,7 +112,7 @@ public class EffectInfoSpread extends CodexSpread {
             int col = i % columns;
             int row = i / columns;
 
-            int btnX = rightPageStart + col * spacing;
+            int btnX = leftPageStart + col * spacing;
             int btnY = startY + row * spacing - (int) scrollOffset;
 
             IngredientButton btn = new IngredientButton(btnX, btnY, iconSize, stack, b -> {
@@ -100,11 +125,10 @@ public class EffectInfoSpread extends CodexSpread {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         ResourceLocation id = ForgeRegistries.MOB_EFFECTS.getKey(effect);
-        int leftPageCenter = getLeftPageCenter(guiX);
-        int titleOffsetX = 10;
-        int descY = guiY + 168;
+        int rightPageCenter = getRightPageCenter(guiX);
+        int descY = guiY + 38;
         int descriptionWidth = 130;
-        int startX = leftPageCenter - descriptionWidth / 2 + titleOffsetX + 5;
+        int startX = rightPageCenter - descriptionWidth / 2;
         
         String forcedDescKey = "effect." + (id != null ? id.getNamespace() : "") + "." + (id != null ? id.getPath() : "") + ".description";
         Component description = Component.translatableWithFallback(
@@ -121,11 +145,13 @@ public class EffectInfoSpread extends CodexSpread {
         int columns = 4;
         int spacing = 34;
         int gridWidth = columns * spacing - 6;
-        int rightPageStart = getRightPageCenter(guiX) - gridWidth / 2;
-        int startY = guiY + 55;
-        int visibleHeight = 150;
+        int leftPageCenter = getLeftPageCenter(guiX);
+        int titleOffsetX = 10;
+        int leftPageStart = leftPageCenter - gridWidth / 2 + titleOffsetX + 5;
+        int startY = guiY + 155;
+        int visibleHeight = 65;
 
-        if (mouseX >= rightPageStart - 5 && mouseX <= rightPageStart + gridWidth + 5 &&
+        if (mouseX >= leftPageStart - 5 && mouseX <= leftPageStart + gridWidth + 5 &&
             mouseY >= startY - 5 && mouseY <= startY + visibleHeight) {
             
             for (Button btn : itemButtons) {
@@ -140,7 +166,7 @@ public class EffectInfoSpread extends CodexSpread {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
         if (maxScroll > 0) {
-            scrollOffset = net.minecraft.util.Mth.clamp(scrollOffset - delta * 20, 0, maxScroll);
+            scrollOffset = Mth.clamp(scrollOffset - delta * 20, 0, maxScroll);
             return true;
         }
         return false;
@@ -151,16 +177,52 @@ public class EffectInfoSpread extends CodexSpread {
         renderEffectIcon(graphics, x, y);
         renderEffectInfo(graphics, x, y);
         renderIngredients(graphics, x, y, mouseX, mouseY, partialTick);
+        
+
+        int titleOffsetX = 10;
+        int textY = y + 110;
+        int startX = getLeftPageCenter(x) + titleOffsetX - 31;
+        
+
+        if (mouseX >= startX && mouseX <= startX + 18 && mouseY >= textY && mouseY <= textY + 18) {
+            String categoryKey = switch (effect.getCategory()) {
+                case BENEFICIAL -> "shulespotions.screen.effect_codex.beneficial";
+                case HARMFUL -> "shulespotions.screen.effect_codex.harmful";
+                case NEUTRAL -> "shulespotions.screen.effect_codex.neutral";
+            };
+            graphics.renderTooltip(Minecraft.getInstance().font, Component.translatable(categoryKey), mouseX, mouseY);
+        }
+        
+
+        int levelX = startX + 22;
+        if (mouseX >= levelX && mouseX <= levelX + 18 && mouseY >= textY && mouseY <= textY + 18) {
+            int level = EffectLevelRegistry.getLevel(effect);
+            graphics.renderTooltip(Minecraft.getInstance().font, Component.translatable("shulespotions.screen.effect_codex.level").append(String.valueOf(level)), mouseX, mouseY);
+        }
+        
+
+        int timeX = levelX + 22;
+        if (mouseX >= timeX && mouseX <= timeX + 18 && mouseY >= textY && mouseY <= textY + 18) {
+            String timeKey = effect.isInstantenous() ? "shulespotions.screen.effect_codex.instant" : "shulespotions.duration.name";
+            graphics.renderTooltip(Minecraft.getInstance().font, Component.translatable(timeKey), mouseX, mouseY);
+        }
     }
 
     private void renderEffectIcon(GuiGraphics graphics, int guiX, int guiY) {
         ResourceLocation id = ForgeRegistries.MOB_EFFECTS.getKey(effect);
         if (id == null) return;
 
-        ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(
+        ResourceLocation tempTexture = ResourceLocation.fromNamespaceAndPath(
                 id.getNamespace(),
                 "textures/mob_effect/" + id.getPath() + ".png"
         );
+        
+        ResourceLocation texture;
+        if (Minecraft.getInstance().getResourceManager().getResource(tempTexture).isEmpty()) {
+            texture = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/missing_effect_icon.png");
+        } else {
+            texture = tempTexture;
+        }
 
         int iconX = guiX + 74;
         int iconY = guiY + 35;
@@ -182,7 +244,9 @@ public class EffectInfoSpread extends CodexSpread {
         int textY = guiY + 110;
 
         Component title = Component.translatable(effect.getDescriptionId());
-        drawCenteredScaledString(graphics, title, leftPageCenter + titleOffsetX, guiY + 22, 1.5F, effect.getColor());
+        drawCenteredScaledString(graphics, title, leftPageCenter + titleOffsetX, guiY + 15, 1.5F, effect.getColor());
+
+        
 
         String modName = "-";
         if (id != null) {
@@ -190,44 +254,61 @@ public class EffectInfoSpread extends CodexSpread {
             if ("minecraft".equals(modId)) {
                 modName = "Minecraft";
             } else {
-                modName = net.minecraftforge.fml.ModList.get().getModContainerById(modId)
+                modName = ModList.get().getModContainerById(modId)
                         .map(c -> c.getModInfo().getDisplayName())
                         .orElse(modId.substring(0, 1).toUpperCase() + modId.substring(1));
             }
         }
 
         int descriptionWidth = 130;
-        int leftMargin = leftPageCenter - descriptionWidth / 2 + titleOffsetX + 5;
 
+        int sourceY = guiY + 206;
+        int rightPageCenter = getRightPageCenter(guiX);
+        int sourceX = rightPageCenter - 85;
         Component sourceLabel = Component.translatable("shulespotions.screen.effect_codex.source");
+        
+        graphics.pose().pushPose();
+        graphics.pose().translate(sourceX, sourceY, 0);
+        graphics.pose().scale(0.8F, 0.8F, 1.0F);
         graphics.drawString(Minecraft.getInstance().font,
                 sourceLabel,
-                leftMargin, textY, 0x7A6A52, false);
-
+                0, 0, 0x7A6A52, false);
         graphics.drawString(Minecraft.getInstance().font,
                 modName,
-                leftMargin + Minecraft.getInstance().font.width(sourceLabel) + 5, textY, COLOR_TEXT, false);
+                Minecraft.getInstance().font.width(sourceLabel) + 2, 0, COLOR_TEXT, false);
+        graphics.pose().popPose();
 
-        textY += 18;
+        ResourceLocation categorySprite = switch (effect.getCategory()) {
+            case BENEFICIAL -> BENEFICIAL_SPRITE;
+            case HARMFUL -> HARMFUL_SPRITE;
+            case NEUTRAL -> NEUTRAL_SPRITE;
+        };
+        
+        int level = EffectLevelRegistry.getLevel(effect);
+        ResourceLocation levelSprite = switch (level) {
+            case 1 -> LEVEL_1;
+            case 2 -> LEVEL_2;
+            case 3 -> LEVEL_3;
+            case 4 -> LEVEL_4;
+            case 5 -> LEVEL_5;
+            default -> LEVEL_6;
+        };
+        
+        ResourceLocation timeSprite = effect.isInstantenous() ? INSTANT_SPRITE : DURATION_SPRITE;
+        
+        int startX = leftPageCenter + titleOffsetX - 31;
+        graphics.blit(categorySprite, startX, textY, 0, 0, 18, 18, 18, 18);
+        graphics.blit(levelSprite, startX + 22, textY, 0, 0, 18, 18, 18, 18);
+        graphics.blit(timeSprite, startX + 44, textY, 0, 0, 18, 18, 18, 18);
 
-        Component categoryLabel = Component.translatable("shulespotions.screen.effect_codex.category");
-        graphics.drawString(Minecraft.getInstance().font,
-                categoryLabel,
-                leftMargin, textY, 0x7A6A52, false);
-        graphics.drawString(Minecraft.getInstance().font,
-                Component.translatable(effect.isBeneficial()
-                        ? "shulespotions.screen.effect_codex.beneficial"
-                        : "shulespotions.screen.effect_codex.harmful"),
-                leftMargin + Minecraft.getInstance().font.width(categoryLabel) + 5, textY, effect.isBeneficial() ? 0x00640b : 0xc10000, false);
 
-        textY += 25;
-
+        int descTitleY = guiY + 18;
         Component descTitle = Component.translatable("shulespotions.screen.effect_codex.description");
-        drawCenteredScaledString(graphics, descTitle, leftPageCenter + titleOffsetX, textY, 1.0F, COLOR_TITLE);
+        drawCenteredScaledString(graphics, descTitle, rightPageCenter, descTitleY, 1.5F, COLOR_TITLE);
 
-        textY += 15;
-
-        String forcedDescKey = "effect." + id.getNamespace() + "." + id.getPath() + ".description";
+        String forcedDescKey = "effect." + (id != null ? id.getNamespace() : "") + "." + (id != null ? id.getPath() : "") + ".description";
+        int descX = rightPageCenter - descriptionWidth / 2;
+        int descTextY = descTitleY + 20;
 
         graphics.drawWordWrap(
                 Minecraft.getInstance().font,
@@ -235,8 +316,8 @@ public class EffectInfoSpread extends CodexSpread {
                         forcedDescKey,
                         Component.translatable("shulespotions.screen.effect_codex.missing_description").getString()
                 ),
-                leftMargin,
-                textY,
+                descX,
+                descTextY,
                 descriptionWidth,
                 COLOR_TEXT
         );
@@ -245,20 +326,21 @@ public class EffectInfoSpread extends CodexSpread {
     private void renderIngredients(GuiGraphics graphics, int guiX, int guiY, int mouseX, int mouseY, float partialTick) {
         if (sortedIngredients.isEmpty()) return;
 
-        Component title = Component.translatable("shulespotions.screen.effect_codex.ingredients");
-        int rightPageCenter = getRightPageCenter(guiX);
-        drawCenteredScaledString(graphics, title, rightPageCenter, guiY + 18, 1.5F, COLOR_TITLE);
-
         int columns = 4;
         int spacing = 34;
         int gridWidth = columns * spacing - 6;
-        int rightPageStart = rightPageCenter - gridWidth / 2;
-        int startY = guiY + 55;
-        int visibleHeight = 150;
+        int leftPageCenter = getLeftPageCenter(guiX);
+        int titleOffsetX = 10;
+        int leftPageStart = leftPageCenter - gridWidth / 2 + titleOffsetX + 5;
+        int startY = guiY + 155;
+        int visibleHeight = 65;
 
-        graphics.enableScissor(rightPageStart - 5, startY - 5, rightPageStart + gridWidth + 5, startY + visibleHeight);
+        Component title = Component.translatable("shulespotions.screen.effect_codex.ingredients");
+        drawCenteredScaledString(graphics, title, leftPageCenter + titleOffsetX, guiY + 142, 1.0F, COLOR_TITLE);
 
-        boolean mouseInBox = mouseX >= rightPageStart - 5 && mouseX <= rightPageStart + gridWidth + 5 &&
+        graphics.enableScissor(leftPageStart - 5, startY - 5, leftPageStart + gridWidth + 5, startY + visibleHeight);
+
+        boolean mouseInBox = mouseX >= leftPageStart - 5 && mouseX <= leftPageStart + gridWidth + 5 &&
                              mouseY >= startY - 5 && mouseY <= startY + visibleHeight;
         
         int renderMouseX = mouseInBox ? mouseX : -1;
@@ -282,14 +364,13 @@ public class EffectInfoSpread extends CodexSpread {
         }
 
         if (maxScroll > 0) {
-            int scrollBarX = rightPageStart + gridWidth + 8;
-            int scrollBarY = startY;
+            int scrollBarX = leftPageStart + gridWidth + 8;
             int scrollBarHeight = visibleHeight - 5;
             int thumbHeight = Math.max(10, scrollBarHeight * visibleHeight / (visibleHeight + maxScroll));
-            int thumbY = scrollBarY + (int) ((scrollBarHeight - thumbHeight) * (scrollOffset / (float) maxScroll));
+            int thumbY = startY + (int) ((scrollBarHeight - thumbHeight) * (scrollOffset / (float) maxScroll));
             
-            graphics.fill(scrollBarX, scrollBarY, scrollBarX + 2, scrollBarY + scrollBarHeight, 0x44000000);
-            graphics.fill(scrollBarX, thumbY, scrollBarX + 2, thumbY + thumbHeight, 0xFF5E4A32);
+            graphics.fill(scrollBarX, startY, scrollBarX + 2, startY + scrollBarHeight, 0xFF4A3A26);
+            graphics.fill(scrollBarX, thumbY, scrollBarX + 2, thumbY + thumbHeight, 0xFF9E8364);
         }
     }
 }

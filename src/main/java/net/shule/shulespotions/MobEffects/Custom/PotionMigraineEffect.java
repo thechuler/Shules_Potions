@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.network.PacketDistributor;
 import net.shule.shulespotions.Messages.ModMessages;
-import net.shule.shulespotions.Messages.SyncMigraineActivePacket;
+import net.shule.shulespotions.Messages.Custom.SyncMigraineActivePacket;
 import net.shule.shulespotions.util.MigraineExplosionUtils;
 
 public class PotionMigraineEffect extends MobEffect {

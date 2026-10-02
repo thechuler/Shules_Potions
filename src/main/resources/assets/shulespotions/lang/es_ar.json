@@ -1,10 +1,48 @@
 {
+
+  "gui.shulespotions.slot_blocked": "Bloqueado",
+  "gui.shulespotions.too_complex":"Demasiado complejo",
+
   "block.shulespotions.potion_cauldron": "Caldero de Pociones",
   "block.shulespotions.copper_cauldron": "Caldero de Cobre",
+  "block.shulespotions.meteor_cauldron": "Caldero de Meteorito",
+  "block.shulespotions.big_cauldron": "Caldero Gigante",
   "block.shulespotions.potionshelf": "Estante de Pociones",
   "block.shulespotions.spoon_rack": "Soporte para Cucharas",
   "block.shulespotions.mortar": "Mortero",
   "block.shulespotions.potion_splash": "Charco de Poción",
+  "block.shulespotions.spitter_trap": "Trampa Escupidora",
+  "block.shulespotions.ancite_bricks": "Ladrillos de Ancita",
+  "block.shulespotions.cracked_ancite_bricks": "Ladrillos de Ancita quebrados",
+  "block.shulespotions.chiseled_ancite_bricks": "Ladrillos de Ancita cincelados",
+  "block.shulespotions.smooth_ancite": "Ancita lisa",
+  "block.shulespotions.mossy_ancite_bricks": "Ancita musgosa",
+  "block.shulespotions.grown_mossy_ancite_bricks": "Ancita musgosa crecida",
+  "block.shulespotions.overgrown_mossy_ancite_bricks": "Ancita musgosa sobrecrecida",
+  "block.shulespotions.ancite_ornamented_bricks": "Ladrillos de Ancita ornamentados",
+  "block.shulespotions.chiseled_ancite_ornamented_bricks": "Ladrillos de Ancita cincelados ornamentados",
+  "block.shulespotions.ancite_lock": "Cerradura de Ancita",
+  "block.shulespotions.ancite_blocking_wall": "Pared de Ancita",
+  "block.shulespotions.ancite_pillar": "Pilar de Ancita",
+  "block.shulespotions.ancite_bricks_stairs": "Escaleras de Ancita",
+  "block.shulespotions.instable_ancite_bricks": "Ladrillos de Ancita Inestables",
+  "block.shulespotions.sitting_ancient_statue": "Estatua Sentada",
+  "block.shulespotions.ancient_pedestal": "Pedestal Antiguo",
+  "block.shulespotions.election_ancient_pedestal": "Pedestal Antiguo de Selección",
+  "block.shulespotions.ominous_pedestal": "Pedestal Antiguo Ominoso",
+  "block.shulespotions.meteorite_stone": "Meteorito",
+  "block.shulespotions.meteorite_stone_burned": "Meteorito Calcinado",
+  "block.shulespotions.meteorite_stone_petrified": "Meteorito Petrificado",
+  "block.shulespotions.onyx_ore": "Mena de Ónix",
+  "block.shulespotions.ancite_redstone_clock": "Reloj de Ancita",
+  "block.shulespotions.spike": "Púa",
+
+
+
+
+
+
+
 
   "item.shulespotions.effect_codex": "Códice de Efectos",
   "item.shulespotions.recipe_scroll": "Pergamino de Recetas",
@@ -34,6 +72,7 @@
   "item.shulespotions.netherite_dust": "Netherita Molida",
   "item.shulespotions.gold_dust": "Oro Molido",
   "item.shulespotions.crushed_eye": "Ojo Triturado",
+  "item.shulespotions.crushed_totem": "Totem Triturado",
   "item.shulespotions.onyx": "Ónix",
   "item.shulespotions.alchemist_monocle": "Monóculo del Alquimista",
   "item.shulespotions.mandrake_seed": "Semilla de Mandrágora",
@@ -41,17 +80,35 @@
   "item.shulespotions.ghast_heart": "Corazón de Ghast",
   "item.shulespotions.bastion_fragment": "Fragmento de Bastión",
   "item.shulespotions.bat_ear": "Oreja de Murciélago",
+  "item.shulespotions.dolphin_fin": "Aleta de Delfin",
   "item.shulespotions.allay_essence": "Esencia de Allay",
   "item.shulespotions.alchemist_caliz": "Cáliz",
   "item.shulespotions.fragmented_ender_pearl": "Perla de Ender Fragmentada",
   "item.shulespotions.nitro_spores": "Nitro Esporas",
   "item.shulespotions.butter": "Mantequilla",
+  "item.shulespotions.relic_of_instability": "Reliquia de la Inestabilidad",
+  "item.shulespotions.ancient_key": "Llave Antigua",
+  "item.shulespotions.fermented_carrot": "Zanahoria Fermentada",
+  "item.shulespotions.common_loot_bundle": "Saco de Tesoros Común",
+  "item.shulespotions.uncommon_loot_bundle": "Saco de Tesoros Poco Común",
+  "item.shulespotions.inusual_loot_bundle": "Saco de Tesoros Inusual",
+  "item.shulespotions.rare_loot_bundle": "Saco de Tesoros Raro",
+  "item.shulespotions.exotic_loot_bundle": "Saco de Tesoros Exótico",
+  "item.shulespotions.ancient_loot_bundle": "Saco de Tesoros Antiguo",
 
 
   "block.shulespotions.potion_cauldron.commentary": "Mi viejo y confiable caldero... Me trae recuerdos de mi primer brebaje.",
   "block.shulespotions.potion_cauldron.description": "Para utilizar el caldero de pociones primero deberás llenarlo con un cubo de agua. \n Luego, al agregar ingredientes, tu mezcla obtendrá una probabilidad de ganar un determinado efecto.\n Podrás saber si lo obtuviste o no, tras mezclar el líquido con una cuchara.",
   "block.shulespotions.copper_cauldron.commentary": "El cobre no solo es hermoso, tiene propiedades conductoras... O eso decían los viejos alquimistas.",
   "block.shulespotions.copper_cauldron.description": "Una versión mejorada del caldero tradicional. Gracias a las propiedades térmicas del cobre, este caldero permite mezclar más ingredientes de lo normal.",
+
+  "block.shulespotions.meteor_cauldron.commentary": "Los antiguos utilizaron fragmentos de los mismos astros para crearlo. Mi pregunta es: ¿cómo?",
+  "block.shulespotions.meteor_cauldron.description": "El caldero de meteorito permite a su alquimista crear brebajes más avanzados, estabilizando su contenido y permitiendo una mayor complejidad alquímica.",
+
+  "block.shulespotions.big_cauldron.commentary": "Los jeroglíficos de las ruinas cuentan historias de un dios encerrado en este caldero... No estoy seguro de si me siento cómodo metiendo mis cosas en él.",
+  "block.shulespotions.big_cauldron.description": "El caldero gigante puede ser encontrado en lo más profundo de las ruinas antiguas enterradas bajo las selvas... Sus propiedades alquímicas son simplemente superiores a todo.",
+
+
   "block.shulespotions.spoon_rack.commentary": "Un lugar respetable donde mis herramientas pueden descansar.",
   "block.shulespotions.spoon_rack.description": "El soporte para cucharas te permite almacenar y exhibir hasta 3 cucharas diferentes al mismo tiempo. Al interactuar con él, podrás colgarlas cómodamente para tenerlas siempre a mano durante el preparado.",
   "item.shulespotions.wooden_spoon.commentary": "Una simple rama, convertida en una herramienta magnífica...",
@@ -129,6 +186,7 @@
   "effect.shulespotions.swap": "Intercambio",
   "effect.shulespotions.explosive_sneeze": "Estornudo Explosivo",
   "effect.shulespotions.frost_walk": "Caminata Gélida",
+  "effect.shulespotions.body_break_down": "Desmembramiento",
 
   "effect.minecraft.absorption.description": "Otorga al usuario salud adicional que absorbe el daño antes de que su salud normal se vea afectada.",
   "effect.minecraft.bad_omen.description": "Marca al objetivo con un aura ominosa que desencadena una invasión al entrar a una aldea.",
@@ -183,6 +241,7 @@
   "effect.shulespotions.fertilizer.description": "Genera un crecimiento acelerado en las plantas al rededor del usuario.",
   "effect.shulespotions.potion_migraine.description": "Provoca que la cabeza del objetivo se llene de líquido de poción. Cuando el efecto termina su cabeza explotará.",
   "effect.shulespotions.decapitated.description": "¿Cómo si quiera estoy vivo?",
+  "effect.shulespotions.body_break_down.description": "Tus extremidades se desprenden una a una hasta que solo queda tu cabeza cercenada.",
   "effect.shulespotions.orbital_gravity.description": "Manipula el campo gravitacional de las entidades cercanas al objetivo haciendo que orbiten a su alrededor.",
   "effect.shulespotions.swap.description": "Intercambia la posicion del objetivo con la del usuario.",
   "effect.shulespotions.explosive_sneeze.description": "Provoca que los estornudos del usuario liberen nitroglicerina. En palabras simples un gran BOOM!",
@@ -211,6 +270,7 @@
   "effect.froglins.infection.description": "Profana el cuerpo del objetivo convirtiéndolo en un asqueroso froglin zombie tras su muerte.",
 
   "death.attack.shulespotions.migraine_explosion": "A %1$s le explotó la cabeza por una fuerte migraña",
+  "death.attack.shulespotions.alchemy_damage": "A %1$s lo mató el poder de la alquimia",
 
   "tooltip.shulespotions.recipe_scroll": "¡Haz clic derecho en un caldero lleno para guardar la receta!",
 
@@ -244,10 +304,12 @@
 
   "shulespotions.codex.items": "Herramientas",
   "shulespotions.screen.effect_codex.source": "Fuente: ",
-  "shulespotions.screen.effect_codex.instant": "¿Es Instantáneo?",
+  "shulespotions.screen.effect_codex.instant": "Instantáneo",
   "shulespotions.screen.effect_codex.category": "Categoría: ",
   "shulespotions.screen.effect_codex.beneficial": "Beneficioso",
   "shulespotions.screen.effect_codex.harmful": "Dañino",
+  "shulespotions.screen.effect_codex.neutral": "Neutral",
+  "shulespotions.screen.effect_codex.level": "Nivel: ",
   "shulespotions.screen.effect_codex.description": "Descripción",
   "shulespotions.screen.effect_codex.ingredients": "Ingredientes",
   "shulespotions.screen.effect_codex.missing_description": "El Alquimista no tiene idea de qué hace este efecto...",
@@ -257,11 +319,14 @@
   "shulespotions.vitality.name": "Vitalidad",
   "shulespotions.flavor.name": "Sabor",
   "shulespotions.stability.name": "Estabilidad",
+  "shulespotions.complexity.name": "Complejidad",
   "shulespotions.screen.effect_codex.purity.description": "La Pureza de una poción la hace más fuerte. Cada punto de Pureza equivale a un nivel de efecto de poción.",
   "shulespotions.screen.effect_codex.duration.description": "La Duración de una poción determina cuánto tiempo duran sus efectos.",
   "shulespotions.screen.effect_codex.stability.description": "La Estabilidad de una poción previene que el alquimista sufra un evento caótico. ¡Mantenla siempre en valores altos!",
   "shulespotions.screen.effect_codex.flavor.description": "El Sabor de una poción determina la cantidad de hambre que restaura (o agota) al ser bebida.",
   "shulespotions.screen.effect_codex.vitality.description": "La Vitalidad de una poción determina la cantidad de salud que restaura (o agota) al ser bebida.",
+  "shulespotions.screen.effect_codex.complexity.description": "La Complejidad de un efecto define el nivel mínimo de caldero requerido para elaborarlo. Los efectos de mayor complejidad requieren calderos más avanzados.",
+  "shulespotions.screen.effect_codex.no_effects": "No hay efectos registrados para este nivel.",
   "shulespotions.codex.spoon": "Cuchara",
   "shulespotions.codex.item.commentary": "El Alquimista no ha dejado anotaciones sobre esto...",
   "shulespotions.codex.see_more": "Ver Más",
@@ -292,7 +357,11 @@
   "creativetab.main_tab": "Shule's Potions",
   "shulespotion.codex.empty": " ",
   "sounds.shulespotions.cauldron_boiling": "Caldero hirviendo",
+  "sounds.shulespotions.body_break": "Miembro desprendiéndose",
   "entity.shulespotions.throwable_potion_bottle_projectile": "Botella de Poción Arrojadiza",
   "entity.shulespotions.potion_splash_projectile": "Salpicadura de Poción",
-  "entity.shulespotions.player_clone_name": "Clon de %s"
+  "entity.shulespotions.player_clone_name": "Clon de %s",
+  "entity.shulespotions.player_head": "Cabeza Cercenada",
+  "entity.shulespotions.player_arm": "Brazo Cercenado",
+  "entity.shulespotions.player_leg": "Pierna Cercenada"
 }

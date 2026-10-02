@@ -1,11 +1,11 @@
 package net.shule.shulespotions.Items.custom;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -18,9 +18,12 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
-import net.shule.shulespotions.Screens.RecipeScrollScreen;
+import net.shule.shulespotions.Screens.ClientScreenHooks;
 import net.shule.shulespotions.util.CauldronActions.CauldronAction;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +33,7 @@ import java.util.List;
 public class RecipeScroll extends Item {
 
     public static final String ACTIONS_TAG = "SPActions";
-    public static final String POTION_FLUID_TAG = "SPPotionFluid";
+    public static final String POTION_FLUID_TAG = PotionLiquidTankItem.FLUID_TAG;
 
     public RecipeScroll(Properties pProperties) {
         super(pProperties);
@@ -68,6 +71,7 @@ public class RecipeScroll extends Item {
 
         setActions(recipeScroll, actions);
         setPotionFluid(recipeScroll, fluid);
+        setCauldronBlock(recipeScroll, pContext.getLevel().getBlockState(pContext.getClickedPos()).getBlock());
 
         heldStack.shrink(1);
 
@@ -87,9 +91,7 @@ public class RecipeScroll extends Item {
         if (hasRecipeData(stack)) {
 
             if (pLevel.isClientSide) {
-                Minecraft.getInstance().setScreen(
-                        new RecipeScrollScreen(stack)
-                );
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientScreenHooks.openRecipeScrollScreen(stack));
             }
 
             pLevel.playSound(
@@ -179,6 +181,29 @@ public class RecipeScroll extends Item {
         CompoundTag fluidTag = tag.getCompound(POTION_FLUID_TAG);
 
         return FluidStack.loadFluidStackFromNBT(fluidTag);
+    }
+
+    /*
+     * =========================
+     * CAULDRON BLOCK
+     * =========================
+     */
+
+    public static void setCauldronBlock(ItemStack stack, net.minecraft.world.level.block.Block block) {
+        CompoundTag tag = stack.getOrCreateTag();
+        ResourceLocation id = ForgeRegistries.BLOCKS.getKey(block);
+        if (id != null) {
+            tag.putString("CauldronBlockId", id.toString());
+        }
+    }
+
+    public static net.minecraft.world.level.block.Block getCauldronBlock(ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.contains("CauldronBlockId")) {
+            ResourceLocation id = ResourceLocation.parse(tag.getString("CauldronBlockId"));
+            return ForgeRegistries.BLOCKS.getValue(id);
+        }
+        return null;
     }
 
     /*

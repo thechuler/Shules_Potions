@@ -12,6 +12,8 @@ public class EffectButton extends Button {
 
     private final MobEffect effect;
     private final ResourceLocation texture;
+    private static final ResourceLocation CONTAINER_TEXTURE = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/container.png");
+    private static final ResourceLocation CONTAINER_HOVER_TEXTURE = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/container_hover.png");
     private long hoverStartTime = 0L;
     private boolean lastHovered = false;
     private static final long POP_DURATION = 180; // ms
@@ -22,10 +24,16 @@ public class EffectButton extends Button {
         setTooltip(Tooltip.create(Component.translatable(effect.getDescriptionId())));
         ResourceLocation id = ForgeRegistries.MOB_EFFECTS.getKey(effect);
 
-        texture = ResourceLocation.fromNamespaceAndPath(
+        ResourceLocation tempTexture = ResourceLocation.fromNamespaceAndPath(
                 id.getNamespace(),
                 "textures/mob_effect/" + id.getPath() + ".png"
         );
+        
+        if (net.minecraft.client.Minecraft.getInstance().getResourceManager().getResource(tempTexture).isEmpty()) {
+            texture = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/missing_effect_icon.png");
+        } else {
+            texture = tempTexture;
+        }
     }
 
     public MobEffect getEffect() {
@@ -66,7 +74,15 @@ public class EffectButton extends Button {
 
             iconScale *= (1F + extraScale);
         }
+        float baseScale = width / 18F;
+        ResourceLocation currentContainerTexture = hovered ? CONTAINER_HOVER_TEXTURE : CONTAINER_TEXTURE;
+        
 
+        graphics.pose().pushPose();
+        graphics.pose().translate(getX() + width / 2F, getY() + height / 2F, 0);
+        graphics.pose().scale(baseScale, baseScale, 1F);
+        graphics.blit(currentContainerTexture, -11, -11, 0, 0, 22, 22, 22, 22);
+        graphics.pose().popPose();
 
         graphics.pose().pushPose();
 
@@ -95,15 +111,5 @@ public class EffectButton extends Button {
         );
 
         graphics.pose().popPose();
-    }
-
-    private void renderGlow(GuiGraphics graphics, int x, int y, int width, int height) {
-
-        graphics.setColor(1F, 1F, 0.5F, 0.35F);
-
-        graphics.fill(x - 2, y - 2, x + width + 2,
-                y + height + 2, 0xFFFFFFFF);
-
-        graphics.setColor(1F, 1F, 1F, 1F);
     }
 }

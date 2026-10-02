@@ -21,7 +21,23 @@ public class ProviderBlockTag extends BlockTagsProvider {
 
        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.COPPER_CAULDRON.get());
        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.POTION_CAULDRON.get());
+       this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.METEOR_CAULDRON.get());
+       this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.BIG_CAULDRON.get());
        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.MORTAR.get());
+
+
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.METEORITE_STONE.get());
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.METEORITE_STONE_BURNED.get());
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.METEORITE_STONE_PETRIFIED.get());
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ONYX_ORE.get());
+        this.tag(BlockTags.NEEDS_IRON_TOOL).add(ModBlocks.ONYX_ORE.get());
+
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.ONYX_ORE.get());
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.SPIKE.get());
+
+
+
+
 
 
     }

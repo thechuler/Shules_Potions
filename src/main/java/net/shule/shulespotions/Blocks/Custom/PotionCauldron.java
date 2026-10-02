@@ -3,32 +3,34 @@ package net.shule.shulespotions.Blocks.Custom;
 import net.minecraft.core.BlockPos;
 
 
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -37,30 +39,59 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.shule.shulespotions.Blocks.Entities.PotionCauldronBE;
 
-import net.shule.shulespotions.Particles.ModParticles;
 import org.jetbrains.annotations.Nullable;
-
-import static net.shule.shulespotions.util.ColorUtils.intToRGB;
 
 
 public class PotionCauldron extends BaseEntityBlock {
 
-    private final int MAX_INGREDIENT_COUNT;
-    private final int MAX_LIQUID_LEVEL;
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
+    private final int MAX_INGREDIENT_COUNT;
+    private final int MAX_EFFECT_COUNT;
+    private final int cauldronLevel;
 
     private static final VoxelShape INSIDE = box(2.0D, 3.0D, 2.0D, 14.0D, 15.0D, 14.0D);
 
    protected static final VoxelShape SHAPE = Shapes.or(box(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D), box(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D), box(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), INSIDE);
 
-    public PotionCauldron(Properties pProperties, int maxIngredientCount, int maxLiquidLevel) {
+    public PotionCauldron(Properties pProperties, int maxIngredientCount, int maxEffectCount, int maxLiquidLevel, int cauldronLevel) {
         super(pProperties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
         MAX_INGREDIENT_COUNT = maxIngredientCount;
-        MAX_LIQUID_LEVEL = maxLiquidLevel;
+        MAX_EFFECT_COUNT = maxEffectCount;
+        this.cauldronLevel = cauldronLevel;
+    }
 
+    public int getCauldronLevel() {
+        return cauldronLevel;
+    }
+
+    public int getMAX_EFFECT_COUNT() {
+        return MAX_EFFECT_COUNT;
     }
 
 
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
@@ -138,37 +169,10 @@ public class PotionCauldron extends BaseEntityBlock {
     }
 
 
-    @Override
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        if (level.isClientSide) return;
-
-        if (!(entity instanceof ItemEntity itemEntity)) return;
-
-        BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof PotionCauldronBE cauldron) {
-
-                if (cauldron.getTank().isEmpty() || cauldron.getActions().size() >= MAX_INGREDIENT_COUNT) return;
-                ItemStack stack = itemEntity.getItem();
-                cauldron.checkItem(stack);
-                level.playSound(
-                        null,
-                        pos,
-                        SoundEvents.AMBIENT_UNDERWATER_ENTER,
-                        SoundSource.BLOCKS,
-                        0.6F,
-                        2F + level.random.nextFloat() * 0.2F
-                );
-
-                if (stack.getCount() > 1) {
-                    stack.shrink(1);
-                } else {
-                    itemEntity.discard();
-                }
-            }
 
 
-
-
+    public AABB getItemCaptureAABB(BlockPos pos) {
+        return new AABB(pos).move(0, 0.2, 0).deflate(0.2, 0.2, 0.2);
     }
 
 
@@ -197,8 +201,25 @@ public class PotionCauldron extends BaseEntityBlock {
 
 
 
+    public float getLiquidMinY() { return 0.2f; }
+    public float getLiquidMaxY() { return 0.9f; }
+    public float getLiquidDropOffset() { return 0.35f; }
+    public float getLiquidWidthMin() { return 0.1f; }
+    public float getLiquidWidthMax() { return 0.9f; }
+    public float getItemRotationRadius() { return 0.25f; }
+    public float getBeamWidth() { return 0.35f; }
+    public float getBeamLength() { return 4.5f; }
 
-    }
+
+    public float getBubbleParticleChance() { return 0.4f; }
+    public float getBubbleParticleSpread() { return 0.5f; } // Multiplicador para offsetX/offsetZ
+    public float getBubbleParticleY() { return 1.0f; }
+
+    public int getExplosionParticleCount() { return 200; }
+    public double getExplosionParticleRadius() { return 2.5; }
+    public double getExplosionParticleHeightSpread() { return 1.8; }
+    public double getExplosionParticleY() { return 1.0; }
+}
 
 
 

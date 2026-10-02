@@ -5,10 +5,13 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 
 public class IngredientButton extends Button {
 
     private final ItemStack stack;
+    private static final ResourceLocation CONTAINER_TEXTURE = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/container.png");
+    private static final ResourceLocation CONTAINER_HOVER_TEXTURE = ResourceLocation.fromNamespaceAndPath("shulespotions", "textures/gui/container_hover.png");
     private long hoverStartTime = 0L;
     private boolean lastHovered = false;
     private static final long POP_DURATION = 180; // ms
@@ -46,6 +49,15 @@ public class IngredientButton extends Button {
             }
             iconScale *= (1F + extraScale);
         }
+        float baseScale = width / 18F;
+        ResourceLocation currentContainerTexture = hovered ? CONTAINER_HOVER_TEXTURE : CONTAINER_TEXTURE;
+        
+
+        graphics.pose().pushPose();
+        graphics.pose().translate(getX() + width / 2F, getY() + height / 2F, 0);
+        graphics.pose().scale(baseScale, baseScale, 1F);
+        graphics.blit(currentContainerTexture, -11, -11, 0, 0, 22, 22, 22, 22);
+        graphics.pose().popPose();
 
         graphics.pose().pushPose();
         graphics.pose().translate(getX() + width / 2F, getY() + height / 2F, hovered ? 200 : 0);

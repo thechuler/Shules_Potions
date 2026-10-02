@@ -28,11 +28,25 @@ public class BlockLootTable extends BlockLootSubProvider {
         dropSelf(ModBlocks.POTION_CAULDRON.get());
         dropSelf(ModBlocks.POTIONSHELF.get());
         dropSelf(ModBlocks.SPOON_RACK.get());
+
+        dropSelf(ModBlocks.METEORITE_STONE.get());
+        dropSelf(ModBlocks.METEORITE_STONE_BURNED.get());
+        dropSelf(ModBlocks.METEORITE_STONE_PETRIFIED.get());
+        dropSelf(ModBlocks.METEOR_CAULDRON.get());
+        dropSelf(ModBlocks.BIG_CAULDRON.get());
+
+
+
+
+        dropSelf(ModBlocks.SPIKE.get());
+        this.add(ModBlocks.ONYX_ORE.get(),
+                block -> createOreDrop(ModBlocks.ONYX_ORE.get(), ModItems.ONYX.get())
+        );
+
+
         this.add(ModBlocks.POTION_SPLASH.get(),noDrop());
-
-
-
         this.add(ModBlocks.POTION_FLUID_BLOCK.get(), noDrop());
+        this.add(ModBlocks.UNFINISHED_POTION_FLUID_BLOCK.get(), noDrop());
     }
 
 

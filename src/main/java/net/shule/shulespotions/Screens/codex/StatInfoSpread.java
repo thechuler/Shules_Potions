@@ -19,13 +19,13 @@ import java.util.Map;
 
 public class StatInfoSpread extends CodexSpread {
 
-    private final String STAT;
+    protected final String STAT;
     private static final ResourceLocation BACKGROUND =
             ResourceLocation.fromNamespaceAndPath(
                     "shulespotions",
                     "textures/gui/effect_codex_screen_effect.png");
 
-    private int guiX, guiY;
+    protected int guiX, guiY;
     private double scrollOffset = 0;
     private int maxScroll = 0;
     private final List<Button> itemButtons = new ArrayList<>();
@@ -45,7 +45,10 @@ public class StatInfoSpread extends CodexSpread {
         this.guiX = x;
         this.guiY = y;
         addBackButton(x, y);
-        
+        initRightPage(x, y);
+    }
+
+    protected void initRightPage(int x, int y) {
         sortedIngredients = ItemStatRegistry.getEntries()
                 .entrySet().stream()
                 .filter(e -> getStatValue(e.getValue()) != 0)
@@ -95,6 +98,13 @@ public class StatInfoSpread extends CodexSpread {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (handleLeftDescriptionClick(mouseX, mouseY)) {
+            return true;
+        }
+        return handleRightPageClick(mouseX, mouseY, button);
+    }
+
+    protected boolean handleLeftDescriptionClick(double mouseX, double mouseY) {
         int leftPageCenter = getLeftPageCenter(guiX);
         int titleOffsetX = 10;
         int textY = guiY + 110 + 15; // descTitle Y is 110, then +15
@@ -102,10 +112,10 @@ public class StatInfoSpread extends CodexSpread {
         int startX = leftPageCenter - descriptionWidth / 2 + titleOffsetX + 5;
         
         Component descriptionText = Component.translatable("shulespotions.screen.effect_codex."+STAT+".description");
-        if (handleTextClick(descriptionText, startX, textY, descriptionWidth, mouseX, mouseY)) {
-            return true;
-        }
+        return handleTextClick(descriptionText, startX, textY, descriptionWidth, mouseX, mouseY);
+    }
 
+    protected boolean handleRightPageClick(double mouseX, double mouseY, int button) {
         if (sortedIngredients.isEmpty()) return false;
 
         int columns = 4;
@@ -140,10 +150,14 @@ public class StatInfoSpread extends CodexSpread {
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick, int x, int y) {
         renderStatIcon(graphics, x, y);
         renderStatInfo(graphics, x, y);
+        renderRightPage(graphics, x, y, mouseX, mouseY, partialTick);
+    }
+
+    protected void renderRightPage(GuiGraphics graphics, int x, int y, int mouseX, int mouseY, float partialTick) {
         renderIngredients(graphics, x, y, mouseX, mouseY, partialTick);
     }
 
-    private void renderStatIcon(GuiGraphics graphics, int guiX, int guiY) {
+    protected void renderStatIcon(GuiGraphics graphics, int guiX, int guiY) {
         ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(ShulesPotions.MODID,
                 "textures/gui/" + STAT + "_icon" + ".png"
         );
@@ -160,7 +174,7 @@ public class StatInfoSpread extends CodexSpread {
         graphics.pose().popPose();
     }
 
-    private void renderStatInfo(GuiGraphics graphics, int guiX, int guiY) {
+    protected void renderStatInfo(GuiGraphics graphics, int guiX, int guiY) {
         int leftPageCenter = getLeftPageCenter(guiX);
         int titleOffsetX = 10;
         int textY = guiY + 110;

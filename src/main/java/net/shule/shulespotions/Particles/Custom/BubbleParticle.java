@@ -15,12 +15,12 @@ public class BubbleParticle extends TextureSheetParticle {
 
         this.sprites = sprites;
 
-        // Movimiento random o leve
+
         this.xd = (random.nextDouble() - 0.5) * 0.02;
         this.yd = 0.02;
         this.zd = (random.nextDouble() - 0.5) * 0.02;
 
-        // Color dinámico
+
         this.rCol = (float) r;
         this.gCol = (float) g;
         this.bCol = (float) b;
@@ -41,7 +41,7 @@ public class BubbleParticle extends TextureSheetParticle {
 
         this.yd += 0.002;
 
-        // fade out
+
         this.alpha = 1.0f - ((float) this.age / this.lifetime);
     }
 

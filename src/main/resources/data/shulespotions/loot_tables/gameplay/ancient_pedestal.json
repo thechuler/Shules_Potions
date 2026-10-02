@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "shulespotions:common_loot_bundle", "weight": 50 },
+        { "type": "minecraft:item", "name": "shulespotions:uncommon_loot_bundle", "weight": 20 },
+        { "type": "minecraft:item", "name": "shulespotions:inusual_loot_bundle", "weight": 10 },
+        { "type": "minecraft:item", "name": "shulespotions:rare_loot_bundle", "weight": 5 },
+        { "type": "minecraft:item", "name": "shulespotions:exotic_loot_bundle", "weight": 4 },
+        { "type": "minecraft:item", "name": "shulespotions:ancient_loot_bundle", "weight": 1 }
+      ]
+    }
+  ]
+}

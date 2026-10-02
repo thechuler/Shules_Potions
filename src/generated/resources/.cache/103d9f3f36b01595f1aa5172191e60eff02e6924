@@ -1,1 +1,4 @@
-// 1.20.1	2026-02-28T16:12:57.5021846	Registries
+// 1.20.1	2026-10-01T20:44:29.2373469	Registries
+a8e85b4a65b263f2cbf1767779a82b7a1071e9b6 data/shulespotions/forge/biome_modifier/add_onyx_ore.json
+872be41ff02c5a40a09f9872891b551a5cd60f44 data/shulespotions/worldgen/configured_feature/onyx_ore.json
+44d6342f1f80fbe68f50f2cceb9bf1268492b9ea data/shulespotions/worldgen/placed_feature/onyx_ore_placed.json
