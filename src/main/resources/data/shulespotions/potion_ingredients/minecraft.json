@@ -1,4 +1,93 @@
 {
+
+
+
+  "#minecraft:enchanted_books": {
+    "stability":20,
+    "duration": 40,
+    "color": "#170041"
+  },
+
+  "#minecraft:logs": {
+    "stability":25,
+    "color": "#663e28"
+  },
+  "#minecraft:planks": {
+    "stability":15,
+    "color": "#663e28"
+  },
+
+  "#forge:cobblestone": {
+    "stability":10,
+    "duration":10,
+    "effects": {
+      "shulespotions:stone_crusher": 2
+    },
+    "color": "#595959"
+  },
+
+  "#forge:stone": {
+    "stability":10,
+    "duration":10,
+    "effects": {
+      "shulespotions:stone_crusher": 2
+    },
+    "color": "#595959"
+  },
+  "#minecraft:wool": {
+    "stability":-10,
+    "duration": 10,
+    "color": "#ffffff"
+  },
+  "#forge:glass": {
+    "stability":-20,
+    "duration": 10,
+    "color": "#ffffff"
+  },
+  "#minecraft:terracotta": {
+    "stability":10,
+    "duration": -10,
+    "color": "#cb733d"
+  },
+  "#minecraft:candles": {
+    "stability":10,
+    "duration": -20,
+    "vitality": 3,
+    "color": "#fde8a6"
+  },
+  "#minecraft:dirt": {
+    "stability":10,
+    "duration": -10,
+    "vitality": 1,
+    "flavor": -1,
+    "effects": {
+      "shulespotions:fertilizer": 5
+    },
+    "color": "#5e4414"
+  },
+  "#minecraft:leaves": {
+    "duration": -10,
+    "vitality": 3,
+    "effects": {
+      "shulespotions:fertilizer": 10
+    },
+    "color": "#368b09"
+  },
+  "#minecraft:flowers": {
+    "duration": -20,
+    "vitality": 4,
+    "effects": {
+      "shulespotions:fertilizer": 20
+    },
+    "color": "#368b09"
+  },
+
+
+
+
+
+
+
   "minecraft:golden_apple": {
     "flavor": 5,
     "vitality": 7,

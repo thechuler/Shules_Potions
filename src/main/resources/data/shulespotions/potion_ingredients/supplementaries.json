@@ -8,10 +8,8 @@
 
   "minecraft:blaze_powder": {
     "duration":25,
-    "purity": 1,
-    "vitality": -23,
     "effects": {
-      "supplementaries:flammable": 18
+      "supplementaries:flammable": 100
     },
     "color": "#f0902b"
   },
@@ -19,7 +17,7 @@
   "minecraft:iron_ingot": {
     "duration":30,
     "effects": {
-      "supplementaries:overencumbered": 20
+      "supplementaries:overencumbered": 100
     },
     "color": "#b6bbda"
   }

@@ -14,12 +14,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Map;
 
-public class EffectLevelLoader extends SimpleJsonResourceReloadListener {
+public class EffectConfigLoader extends SimpleJsonResourceReloadListener {
 
     private static final Gson GSON = new GsonBuilder().create();
 
-    public EffectLevelLoader() {
-        super(GSON, "potion_effect_levels");
+    public EffectConfigLoader() {
+        super(GSON, "potion_effect_configs");
     }
 
     @Override
@@ -27,7 +27,7 @@ public class EffectLevelLoader extends SimpleJsonResourceReloadListener {
                          ResourceManager resourceManager,
                          ProfilerFiller profiler) {
 
-        EffectLevelRegistry.clear();
+        EffectConfigRegistry.clear();
 
         for (Map.Entry<ResourceLocation, JsonElement> fileEntry : object.entrySet()) {
             try {
@@ -69,18 +69,21 @@ public class EffectLevelLoader extends SimpleJsonResourceReloadListener {
 
                     if (entry.getValue().isJsonPrimitive() && entry.getValue().getAsJsonPrimitive().isNumber()) {
                         int level = entry.getValue().getAsInt();
-                        EffectLevelRegistry.register(effectId, level);
-                        System.out.println("Loaded level " + level + " for effect " + effectId);
-                    } else if (entry.getValue().isJsonObject() && entry.getValue().getAsJsonObject().has("level")) {
-                        int level = entry.getValue().getAsJsonObject().get("level").getAsInt();
-                        EffectLevelRegistry.register(effectId, level);
-                        System.out.println("Loaded level " + level + " for effect " + effectId);
+                        EffectConfigRegistry.register(effectId, new EffectConfig(level, false));
+                        System.out.println("Loaded config for effect " + effectId + " (level=" + level + ", hidden=false)");
+                    } else if (entry.getValue().isJsonObject()) {
+                        JsonObject obj = entry.getValue().getAsJsonObject();
+                        int level = obj.has("level") ? obj.get("level").getAsInt() : 1;
+                        boolean hidden = obj.has("hidden") && obj.get("hidden").getAsBoolean();
+                        EffectConfigRegistry.register(effectId, new EffectConfig(level, hidden));
+                        System.out.println("Loaded config for effect " + effectId + " (level=" + level + ", hidden=" + hidden + ")");
                     } else {
-                        System.out.println("Invalid level format for effect: " + effectId);
+                        System.out.println("Invalid config format for effect: " + effectId);
                     }
                 }
+
             } catch (Exception e) {
-                System.err.println("Error parsing effect levels file: " + fileEntry.getKey());
+                System.err.println("Error parsing effect config file: " + fileEntry.getKey());
                 e.printStackTrace();
             }
         }

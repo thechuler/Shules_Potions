@@ -6,9 +6,10 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.shule.shulespotions.Potions.EffectLevelRegistry;
+import net.shule.shulespotions.Potions.EffectConfigRegistry;
 import net.shule.shulespotions.Screens.EffectButton;
 
 import java.util.ArrayList;
@@ -61,7 +62,8 @@ public class ComplexityStatInfoSpread extends StatInfoSpread {
 
     private void rebuildEffectList() {
         currentLevelEffects = ForgeRegistries.MOB_EFFECTS.getValues().stream()
-                .filter(effect -> EffectLevelRegistry.getLevel(effect) == selectedLevel)
+                .filter(effect -> !EffectConfigRegistry.isHidden(effect))
+                .filter(effect -> EffectConfigRegistry.getLevel(effect) == selectedLevel)
                 .sorted(Comparator.comparing((MobEffect e) -> {
                     ResourceLocation key = ForgeRegistries.MOB_EFFECTS.getKey(e);
                     return key != null ? key.getNamespace() : "";
@@ -104,7 +106,7 @@ public class ComplexityStatInfoSpread extends StatInfoSpread {
         int selectorStartX = rightPageCenter - SELECTOR_TOTAL_WIDTH / 2;
         int selectorY = guiY + SELECTOR_Y_OFFSET;
 
-        // Level selector clicks
+
         for (int i = 1; i <= 6; i++) {
             int btnX = selectorStartX + (i - 1) * SELECTOR_SPACING;
             int btnY = selectorY;
@@ -144,7 +146,7 @@ public class ComplexityStatInfoSpread extends StatInfoSpread {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
         if (maxScroll > 0) {
-            scrollOffset = net.minecraft.util.Mth.clamp(scrollOffset - delta * 20, 0, maxScroll);
+            scrollOffset = Mth.clamp(scrollOffset - delta * 20, 0, maxScroll);
             return true;
         }
         return false;

@@ -186,7 +186,6 @@
   "effect.shulespotions.swap": "Intercambio",
   "effect.shulespotions.explosive_sneeze": "Estornudo Explosivo",
   "effect.shulespotions.frost_walk": "Caminata Gélida",
-  "effect.shulespotions.body_break_down": "Desmembramiento",
 
   "effect.minecraft.absorption.description": "Otorga al usuario salud adicional que absorbe el daño antes de que su salud normal se vea afectada.",
   "effect.minecraft.bad_omen.description": "Marca al objetivo con un aura ominosa que desencadena una invasión al entrar a una aldea.",
@@ -241,7 +240,6 @@
   "effect.shulespotions.fertilizer.description": "Genera un crecimiento acelerado en las plantas al rededor del usuario.",
   "effect.shulespotions.potion_migraine.description": "Provoca que la cabeza del objetivo se llene de líquido de poción. Cuando el efecto termina su cabeza explotará.",
   "effect.shulespotions.decapitated.description": "¿Cómo si quiera estoy vivo?",
-  "effect.shulespotions.body_break_down.description": "Tus extremidades se desprenden una a una hasta que solo queda tu cabeza cercenada.",
   "effect.shulespotions.orbital_gravity.description": "Manipula el campo gravitacional de las entidades cercanas al objetivo haciendo que orbiten a su alrededor.",
   "effect.shulespotions.swap.description": "Intercambia la posicion del objetivo con la del usuario.",
   "effect.shulespotions.explosive_sneeze.description": "Provoca que los estornudos del usuario liberen nitroglicerina. En palabras simples un gran BOOM!",
@@ -357,11 +355,7 @@
   "creativetab.main_tab": "Shule's Potions",
   "shulespotion.codex.empty": " ",
   "sounds.shulespotions.cauldron_boiling": "Caldero hirviendo",
-  "sounds.shulespotions.body_break": "Miembro desprendiéndose",
   "entity.shulespotions.throwable_potion_bottle_projectile": "Botella de Poción Arrojadiza",
   "entity.shulespotions.potion_splash_projectile": "Salpicadura de Poción",
-  "entity.shulespotions.player_clone_name": "Clon de %s",
-  "entity.shulespotions.player_head": "Cabeza Cercenada",
-  "entity.shulespotions.player_arm": "Brazo Cercenado",
-  "entity.shulespotions.player_leg": "Pierna Cercenada"
+  "entity.shulespotions.player_clone_name": "Clon de %s"
 }

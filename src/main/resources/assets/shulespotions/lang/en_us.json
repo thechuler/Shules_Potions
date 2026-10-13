@@ -182,7 +182,6 @@
   "effect.shulespotions.swap": "Swap",
   "effect.shulespotions.explosive_sneeze": "Explosive Sneeze",
   "effect.shulespotions.frost_walk": "Frost Walk",
-  "effect.shulespotions.body_break_down": "Dismemberment",
 
   "effect.minecraft.absorption.description": "Grants the user additional health that absorbs damage before their normal health is affected.",
   "effect.minecraft.bad_omen.description": "Marks the target with an ominous aura that triggers a raid when entering a village.",
@@ -237,7 +236,6 @@
   "effect.shulespotions.fertilizer.description": "Generates accelerated growth in plants around the user.",
   "effect.shulespotions.potion_migraine.description": "Causes the target's head to fill with potion liquid. When the effect ends, their head will explode.",
   "effect.shulespotions.decapitated.description": "How am I even alive?",
-  "effect.shulespotions.body_break_down.description": "Your limbs fall off one by one until only your severed head remains.",
   "effect.shulespotions.orbital_gravity.description": "Manipulates the gravitational field of entities near the target, causing them to orbit around it.",
   "effect.shulespotions.swap.description": "Swaps the target's position with the user's.",
   "effect.shulespotions.explosive_sneeze.description": "Causes the user's sneezes to release nitroglycerin. In simple words, a big BOOM!",
@@ -353,11 +351,7 @@
   "creativetab.main_tab": "Shule's Potions",
   "shulespotion.codex.empty": " ",
   "sounds.shulespotions.cauldron_boiling": "Cauldron boiling",
-  "sounds.shulespotions.body_break": "Body part snaps off",
   "entity.shulespotions.throwable_potion_bottle_projectile": "Throwable Potion Bottle",
   "entity.shulespotions.potion_splash_projectile": "Potion Splash",
-  "entity.shulespotions.player_clone_name": "Clone of %s",
-  "entity.shulespotions.player_head": "Severed Head",
-  "entity.shulespotions.player_arm": "Severed Arm",
-  "entity.shulespotions.player_leg": "Severed Leg"
+  "entity.shulespotions.player_clone_name": "Clone of %s"
 }

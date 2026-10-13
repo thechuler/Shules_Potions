@@ -32,12 +32,6 @@
     ]
   },
 
-  "body_break": {
-    "subtitles": "sounds.shulespotions.body_break",
-    "sounds":[
-      "shulespotions:body_break"
-    ]
-  },
   "crumbling": {
     "subtitles": "sounds.shulespotions.crumbling",
     "sounds":[

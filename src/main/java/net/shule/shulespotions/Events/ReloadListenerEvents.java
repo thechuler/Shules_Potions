@@ -1,10 +1,13 @@
 package net.shule.shulespotions.Events;
 
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.shule.shulespotions.Potions.EffectLevelLoader;
+import net.shule.shulespotions.Potions.BrewingRecipeAutoMapper;
+import net.shule.shulespotions.Potions.EffectConfigLoader;
 import net.shule.shulespotions.Potions.IngredientStatLoader;
+import net.shule.shulespotions.Potions.ItemStatRegistry;
 import net.shule.shulespotions.ShulesPotions;
 
 @Mod.EventBusSubscriber(
@@ -16,6 +19,12 @@ public class ReloadListenerEvents {
     @SubscribeEvent
     public static void onReload(AddReloadListenerEvent event) {
         event.addListener(new IngredientStatLoader());
-        event.addListener(new EffectLevelLoader());
+        event.addListener(new EffectConfigLoader());
+    }
+
+    @SubscribeEvent
+    public static void onTagsUpdated(TagsUpdatedEvent event) {
+        BrewingRecipeAutoMapper.mapExternalRecipes();
+        ItemStatRegistry.invalidateCache();
     }
 }

@@ -1,8 +1,10 @@
 package net.shule.shulespotions.Events;
 
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
@@ -12,13 +14,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Mod;
@@ -27,14 +28,14 @@ import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.effect.MobEffectInstance;
+import net.shule.shulespotions.Blocks.Entities.SpikeBE;
 import net.shule.shulespotions.Blocks.Renders.AncientPedestalRender;
+import net.shule.shulespotions.Entities.Renders.*;
 import net.shule.shulespotions.MobEffects.ModMobEffects;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import net.shule.shulespotions.Blocks.Entities.PotionSplashBE;
-import net.shule.shulespotions.Blocks.Entities.SpoonRackBE;
 import net.shule.shulespotions.Blocks.ModBlockEntities;
 import net.shule.shulespotions.Blocks.ModBlocks;
 import net.shule.shulespotions.Blocks.Renders.MortarRender;
@@ -42,25 +43,13 @@ import net.shule.shulespotions.Blocks.Renders.PotionCauldronRenderer;
 import net.shule.shulespotions.Blocks.Renders.SpitterTrapRenderer;
 import net.shule.shulespotions.Blocks.Renders.SpoonRackRenderer;
 import net.shule.shulespotions.Entities.ModEntities;
-import net.shule.shulespotions.Entities.Models.PlayerArmModel;
-import net.shule.shulespotions.Entities.Models.PlayerHeadModel;
-import net.shule.shulespotions.Entities.Models.PlayerLegModel;
 import net.shule.shulespotions.Entities.Models.PotionSplashProjectileModel;
-import net.shule.shulespotions.Entities.Renders.PlayerArmRenderer;
-import net.shule.shulespotions.Entities.Renders.PlayerHeadRenderer;
-import net.shule.shulespotions.Entities.Renders.PlayerLegRenderer;
-import net.shule.shulespotions.Entities.Renders.PotionSplashProjectileRenderer;
-import net.shule.shulespotions.Entities.Renders.ShadowClonRenderer;
 import net.shule.shulespotions.Fluids.ModFluids;
 import net.shule.shulespotions.Fluids.PotionFluidHelper;
 import net.shule.shulespotions.Items.ModItems;
 import net.shule.shulespotions.Items.custom.PotionLiquidBottleItem;
 import net.shule.shulespotions.Items.custom.RecipeScroll;
-import net.shule.shulespotions.Particles.Custom.AncientParticleProvider;
-import net.shule.shulespotions.Particles.Custom.BubbleProvider;
-import net.shule.shulespotions.Particles.Custom.CorruptionFireProvider;
-import net.shule.shulespotions.Particles.Custom.InstabilityBubbleProvider;
-import net.shule.shulespotions.Particles.Custom.PotionExplotionProvider;
+import net.shule.shulespotions.Particles.Custom.*;
 import net.shule.shulespotions.Particles.ModParticles;
 import net.shule.shulespotions.Renders.CloneOverlayLayer;
 import net.shule.shulespotions.Renders.CoveredOnPotionLiquidLayer;
@@ -119,28 +108,14 @@ public class ModClientEvents {
 
         event.registerEntityRenderer(
                 ModEntities.PLAYER_CLONE.get(),
-                net.shule.shulespotions.Entities.Renders.PlayerCloneRenderer::new
+                PlayerCloneRenderer::new
         );
 
         event.registerEntityRenderer(
                 ModEntities.SPINNING_BLOCK.get(),
-                net.shule.shulespotions.Entities.Renders.SpinningBlockRenderer::new
+               SpinningBlockRenderer::new
         );
 
-        event.registerEntityRenderer(
-                ModEntities.PLAYER_HEAD.get(),
-                PlayerHeadRenderer::new
-        );
-
-        event.registerEntityRenderer(
-                ModEntities.PLAYER_ARM.get(),
-                PlayerArmRenderer::new
-        );
-
-        event.registerEntityRenderer(
-                ModEntities.PLAYER_LEG.get(),
-                PlayerLegRenderer::new
-        );
     }
 
     @SubscribeEvent
@@ -151,32 +126,17 @@ public class ModClientEvents {
                 PotionSplashProjectileModel.LAYER_LOCATION,
                 PotionSplashProjectileModel::createBodyLayer
         );
-
-        event.registerLayerDefinition(
-                PlayerHeadModel.LAYER_LOCATION,
-                PlayerHeadModel::createBodyLayer
-        );
-
-        event.registerLayerDefinition(
-                PlayerArmModel.LAYER_LOCATION,
-                PlayerArmModel::createBodyLayer
-        );
-
-        event.registerLayerDefinition(
-                PlayerLegModel.LAYER_LOCATION,
-                PlayerLegModel::createBodyLayer
-        );
     }
 
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticles.BUBBLE.get(), BubbleProvider::new);
         event.registerSpriteSet(ModParticles.POTION_EXPLOTION.get(), PotionExplotionProvider::new);
-        event.registerSpriteSet(ModParticles.POTION_SMOKE.get(), net.shule.shulespotions.Particles.Custom.PotionSmokeProvider::new);
+        event.registerSpriteSet(ModParticles.POTION_SMOKE.get(), PotionSmokeProvider::new);
         event.registerSpriteSet(ModParticles.INSTABILITY_BUBBLE.get(), InstabilityBubbleProvider::new);
         event.registerSpriteSet(ModParticles.CORRUPTION_FIRE.get(), CorruptionFireProvider::new);
         event.registerSpriteSet(ModParticles.ANCIENT_PARTICLE.get(), AncientParticleProvider::new);
-        event.registerSpriteSet(ModParticles.OMINOUS_FIRE.get(), net.shule.shulespotions.Particles.Custom.OminousFireProvider::new);
+        event.registerSpriteSet(ModParticles.OMINOUS_FIRE.get(),OminousFireProvider::new);
     }
 
 
@@ -311,9 +271,9 @@ public class ModClientEvents {
                         return splash.getColor();
                     }
                     
-                    if (be instanceof net.shule.shulespotions.Blocks.Entities.SpikeBE spike) {
+                    if (be instanceof SpikeBE spike) {
                         if (tintIndex == 0) {
-                            net.minecraft.world.item.ItemStack potion = spike.getStoredPotion();
+                            ItemStack potion = spike.getStoredPotion();
                             if (!potion.isEmpty() && potion.getItem() instanceof PotionLiquidBottleItem bottle) {
                                 FluidStack fluid = bottle.getFluid(potion);
                                 if (!fluid.isEmpty()) {
@@ -349,10 +309,6 @@ public class ModClientEvents {
                 livingRenderer.addLayer(
                         new ButterFingersLayer(livingRenderer)
                 );
-
-                if (livingRenderer instanceof net.minecraft.client.renderer.entity.HumanoidMobRenderer<?, ?> humanoidRenderer) {
-                    BodyBreakDownClientEvents.hookPlayerArmorLayers(humanoidRenderer, event.getContext());
-                }
             }
         });
 
@@ -370,12 +326,10 @@ public class ModClientEvents {
             playerRenderer.addLayer(
                     new ButterFingersLayer<>(playerRenderer)
             );
-
-            BodyBreakDownClientEvents.hookPlayerArmorLayers(playerRenderer, event.getContext());
         }
     }
 
-    @Mod.EventBusSubscriber(modid = net.shule.shulespotions.ShulesPotions.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = ShulesPotions.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
     public static class ForgeEvents {
         private static final Map<UUID, Integer> migraineStartTicks = new HashMap<>();
 
@@ -397,20 +351,20 @@ public class ModClientEvents {
             Class<?> clazz = model.getClass();
             while (clazz != null && clazz != Object.class) {
                 for (java.lang.reflect.Field field : clazz.getDeclaredFields()) {
-                    if (field.getType() == net.minecraft.client.model.geom.ModelPart.class) {
+                    if (field.getType() == ModelPart.class) {
                         try {
                             field.setAccessible(true);
-                            net.minecraft.client.model.geom.ModelPart part = (net.minecraft.client.model.geom.ModelPart) field.get(model);
+                            ModelPart part = (ModelPart) field.get(model);
                             if (part != null) {
                                 if (part.hasChild("head")) {
-                                    net.minecraft.client.model.geom.ModelPart head = part.getChild("head");
+                                   ModelPart head = part.getChild("head");
                                     head.xScale = scale;
                                     head.yScale = scale;
                                     head.zScale = scale;
                                     headFound = true;
                                 }
                                 if (part.hasChild("hat")) {
-                                    net.minecraft.client.model.geom.ModelPart hat = part.getChild("hat");
+                                   ModelPart hat = part.getChild("hat");
                                     hat.xScale = scale;
                                     hat.yScale = scale;
                                     hat.zScale = scale;

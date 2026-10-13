@@ -2,6 +2,7 @@ package net.shule.shulespotions.Screens.codex;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.shule.shulespotions.Potions.EffectConfigRegistry;
 import net.shule.shulespotions.Screens.EffectButton;
 import net.shule.shulespotions.Screens.codex.base.PagedGridSpread;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +19,7 @@ public class EffectGridSpread extends PagedGridSpread<MobEffect> {
 
     public EffectGridSpread() {
         super(ForgeRegistries.MOB_EFFECTS.getValues().stream()
+                .filter(effect -> !EffectConfigRegistry.isHidden(effect))
                 .sorted(Comparator.comparing((MobEffect e) -> {
                     ResourceLocation key = ForgeRegistries.MOB_EFFECTS.getKey(e);
                     return key != null ? key.getNamespace() : "";

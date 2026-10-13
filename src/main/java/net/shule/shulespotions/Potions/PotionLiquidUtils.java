@@ -36,7 +36,7 @@ public class PotionLiquidUtils {
             if (random.nextInt(100) < chance) {
                 MobEffect effect = BuiltInRegistries.MOB_EFFECT.get(entry.getKey());
                 if (effect != null) {
-                    if (EffectLevelRegistry.getLevel(effect) <= cauldronLevel) {
+                    if (EffectConfigRegistry.getLevel(effect) <= cauldronLevel) {
                         result.add(effect);
                     }
                 }

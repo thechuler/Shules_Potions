@@ -10,7 +10,7 @@
     "duration": 20,
     "color":"#0d6228",
     "effects": {
-      "froglins:infection": 40
+      "froglins:infection": 100
     }
   },
 

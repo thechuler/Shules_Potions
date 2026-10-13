@@ -62,6 +62,16 @@ public class ProviderRecipe extends RecipeProvider {
                 0.2f);
 
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModItems.RECIPE_SCROLL.get())
+                .pattern(" P ")
+                .pattern("PBP")
+                .pattern(" P ")
+                .define('B', ModItems.SMALL_POTION_BOTTLE.get())
+                .define('P', Items.PAPER)
+                .unlockedBy("has_potion_bottle", has(ModItems.SMALL_POTION_BOTTLE.get()))
+                .save(consumer);
+
+
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModBlocks.POTION_CAULDRON.get().asItem())
                 .pattern("I I")
@@ -208,6 +218,14 @@ public class ProviderRecipe extends RecipeProvider {
                 .unlockedBy("has_rotten_flesh", has(Items.ROTTEN_FLESH))
                 .save(consumer);
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.FERMENTED_CARROT.get())
+                .requires(Items.CARROT)
+                .requires(Items.SUGAR)
+                .requires(Items.BROWN_MUSHROOM)
+                .unlockedBy("has_carrot", has(Items.CARROT))
+                .save(consumer);
+
+
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.ROTTEN_APPLE.get())
                 .requires(Items.ROTTEN_FLESH)
@@ -241,6 +259,16 @@ public class ProviderRecipe extends RecipeProvider {
                 .requires(Items.PAPER)
                 .unlockedBy("has_potion_bottle", has(ModItems.SMALL_POTION_BOTTLE.get()))
                 .save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.BIG_POTION_BOTTLE.get())
+                .requires(ModItems.LARGE_POTION_BOTTLE.get())
+                .requires(Items.GLASS)
+                .requires(Items.GLASS)
+                .requires(Items.GLASS)
+                .requires(Items.PAPER)
+                .unlockedBy("has_potion_bottle", has(ModItems.LARGE_POTION_BOTTLE.get()))
+                .save(consumer);
+
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.FRAGMENTED_ENDER_PEARL.get(),2)
                 .requires(Items.ENDER_PEARL)

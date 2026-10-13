@@ -11,7 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.fml.ModList;
-import net.shule.shulespotions.Potions.EffectLevelRegistry;
+import net.shule.shulespotions.Potions.EffectConfigRegistry;
 import net.shule.shulespotions.Potions.ItemStatRegistry;
 import net.shule.shulespotions.Screens.IngredientButton;
 import net.shule.shulespotions.Screens.codex.base.CodexSpread;
@@ -196,7 +196,7 @@ public class EffectInfoSpread extends CodexSpread {
 
         int levelX = startX + 22;
         if (mouseX >= levelX && mouseX <= levelX + 18 && mouseY >= textY && mouseY <= textY + 18) {
-            int level = EffectLevelRegistry.getLevel(effect);
+            int level = EffectConfigRegistry.getLevel(effect);
             graphics.renderTooltip(Minecraft.getInstance().font, Component.translatable("shulespotions.screen.effect_codex.level").append(String.valueOf(level)), mouseX, mouseY);
         }
         
@@ -284,7 +284,7 @@ public class EffectInfoSpread extends CodexSpread {
             case NEUTRAL -> NEUTRAL_SPRITE;
         };
         
-        int level = EffectLevelRegistry.getLevel(effect);
+        int level = EffectConfigRegistry.getLevel(effect);
         ResourceLocation levelSprite = switch (level) {
             case 1 -> LEVEL_1;
             case 2 -> LEVEL_2;

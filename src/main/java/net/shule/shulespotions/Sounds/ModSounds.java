@@ -25,8 +25,6 @@ public class ModSounds {
             registerSoundEvent("blowing");
     public static final RegistryObject<SoundEvent> SELECTION =
             registerSoundEvent("selection");
-    public static final RegistryObject<SoundEvent> BODY_BREAK =
-            registerSoundEvent("body_break");
     public static final RegistryObject<SoundEvent> CRUMBLING =
             registerSoundEvent("crumbling");
 

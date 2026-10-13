@@ -27,7 +27,7 @@ import net.shule.shulespotions.Blocks.Custom.BigCauldronCore;
 import net.shule.shulespotions.Blocks.Custom.PotionCauldron;
 import net.shule.shulespotions.Blocks.ModBlocks;
 import net.shule.shulespotions.Items.custom.RecipeScroll;
-import net.shule.shulespotions.Potions.EffectLevelRegistry;
+import net.shule.shulespotions.Potions.EffectConfigRegistry;
 import net.shule.shulespotions.Potions.PotionLiquid;
 import net.shule.shulespotions.Potions.PotionLiquidUtils;
 import org.jetbrains.annotations.NotNull;
@@ -441,7 +441,7 @@ public class RecipeScrollScreen extends Screen {
                 ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "textures/mob_effect/" + id.getPath() + ".png");
                 int startTick = i * delayPerEffect;
                 float scale = getPopAnimationScale(startTick);
-                boolean isLowTolerance = cauldronLevel < EffectLevelRegistry.getLevel(effect);
+                boolean isLowTolerance = cauldronLevel < EffectConfigRegistry.getLevel(effect);
 
                 renderAnimatedEffect(graphics, texture, iconX, iconY, scale, isHovered && !isBlocked);
 

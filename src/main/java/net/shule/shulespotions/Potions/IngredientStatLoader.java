@@ -9,8 +9,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.conditions.ICondition;
 
 import java.util.Map;
 
@@ -23,8 +27,7 @@ public class IngredientStatLoader extends SimpleJsonResourceReloadListener {
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> object,
-                         ResourceManager resourceManager,
+    protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager,
                          ProfilerFiller profiler) {
 
         ItemStatRegistry.clear();
@@ -44,47 +47,69 @@ public class IngredientStatLoader extends SimpleJsonResourceReloadListener {
                         System.out.println("Skipping file " + fileEntry.getKey() + " as forge:conditions is not a JsonArray");
                         continue;
                     }
-                    if (!net.minecraftforge.common.crafting.CraftingHelper.processConditions(conditionsElement.getAsJsonArray(), net.minecraftforge.common.crafting.conditions.ICondition.IContext.EMPTY)) {
+                    if (!CraftingHelper.processConditions(conditionsElement.getAsJsonArray(), ICondition.IContext.EMPTY)) {
                         System.out.println("Skipping file " + fileEntry.getKey() + " due to Forge conditions not met");
                         continue;
                     }
                 }
 
                 for (Map.Entry<String, JsonElement> ingredientEntry : root.entrySet()) {
-                    if (ingredientEntry.getKey().equals("forge:conditions")) {
-                        continue;
+
+                    if (ingredientEntry.getKey().startsWith("#")) {
+
+                        String key = ingredientEntry.getKey().substring(1);
+
+                        TagKey<Item> tagKey = ItemTags.create(ResourceLocation.parse(key));
+
+                        IngredientStat stat = IngredientStat.CODEC
+                                .parse(JsonOps.INSTANCE, ingredientEntry.getValue())
+                                .resultOrPartial(System.out::println)
+                                .orElse(null);
+
+                        if (stat == null) continue;
+
+                        ItemStatRegistry.registerTag(tagKey, stat);
+
+                        System.out.println("Loaded stats for tag " + key);
+
+                    } else {
+
+                        if (ingredientEntry.getKey().equals("forge:conditions")) {
+                            continue;
+                        }
+
+                        ResourceLocation itemId = ResourceLocation.tryParse(ingredientEntry.getKey());
+
+                        if (itemId == null) {
+                            System.out.println("Invalid item id: " + ingredientEntry.getKey());
+                            continue;
+                        }
+
+                        if (!BuiltInRegistries.ITEM.containsKey(itemId)) {
+                            System.out.println("Unknown item: " + itemId);
+                            continue;
+                        }
+
+                        Item item = BuiltInRegistries.ITEM.get(itemId);
+
+                        IngredientStat stat = IngredientStat.CODEC
+                                .parse(JsonOps.INSTANCE, ingredientEntry.getValue())
+                                .resultOrPartial(System.out::println)
+                                .orElse(null);
+
+                        if (stat == null) continue;
+
+                        ItemStatRegistry.register(item, stat);
+
+                        System.out.println("Loaded stats for " + itemId);
                     }
-
-                ResourceLocation itemId =
-                        ResourceLocation.tryParse(ingredientEntry.getKey());
-
-                if (itemId == null) {
-                    System.out.println("Invalid item id: " + ingredientEntry.getKey());
-                    continue;
                 }
 
-                if (!BuiltInRegistries.ITEM.containsKey(itemId)) {
-                    System.out.println("Unknown item: " + itemId);
-                    continue;
-                }
-
-                Item item = BuiltInRegistries.ITEM.get(itemId);
-
-                IngredientStat stat = IngredientStat.CODEC
-                        .parse(JsonOps.INSTANCE, ingredientEntry.getValue())
-                        .resultOrPartial(System.out::println)
-                        .orElse(null);
-
-                if (stat == null) continue;
-
-                ItemStatRegistry.register(item, stat);
-
-                System.out.println("Loaded stats for " + itemId);
-            }
             } catch (Exception e) {
                 System.err.println("Error parsing ingredient stats file: " + fileEntry.getKey());
                 e.printStackTrace();
             }
         }
+        BrewingRecipeAutoMapper.mapExternalRecipes();
     }
 }

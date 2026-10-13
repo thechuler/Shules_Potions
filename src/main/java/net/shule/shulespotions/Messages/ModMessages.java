@@ -60,20 +60,5 @@ public class ModMessages {
                 SyncDecapitatedActivePacket::handle
         );
 
-        INSTANCE.registerMessage(
-                packetId++,
-                SyncBodyPartsPacket.class,
-                SyncBodyPartsPacket::encode,
-                SyncBodyPartsPacket::decode,
-                SyncBodyPartsPacket::handle
-        );
-
-        INSTANCE.registerMessage(
-                packetId++,
-                ControlHeadPacket.class,
-                ControlHeadPacket::encode,
-                ControlHeadPacket::decode,
-                ControlHeadPacket::handle
-        );
     }
 }

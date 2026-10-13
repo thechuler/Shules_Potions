@@ -48,7 +48,7 @@
 
   "shulespotions:relic_of_instability": {
     "effects": {
-      "shulespotions:body_break_down": 100
+      "shulespotions:instability": 100
     },
     "color": "#ff9000"
   },
